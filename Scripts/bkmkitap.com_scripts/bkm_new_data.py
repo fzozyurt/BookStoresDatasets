@@ -8,13 +8,15 @@ from datetime import date
 
 # Mevcut Veri İçe Aktarma
 
+print(str(pd.to_datetime("today", format="%d.%m.%Y %H:%M:%S")))
+
 filename = "Datasets/BKM_Datasets.csv"
 data = pd.read_csv(filename, sep=";")
 
 data.info()
 
 data["Fiyat"] = pd.to_numeric(data["Fiyat"])
-data['Tarih'] = pd.to_datetime(data['Tarih'], format="ISO8601")
+data['Tarih'] = pd.to_datetime(data['Tarih'], format="%d.%m.%Y %H:%M:%S")
 
 data.info()
 
@@ -85,7 +87,7 @@ def veri_al(i, link):
         resim[a] = (resim[a]['data-src'])
         Bresim[a] = resim[a].replace('-K.jpg', '-O.jpg')
         liste.append([isim[a], yazar[a], yayın[a], fiyat[a], sayfa[a], "BKM Kitap",
-                     pd.to_datetime("today"), resim[a], Bresim[a]])
+                     pd.to_datetime("today", format="%d.%m.%Y %H:%M:%S"), resim[a], Bresim[a]])
     print("Sayfa No : "+str(i)+" İşlem OK")
 
 
@@ -115,7 +117,7 @@ df['Fiyat'] = df['Fiyat'] + "."+df['Kr']
 df.drop("Kr", axis=1, inplace=True)
 
 df["Fiyat"] = pd.to_numeric(df["Fiyat"])
-df['Tarih'] = pd.to_datetime(df['Tarih'], format="ISO8601")
+df['Tarih'] = pd.to_datetime(df['Tarih'], format="%d.%m.%Y %H:%M:%S")
 
 df.reset_index(inplace=True)
 df.drop("index", axis=1, inplace=True)
