@@ -29,11 +29,6 @@ jobs:
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
         run: python Scripts/all_datasets_import.py
 
-      - name: List File # run main.py
-        run: ls
-          cd Datasets
-          ls
-
       - name: Script Start # run main.py
         run: python Scripts/bkmkitap.com_scripts/bkm_new_data.py
 
