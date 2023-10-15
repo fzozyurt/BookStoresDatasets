@@ -3,6 +3,6 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 prep_location = 'Datasets'
 
 KaggleApi.dataset_download_files(
-    "furkanzeki/bookdataset", path=prep_location, unzip=True)
+    dataset="furkanzeki/bookdataset", path=prep_location, unzip=True)
 
 print("Dosya İndirildi")
