@@ -1,0 +1,45 @@
+name: BKM Kitap Query
+
+on:
+  workflow_dispatch:
+  #schedule:
+  #  - cron: "0 0 * * *" # Hergün saat 00:00 da
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v3 # checkout the repository content
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9" # install the python version needed
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Dawnload Dataset # run main.py
+        env:
+          # Kaggle API auth
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: python Scripts/all_datasets_import.py
+
+      - name: Script Start # run main.py
+        run: python Scripts/bkmkitap.com_scripts/bkmkitap_scripts.py
+
+      - name:
+          Kaggle Sync
+          # only sync when there is push to master
+        env:
+          # Kaggle API auth
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: |
+          cd Datasets
+          kaggle datasets metadata ${{ vars.KAGGLE_DATASET_PATH}}
+          python ../Scripts/kaggleUpload.py

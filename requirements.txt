@@ -4,5 +4,5 @@ requests
 kaggle == 1.5.12
 datetime
 beautifulsoup4
-re
 selenium
+re
