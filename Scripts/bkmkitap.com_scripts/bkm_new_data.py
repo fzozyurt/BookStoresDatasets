@@ -4,16 +4,19 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import re
+from datetime import date
 
 # Mevcut Veri İçe Aktarma
 
 filename = "Datasets/BKM_Datasets.csv"
 data = pd.read_csv(filename, sep=";")
 
+print(str(date.today()))
+
 data.info()
 
 data["Fiyat"] = pd.to_numeric(data["Fiyat"])
-data['Tarih'] = pd.to_datetime(data['Tarih'])
+data['Tarih'] = pd.to_datetime(data['Tarih'], dayfirst=True)
 
 data.info()
 
@@ -84,7 +87,7 @@ def veri_al(i, link):
         resim[a] = (resim[a]['data-src'])
         Bresim[a] = resim[a].replace('-K.jpg', '-O.jpg')
         liste.append([isim[a], yazar[a], yayın[a], fiyat[a], sayfa[a], "BKM Kitap",
-                     pd.to_datetime("today").date(), resim[a], Bresim[a]])
+                     date.today(), resim[a], Bresim[a]])
     print("Sayfa No : "+str(i)+" İşlem OK")
 
 
