@@ -4,20 +4,11 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import re
-import pytz
-from pytz import timezone
-from datetime import datetime
 
 # Mevcut Veri İçe Aktarma
 
 filename = "Datasets/BKM_Datasets.csv"
 data = pd.read_csv(filename, sep=";")
-
-utc_now = datetime.now()
-utc = pytz.timezone('UTC')
-aware_date = utc.localize(utc_now)
-turkey = timezone('Europe/Istanbul')
-now_turkey = aware_date.astimezone(turkey)
 
 data["Fiyat"] = pd.to_numeric(data["Fiyat"])
 data['Tarih'] = pd.to_datetime(data['Tarih'])
@@ -91,12 +82,12 @@ def veri_al(i, link):
         resim[a] = (resim[a]['data-src'])
         Bresim[a] = resim[a].replace('-K.jpg', '-O.jpg')
         liste.append([isim[a], yazar[a], yayın[a], fiyat[a], sayfa[a], "BKM Kitap",
-                     now_turkey.strftime('%d.%m.%Y %H:%M:%S'), resim[a], Bresim[a]])
+                     pd.to_datetime("today").date(), resim[a], Bresim[a]])
     print("Sayfa No : "+str(i)+" İşlem OK")
 
 
 # Veri Alma Fonksiyonunu Çalıştır
-for link in links[2:3]:
+for link in links:
     print("Kategori : "+str(link))
     liste = []
     list1 = []
