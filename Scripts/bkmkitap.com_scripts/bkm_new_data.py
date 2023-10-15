@@ -10,6 +10,8 @@ import re
 filename = "Datasets/BKM_Datasets.csv"
 data = pd.read_csv(filename, sep=";")
 
+data.info()
+
 data["Fiyat"] = pd.to_numeric(data["Fiyat"])
 data['Tarih'] = pd.to_datetime(data['Tarih'])
 
