@@ -16,7 +16,7 @@ data = pd.read_csv(filename, sep=";")
 data.info()
 
 data["Fiyat"] = pd.to_numeric(data["Fiyat"])
-data['Tarih'] = pd.to_datetime(data['Tarih'], format="%d.%m.%Y %H:%M:%S")
+data['Tarih'] = pd.to_datetime(data['Tarih'], format="%Y.%m.%d %H:%M:%S")
 
 data.info()
 

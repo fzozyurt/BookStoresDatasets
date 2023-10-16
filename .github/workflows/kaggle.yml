@@ -2,10 +2,6 @@ name: Kaggle Dataset Update
 
 on:
   workflow_dispatch:
-  push:
-    branches: [master]
-    paths:
-      - "**IstanbulTraficData.csv"
 
 jobs:
   build:
