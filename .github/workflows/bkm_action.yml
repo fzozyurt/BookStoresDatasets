@@ -28,7 +28,7 @@ jobs:
             # Kaggle API auth
             KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
             KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-            KAGGLE_DATASET_PATH: ${{ vars.BKM_KAGGLE_DATASET_PATH }}
+            DATASET_PATH: ${{ vars.BKM_KAGGLE_DATASET_PATH }}
           run: python Scripts/dataset_import.py
 
     container:
@@ -41,6 +41,7 @@ jobs:
     steps:
       - name: checkout repo content
         run: ls ${{ github.workspace }} # checkout the repository conten
+      
 
 
       
