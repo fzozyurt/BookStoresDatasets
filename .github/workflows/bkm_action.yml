@@ -16,3 +16,11 @@ jobs:
       image: python:3.9
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}
+  Deger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo content
+        run: ls ${{ github.workspace }} # checkout the repository content
+
+
+      
