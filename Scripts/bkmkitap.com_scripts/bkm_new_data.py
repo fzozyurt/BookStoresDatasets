@@ -12,6 +12,7 @@ from datetime import date
 print(str(pd.to_datetime("today", format="%d.%m.%Y %H:%M:%S")))
 
 filename = os.environ["FILE_LOC"]
+filename = os.environ["FILE_LOC"]
 data = pd.read_csv(filename, sep=";")
 
 data["Fiyat"] = pd.to_numeric(data["Fiyat"])
@@ -25,7 +26,7 @@ links = []
 site = 'https://www.bkmkitap.com'
 
 # Kategori İçe Aktarma
-data = np.loadtxt(os.environ["K_LOC"])
+links = np.loadtxt(os.environ["K_LOC"])
 
 # Mevcut Verideki En Güncel Fiyatı Sorgulama
 
