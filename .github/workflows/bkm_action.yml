@@ -10,8 +10,14 @@ jobs:
         K_LOC: ["links-0.txt", "links-1.txt", "links-2.txt","links-3.txt","links-4.txt"]
         mongodb-version: ["5.0"]
     steps:
+
         - name: checkout repo content
           uses: actions/checkout@v3 # checkout the repository content
+          with:
+            path: ${{ github.workspace }}
+
+        - name: checkout repo content
+          run: mkdir ${{ github.workspace }}/test # checkout the repository conten
 
         - name: setup python
           uses: actions/setup-python@v4
