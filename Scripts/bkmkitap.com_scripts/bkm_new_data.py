@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import requests
@@ -10,15 +11,12 @@ from datetime import date
 
 print(str(pd.to_datetime("today", format="%d.%m.%Y %H:%M:%S")))
 
-filename = "Datasets/BKM_Datasets.csv"
+filename = os.environ["FILE_LOC"]
 data = pd.read_csv(filename, sep=";")
 
-data.info()
-
 data["Fiyat"] = pd.to_numeric(data["Fiyat"])
-data['Tarih'] = pd.to_datetime(data['Tarih'], format="%Y-%m-%d %H:%M:%S")
+data["Tarih"] = pd.to_datetime(data['Tarih'], format="%Y-%m-%d %H:%M:%S")
 
-data.info()
 
 # Yeni veri oluşturma
 df = pd.DataFrame(columns=["Kitap İsmi", "Yazar", "Yayın Evi", "Fiyat",
@@ -27,15 +25,7 @@ links = []
 site = 'https://www.bkmkitap.com'
 
 # Kategori İçe Aktarma
-url = "https://www.bkmkitap.com/kategori-listesi"
-response = requests.get(url)
-html_icerigi = response.content
-soup = BeautifulSoup(html_icerigi, "html.parser")
-kategori = soup.find_all("a", class_=["btn btn-default btn-upper"])
-for a in range(len(kategori)):
-    kategori[a] = str(site+"/"+(kategori[a]['href']))
-    links.append(kategori[a])
-    print(kategori[a])
+data = np.loadtxt(os.environ["K_LOC"])
 
 # Mevcut Verideki En Güncel Fiyatı Sorgulama
 
@@ -49,8 +39,8 @@ grup = data.groupby(['URL']).agg(Tarih=('Tarih', np.max))
 grup = pd.merge(grup, data[['URL', 'Tarih', 'Fiyat']],
                 how='left', on=['URL', 'Tarih'])
 
-# Yeni Veri Alma
 
+# Yeni Veri Alma
 
 def veri_al(i, link):
     url = link+"?pg="+str(i)
@@ -89,7 +79,6 @@ def veri_al(i, link):
         liste.append([isim[a], yazar[a], yayın[a], fiyat[a], sayfa[a], "BKM Kitap",
                      pd.to_datetime("today", format="%d.%m.%Y %H:%M:%S"), resim[a], Bresim[a]])
     print("Sayfa No : "+str(i)+" İşlem OK")
-
 
 # Veri Alma Fonksiyonunu Çalıştır
 for link in links:

@@ -6,8 +6,18 @@ on:
   #  - cron: "0 0 * * *" # Hergün saat 00:00 da
 
 jobs:
-  build:
+  runner-job:
     runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: BKM
+      FILE_LOC: Datasets/BKM_Datasets.csv
+    
+    services:
+      mongodb:
+        image: mongo
+        ports:
+        - 27017:27017
+
     steps:
       - name: checkout repo content
         uses: actions/checkout@v3 # checkout the repository content
@@ -27,19 +37,15 @@ jobs:
           # Kaggle API auth
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-        run: python Scripts/all_datasets_import.py
+          DATASET_PATH: ${{ vars.BKM_KAGGLE_DATASET_PATH}}
+        run: python Scripts/dataset_import.py
 
+  JOB1:
+    runs-on: ubuntu-latest
+    needs: runner-job
+    steps:
       - name: Script Start # run main.py
-        run: python Scripts/bkmkitap.com_scripts/bkm_new_data_create.py
+        run: ls
 
-      - name:
-          Kaggle Sync
-          # only sync when there is push to master
-        env:
-          # Kaggle API auth
-          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-        run: |
-          cd Datasets
-          kaggle datasets metadata ${{ vars.KAGGLE_DATASET_PATH}}
-          python ../Scripts/kaggleUpload.py
+      - name: Ping Start # run main.py
+        run: ping localhost:27017
