@@ -1,4 +1,4 @@
-name: BKM Kitap Query
+name: BKM Kitap Query-test
 
 on:
   workflow_dispatch:
