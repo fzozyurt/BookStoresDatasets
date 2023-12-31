@@ -40,6 +40,9 @@ jobs:
     needs: Kategori
     steps:
       - name: checkout repo content
+        run: mkdir ${{ github.workspace }}/test # checkout the repository conten
+
+      - name: checkout repo content
         run: ls ${{ github.workspace }} # checkout the repository conten
       
 
