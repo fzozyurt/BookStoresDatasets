@@ -31,7 +31,7 @@ jobs:
             pip install -r requirements.txt
         
         - name: Kategori Olustur # run main.py
-          run: python Scripts/bkm_categori_list_create.py
+          run: python Scripts/bkmkitap.com_scripts/bkm_categori_list_create.py
 
   Web_Scrapping:
     name: Web Scraping Node ID - ${{ matrix.N_ID }}
@@ -45,7 +45,7 @@ jobs:
         - name: checkout repo content
           uses: actions/checkout@v3 # checkout the repository content
           with:
-            path: ${{ github.workspace }}
+            ref: ${{github.ref}}
 
         - name: checkout repo content
           run: mkdir ${{ github.workspace }}/test # checkout the repository conten
