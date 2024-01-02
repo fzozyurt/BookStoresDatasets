@@ -8,9 +8,6 @@ on:
 jobs:
   Preprocessing:
     runs-on: ubuntu-latest
-    outputs:
-      output_file:
-        value: BKM_other_data/Kategori.csv
     services:
       mongodb:
         image: mongo:latest
