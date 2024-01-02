@@ -29,6 +29,9 @@ jobs:
           run: |
             python -m pip install --upgrade pip
             pip install -r requirements.txt
+
+        - name: install python packages
+          run: mkdir BKM_other_data
         
         - name: Kategori Olustur # run main.py
           run: python Scripts/bkmkitap.com_scripts/bkm_categori_list_create.py
@@ -45,7 +48,7 @@ jobs:
         - name: checkout repo content
           uses: actions/checkout@v3 # checkout the repository content
           with:
-            ref: ${{github.ref}}
+            path: ${{github.ref}}
 
         - name: checkout repo content
           run: mkdir ${{ github.workspace }}/test # checkout the repository conten
