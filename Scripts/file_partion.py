@@ -1,12 +1,8 @@
 import numpy as np
+import pandas as pd
 
-def filepartion(direction,links=[],count=3):
-    part_links=np.array_split(links, count)
-    print(part_links)
-    i=0
-    while i<count:
-        with open(direction+'/links-'+str(i)+'.txt', 'w') as f:
-            for line in part_links[i]:
-                f.write(f"{line}\n")
-        f.close()
-        i=i+1
+def partion(direction,links=[],count=3):
+    df = pd.DataFrame(links)
+    df.reset_index(drop=True, inplace=True)
+    df["Node"] = df.index.map(lambda x: x % count + 1)
+    df.to_csv(direction+"/Kategori.csv", index=False)
