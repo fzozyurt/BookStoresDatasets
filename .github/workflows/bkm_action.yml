@@ -4,20 +4,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  create_csv:
+  job1:
     runs-on: ubuntu-latest
-
+    outputs:
+      step1output: ${{ steps.step1.outputs.some_output }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Adım 1
+      id: step1
+      run: echo "::set-output name=some_output::merhaba dünya test"
 
-      - name: Create CSV
-        run: |
-          ls ${{ github.action_path }}
-
-  use_csv:
+  job2:
+    needs: job1
     runs-on: ubuntu-latest
-    needs: create_csv
     steps:
-      - name: Checkout repository
-        run: ls ${{ github.action_path }}
+    - name: Adım 2
+      run: echo "Job 1 çıktısı: ${{ needs.job1.outputs.step1output }}"
