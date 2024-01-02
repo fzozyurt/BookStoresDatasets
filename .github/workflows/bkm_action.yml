@@ -16,7 +16,6 @@ jobs:
         image: mongo:latest
         ports:
           - 27017:27017
-        options: --health-cmd "mongo --eval 'printjson(db.runCommand({ connectionStatus: 1 }))'" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
         - name: checkout repo content
           uses: actions/checkout@v3 # checkout the repository content
@@ -39,7 +38,7 @@ jobs:
         - name: Kategori Olustur # run main.py
           run: python Scripts/bkm_categori_list_create.py
 
-Pre_processing:
+  Pre_processing:
     name: Web Scraping Node ID - ${{ matrix.N_ID }}
     runs-on: ubuntu-latest
     strategy:
