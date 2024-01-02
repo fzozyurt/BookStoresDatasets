@@ -1,0 +1,41 @@
+name: CSV Aktarma
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_csv:
+    runs-on: ubuntu-latest
+    outputs:
+      id: csv_output
+      values:
+        csv_path: ${{ github.workspace }}/test/veriler.csv
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create CSV
+        run: |
+          # Burada CSV dosyasını oluşturun
+          echo "Ad,Soyad,Yaş" > veriler.csv
+          echo "Ahmet,Yılmaz,25" >> veriler.csv
+          echo "Ayşe,Kara,30" >> veriler.csv
+          echo "Mehmet,Demir,28" >> veriler.csv
+
+  use_csv:
+    runs-on: ubuntu-latest
+    needs: create_csv
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Checkout repository
+        run: ls ${{ github.workspace }}
+
+      - name: Use CSV
+        run: |
+          # CSV dosyasının yolu
+          csv_path="${{ needs.create_csv.outputs.csv_path }}"
+          
+          # Burada CSV dosyasını kullanın
+          cat "$csv_path"
