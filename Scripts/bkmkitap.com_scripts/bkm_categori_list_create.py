@@ -4,8 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import date
 
-from Scripts.file_partion import partion
-
 direction="./BKM_other_data"
 links = []
 site = 'https://www.bkmkitap.com'
@@ -19,6 +17,13 @@ for a in range(len(kategori)):
     kategori[a] = str(site+"/"+(kategori[a]['href']))
     links.append(kategori[a])
     print(kategori[a])
+
+
+def partion(direction,links=[],count=3):
+    df = pd.DataFrame(links)
+    df.reset_index(drop=True, inplace=True)
+    df["Node"] = df.index.map(lambda x: x % count + 1)
+    df.to_csv(direction+"/Kategori.csv", index=False)
 
 partion(direction,links,5)
 
