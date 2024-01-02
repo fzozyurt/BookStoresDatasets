@@ -17,9 +17,8 @@ jobs:
         - name: Start MongoDB
           uses: supercharge/mongodb-github-action@1.10.0
           with:
-            mongodb-version: ${{ matrix.mongodb-version }}
-            mongodb-replica-set: test-rs
-            mongodb-port: 42069
+            mongodb-version: 5.0
+            mongodb-port: 27017
 
         - name: checkout repo content
           uses: actions/checkout@v3 # checkout the repository content
