@@ -1,7 +1,24 @@
-name: CSV Aktarma
+name: İki JOB'lu İş Akışı
 
-on:
-  workflow_dispatch:
+on: workflow_dispatch:
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      step1output: ${{ steps.step1.outputs.some_output }}
+    steps:
+    - name: Adım 1
+      id: step1
+      run: echo "::set-output name=some_output::merhaba dünya"
+
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+    - name: Adım 2
+      run: echo "Job 1 çıktısı: ${{ needs.job1.outputs.step1output }}"
+
 
 jobs:
   job1:
