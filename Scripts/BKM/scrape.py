@@ -15,7 +15,7 @@ filename = "Dataset/BKM_"+matrix+".csv"
 links=[]
 # JSON dosyasını oku ve Kategorileri links değerine yaz
 categories_file = os.getenv('categories_file')
-with open('../../'+categories_file, 'r') as f:
+with open(categories_file, 'r') as f:
     data = json.load(f)
 for categori in data:
     links.append(categori["url"])

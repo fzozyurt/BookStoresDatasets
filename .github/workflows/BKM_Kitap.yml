@@ -90,7 +90,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: bkm_categories
-        path: categories_${{ matrix.job_id }}.json #Katefori Listesini İndiriyor
+        path: Scripts/BKM/categories_${{ matrix.job_id }}.json #Katefori Listesini İndiriyor
 
     - name: Scraping Start
       env:
@@ -98,7 +98,7 @@ jobs:
         matrix_id: ${{ matrix.job_id }}
       run: |
         python Scripts/BKM/scrape.py
-        
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
