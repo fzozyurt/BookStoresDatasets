@@ -2,6 +2,6 @@ pandas
 selenium
 numpy
 requests
-kaggle == 1.5.12
+kaggle
 datetime
 beautifulsoup4
