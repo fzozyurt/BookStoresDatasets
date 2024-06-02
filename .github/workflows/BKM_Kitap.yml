@@ -97,7 +97,8 @@ jobs:
         categories_file: categories_${{ matrix.job_id }}.json
         matrix_id: ${{ matrix.job_id }}
       run: |
-        python Scripts/BKM/scrape.py
+        cd Scripts/BKM
+        python scrape.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
