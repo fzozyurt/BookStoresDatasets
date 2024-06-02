@@ -90,24 +90,20 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: bkm_categories
-        path: categories_${{ matrix.job_id }}.json
-    
-    - name: Install dependencies1
-      run: ls
+        path: categories_${{ matrix.job_id }}.json #Katefori Listesini İndiriyor
 
-    - name: Distribute categories
+    - name: Scraping Start
+      env:
+        categories_file: categories_${{ matrix.job_id }}.json
+        matrix_id: ${{ matrix.job_id }}
       run: |
-        python distribute_categories.py ${{ matrix.job_id }}
-
-    - name: Scrape categories
-      run: |
-        python scrape_by_category.py ${{ matrix.job_id }}
-
+        python Scripts/BKM/scrape.py
+        
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: books_${{ matrix.job_id }}
-        path: books_${{ matrix.job_id }}.csv
+        name: scraping data
+        path: Dataset/BKM__${{ matrix.job_id }}.csv
 
   combine:
     runs-on: ubuntu-latest
