@@ -1,0 +1,105 @@
+name: Scrap and Update Kaggle Dataset
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  scrape_categories:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+    - name: Scrape categories
+      run: |
+        python Scripts/BKM/scrape_categories.py
+
+    - name: Upload categories artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: categories
+        path: categories.json
+
+  scrape_job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job_id: [1, 2, 3, 4]  # Job sayısını ihtiyacınıza göre artırabilirsiniz
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        pip install selenium pandas
+
+    - name: Download categories artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: categories
+        path: categories.json
+
+    - name: Distribute categories
+      run: |
+        python distribute_categories.py ${{ matrix.job_id }}
+
+    - name: Scrape categories
+      run: |
+        python scrape_by_category.py ${{ matrix.job_id }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: books_${{ matrix.job_id }}
+        path: books_${{ matrix.job_id }}.csv
+
+  combine:
+    runs-on: ubuntu-latest
+    needs: scrape_job
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        pip install pandas kaggle
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: books_*
+        path: .
+
+    - name: Combine datasets
+      run: |
+        python combine.py
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+
+    - name: Cleanup artifacts
+      run: |
+        rm books_*.csv
