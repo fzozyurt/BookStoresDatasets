@@ -11,9 +11,10 @@ def publish_to_kaggle(folder, message):
         version_notes=message
     )
 
+if __name__ == "__main__":
 
-prep_location = '../Data'
+    prep_location = '../Data'
 
-print("--> Publish to Kaggle")
-publish_to_kaggle(prep_location, str(date.today()))
-print("Kaggle Upload Ok")
+    print("--> Publish to Kaggle")
+    publish_to_kaggle(prep_location, str(date.today()))
+    print("Kaggle Upload Ok")
