@@ -29,8 +29,6 @@ column=data.columns
 # Yeni veri oluşturma
 df = pd.DataFrame(columns=column)
 
-
-
 grup = data.groupby(['URL']).agg(Tarih=('Tarih', np.max))
 grup=pd.merge(grup,data[['URL','Tarih','Fiyat']],how='left', on=['URL','Tarih'])
 
