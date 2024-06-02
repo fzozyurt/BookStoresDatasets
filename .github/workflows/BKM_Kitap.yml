@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+env:
+    DATASET_NAME: 'furkanzeki/bkm-book-dataset'
+    FILE_NAME: 'BKM_Datasets.csv'
+
 jobs:
   scrape_categories:
     runs-on: ubuntu-latest
@@ -22,14 +26,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-    - name: Scrape categories
+    - name: Kaggle Dataset Dawnload
       run: |
-        python Scripts/BKM/scrape_categories.py
+          python Scripts/BKM/scrape_categories.py
+
+    - name: Download Kaggle Dataset
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        DATASET_NAME: ${{ env.DATASET_NAME }}
+      run: python Scripts/dataset_download.py
+    
+    - name: Upload Dataset as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: bkn_dataset
+        path: datasets/
 
     - name: Upload categories artifact
       uses: actions/upload-artifact@v2
       with:
-        name: categories
+        name: bkm_categories
         path: |
             categories_1.json
             categories_2.json
@@ -59,11 +76,22 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Download bkn_dataset artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: bkn_dataset
+    
+    - name: Install dependencies
+      run: ls
+
     - name: Download categories artifact
       uses: actions/download-artifact@v2
       with:
-        name: categories
+        name: bkm_categories
         path: categories_${{ matrix.job_id }}.json
+    
+    - name: Install dependencies1
+      run: ls
 
     - name: Distribute categories
       run: |
