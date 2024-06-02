@@ -30,13 +30,20 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: categories
-        path: categories.json
+        path: |
+            categories_1.json
+            categories_2.json
+            categories_3.json
+            categories_4.json
+            categories_5.json
+        retention-days: 1
 
   scrape_job:
+    needs: scrape_categories
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        job_id: [1, 2, 3, 4]  # Job sayısını ihtiyacınıza göre artırabilirsiniz
+        job_id: [1, 2, 3, 4, 5]  # Job sayısını ihtiyacınıza göre artırabilirsiniz
 
     steps:
     - name: Checkout repository
@@ -45,17 +52,18 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.x
+        python-version: 3.10.6
 
     - name: Install dependencies
       run: |
-        pip install selenium pandas
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Download categories artifact
       uses: actions/download-artifact@v2
       with:
         name: categories
-        path: categories.json
+        path: categories_${{ matrix.job_id }}.json
 
     - name: Distribute categories
       run: |
@@ -81,7 +89,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.x
+        python-version: 3.10.6
 
     - name: Install dependencies
       run: |
