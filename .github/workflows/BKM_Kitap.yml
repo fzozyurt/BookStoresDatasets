@@ -82,23 +82,22 @@ jobs:
       with:
         name: bkm_dataset #Dataset ana dizine ekleniyor
         path: data/
-    
-    - name: Install dependencies
-      run: ls
 
     - name: Download categories artifact
       uses: actions/download-artifact@v2
       with:
         name: bkm_categories
-        path: Scripts/BKM/categories_${{ matrix.job_id }}.json #Katefori Listesini İndiriyor
+        path: categories_${{ matrix.job_id }}.json #Katefori Listesini İndiriyor
+    
+    - name: Install dependencies
+      run: ls
 
     - name: Scraping Start
       env:
         categories_file: categories_${{ matrix.job_id }}.json
         matrix_id: ${{ matrix.job_id }}
       run: |
-        cd Scripts/BKM
-        python scrape.py
+        python Scripts/BKM/scrape.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
