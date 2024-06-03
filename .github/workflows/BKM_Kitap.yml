@@ -88,7 +88,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: bkm_categories
-        path: Scripts/BKM/categories_${{ matrix.job_id }}.json #Katefori Listesini İndiriyor
+        path: categories_${{ matrix.job_id }}.json #Katefori Listesini İndiriyor
     
     - name: Install dependencies
       run: ls
