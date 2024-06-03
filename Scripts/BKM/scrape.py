@@ -12,12 +12,14 @@ from datetime import date
 matrix=os.getenv('matrix_id')
 filename = "Dataset/BKM_"+matrix+".csv"
 
+print("Current File:" + os.getcwd())
 links=[]
 # JSON dosyasını oku ve Kategorileri links değerine yaz
 GITHUB_WORKSPACE=os.getenv('GITHUB_WORKSPACE')
 categories_file = os.getenv('categories_file')
+category_file_path=os.path.join(os.path.dirname(os.path.dirname(__file__)),categories_file)
 
-with open(GITHUB_WORKSPACE+"/"+categories_file, 'r') as f:
+with open(category_file_path, 'r') as f:
     data = json.load(f)
 for categori in data:
     links.append(categori["url"])
