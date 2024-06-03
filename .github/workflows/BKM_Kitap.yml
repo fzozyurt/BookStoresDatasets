@@ -89,8 +89,8 @@ jobs:
       with:
         name: bkm_categories
     
-    - name: Install dependencies
-      run: ls
+    - name: Create Dataset File
+      run: mkdir -p Dataset
 
     - name: Scraping Start
       env:
@@ -124,16 +124,16 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
-        name: books_*
-        path: .
+        name: scraping data
+        path: Dataset/
 
     - name: Combine datasets
       run: |
-        python combine.py
+        python Script/combine.py
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
     - name: Cleanup artifacts
       run: |
-        rm books_*.csv
+        rm Dataset/BKM_*.csv
