@@ -17,7 +17,7 @@ links=[]
 GITHUB_WORKSPACE=os.getenv('GITHUB_WORKSPACE')
 categories_file = os.getenv('categories_file')
 
-with open(GITHUB_WORKSPACE+categories_file, 'r') as f:
+with open(GITHUB_WORKSPACE+"/"+categories_file, 'r') as f:
     data = json.load(f)
 for categori in data:
     links.append(categori["url"])
