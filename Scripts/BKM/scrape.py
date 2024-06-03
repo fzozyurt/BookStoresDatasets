@@ -5,13 +5,14 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import re
-from datetime import date
+from datetime import datetime
+from pytz import timezone
 
 # Mevcut Veri İçe Aktarma
+format = "%Y-%m-%d %H:%M:%S"
 
 matrix=os.getenv('matrix_id')
 filename = "Dataset/BKM_"+matrix+".csv"
-
 
 links=[]
 # JSON dosyasını oku ve Kategorileri links değerine yaz
