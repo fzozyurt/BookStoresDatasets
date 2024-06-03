@@ -103,7 +103,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: scraping data
-        path: Dataset/BKM__${{ matrix.job_id }}.csv
+        path: Dataset/BKM_${{ matrix.job_id }}.csv
 
   combine:
     runs-on: ubuntu-latest
