@@ -12,7 +12,7 @@ from datetime import date
 matrix=os.getenv('matrix_id')
 filename = "Dataset/BKM_"+matrix+".csv"
 
-for dirname, _, filenames in os.walk():
+for dirname, _, filenames in os.walk('/'):
     for filename in filenames:
         print(os.path.join(dirname, filename))
 
