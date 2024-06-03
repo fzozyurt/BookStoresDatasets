@@ -31,19 +31,19 @@ jobs:
       run: |
           python Scripts/BKM/scrape_categories.py
 
-    - name: Download Kaggle Dataset
-      env:
-        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-        DATASET_NAME: ${{ env.DATASET_NAME }}
-      run: python Scripts/dataset_download.py
+    # - name: Download Kaggle Dataset
+    #   env:
+    #     KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+    #     KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+    #     DATASET_NAME: ${{ env.DATASET_NAME }}
+    #   run: python Scripts/dataset_download.py
     
-    - name: Upload dataset as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: bkm_dataset
-        path: data/
-        retention-days: 1
+    # - name: Upload dataset as artifact
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: bkm_dataset
+    #     path: data/
+    #     retention-days: 1
 
     - name: Upload categories artifact
       uses: actions/upload-artifact@v2
