@@ -8,6 +8,7 @@ on:
 env:
     DATASET_NAME: 'furkanzeki/bkm-book-dataset'
     FILE_NAME: 'BKM_Datasets.csv'
+    GITHUB_WORKSPACE: ${{ github.workspace }}
 
 jobs:
   scrape_categories:
