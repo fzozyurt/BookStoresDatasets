@@ -43,7 +43,7 @@ def tur_degistir(fiyat):
 def son_fiyat_sorgu(link):
     URL_filter_data = grup.query("URL ==@link")["Fiyat"]
     if URL_filter_data.count()!=0:
-        return float(URL_filter_data)
+        return float(URL_filter_data.iloc[0])
     else:
         URL_filter_data=0.0
         return URL_filter_data
