@@ -3,12 +3,11 @@ name: BKM Scrap and Update Kaggle Dataset
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '00 06,09,12,18 * * *'
 
 env:
     DATASET_NAME: 'furkanzeki/bkm-book-dataset'
     FILE_NAME: 'BKM_Datasets.csv'
-    GITHUB_WORKSPACE: ${{ github.workspace }}
 
 jobs:
   scrape_categories:

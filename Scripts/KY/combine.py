@@ -30,7 +30,7 @@ final_df.drop("index",axis=1,inplace=True)
 final_df.to_csv('Data/KY_Datasets.csv',sep=';',index=False,encoding="utf-8")
 
 # Yeni dataset'i Kaggle'ye yükleme
-dictionary = {'title':"ky-book-dataset", 'id':"furkanzeki/ky-book-dataset", 'resources':[{"path": "KY_Datasets.csv","description":"KY_Datasets"}]}
+dictionary = {'title':"kitap-yurdu-dataset", 'id':"furkanzeki/kitap-yurdu-dataset", 'resources':[{"path": "KY_Datasets.csv","description":"KY_Datasets"}]}
 jsonString = json.dumps(dictionary, indent=4)
 f = open("Data/dataset-metadata.json", "w")
 f.write(jsonString)
