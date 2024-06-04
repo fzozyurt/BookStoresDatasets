@@ -29,7 +29,7 @@ columns=["Kitap İsmi", "Yazar", "Yayın Evi", "Fiyat",
 data = pd.read_csv("Data/BKM_Datasets.csv", sep=";")
 column=data.columns
 # Yeni veri oluşturma
-df = pd.DataFrame(columns=column)
+dataset = pd.DataFrame(columns=column)
 
 grup = data.groupby(['URL']).agg(Tarih=('Tarih', np.max))
 grup=pd.merge(grup,data[['URL','Tarih','Fiyat']],how='left', on=['URL','Tarih'])
@@ -100,7 +100,7 @@ def veri_al(link):
 
 for link in links:
     print("Kategori : "+link)
-    dataset = pd.DataFrame(veri_al(link),columns = column)
+    dataset = pd.concat([dataset,pd.DataFrame(veri_al(link),columns = column)])
 
 dataset.reset_index(inplace=True)
 dataset.drop("index",axis=1,inplace=True)

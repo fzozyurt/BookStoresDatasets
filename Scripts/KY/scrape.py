@@ -10,8 +10,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from pytz import timezone
 
-import logging
-
 from Selenium import initialize_driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,7 +17,6 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
-logging.basicConfig(filename="selenium.log", level=logging.INFO)
 
 #Parametreler
 format = "%Y-%m-%d %H:%M:%S"
@@ -89,22 +86,20 @@ def Get_Data(soup):
         if tur_degistir(price)!=float(son_fiyat_sorgu(url)):
             listeData.append([title,author,publisher,"","","",category,tur_degistir(price),url,"Kitap Yurdu",datetime.now(timezone('UTC')).astimezone(timezone('Asia/Istanbul')).strftime(format),img,raiting,raiting_count,NLP_Data])
         else:
-            logging.info("{} {} Fiyat değişmediğinden ekleme yapılmadı.",url)
+            print("Fiyat Değişmediğinden İşlem Yapılmadı")
     return listeData
 
 def veri_al(link):
     url=link
     wd.get(url)
-    logging.info("Sayfa açıldı: {}".format(wd.current_url))
     try:
         wd.find_element(By.XPATH,"//*[@id='list_product_carousel_best_sell-view-all']").click()
     except:
-         logging.info("Tek Kategori. Tümünü listele atlandı. URL: {}".format(wd.current_url))
+        print("Kategori Seçim Atlandı")
     print(wd.current_url)
     drop=wd.find_element(By.XPATH,"//*[@id='content']/div/div[1]/div/div[2]/select") #100 Öğre Gösterme Seçimi
     drop = Select(drop)
     drop.select_by_visible_text("100 Ürün")
-    logging.info("100 öğe listele seçildi")
     print(wd.current_url)
     if WebDriverWait(wd, 30).until(EC.url_changes(url=url)):
         #wd.find_element(By.XPATH,"//*[@id='content']/div/div[1]/div/div[3]/a").click() # Yatay görünüme Geç
@@ -116,8 +111,6 @@ def veri_al(link):
         i=1
         CurrentDF=pd.DataFrame(columns = column)
         while i<= int(sayfasayisi):
-            logging.info("{} sayfa scrapping başlatıldı.",i)
-            logging.info("Sayfa URL: {}".format(wd.current_url))
             products_container = wd.find_element(By.CSS_SELECTOR, "#content ")
             soup = BeautifulSoup(products_container.get_attribute("outerHTML"), "html.parser")
             #print(soup.find("div", class_="name").text.strip())
@@ -130,21 +123,18 @@ def veri_al(link):
                         i=i+1
                 except:
                     if WebDriverWait(wd, 5).until(EC.visibility_of_element_located((By.ID, "cookiescript_accept"))):
-                        logging.info("Çerez Uyarısı Görüntülendi")
                         wd.find_element(By.ID, "cookiescript_accept").click()
                         cur_url=wd.current_url
                         wd.find_element(By.CSS_SELECTOR, "a.next").click()
                         if WebDriverWait(wd, 30).until(EC.url_changes(url=cur_url)):
                             i=i+1
-                        logging.info("Çerez Uyarısı Kapatıldı")
             except:
-                logging.info("NEXT Class buton bulunamadı")
+                print("NEXT Butonu Bulunamadı")
                 break
     return CurrentDF
 
 wd= initialize_driver()
 for link in links:
-    logging.info("Kategori: {link}")
     df = pd.concat([df,pd.DataFrame(veri_al(link),columns = column)])
     
 df.reset_index(inplace=True)

@@ -1,4 +1,4 @@
-name: Scrap and Update Kaggle Dataset
+name: KY Scrap and Update Kaggle Dataset
 
 on:
   workflow_dispatch:
@@ -134,11 +134,22 @@ jobs:
 
     - name: Combine datasets
       run: |
-        python Scripts/combine.py
+          python Scripts/KY/combine.py
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Finished KY Dataset
+        path: Data/KY_Datasets.csv
+
+    - name: Dataset Upload
+      run: |
+        python Scripts/dataset_upload.py
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
     - name: Cleanup artifacts
       run: |
-        rm Dataset/KY_*.csv
+        rm Datasets/KY_*.csv
+        rm Data/KY_*.csv

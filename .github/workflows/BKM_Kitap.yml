@@ -1,4 +1,4 @@
-name: Scrap and Update Kaggle Dataset
+name: BKM Scrap and Update Kaggle Dataset
 
 on:
   workflow_dispatch:
@@ -132,14 +132,25 @@ jobs:
       with:
         name: scraping data
         path: Datasets/
-
+    
     - name: Combine datasets
       run: |
-        python Scripts/combine.py
+        python Scripts/BKM/combine.py
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Finished BKM Dataset
+        path: Data/BKM_Datasets.csv
+
+    - name: Dataset Upload
+      run: |
+        python Scripts/dataset_upload.py
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
     - name: Cleanup artifacts
       run: |
-        rm Dataset/BKM_*.csv
+        rm Datasets/BKM_*.csv
+        rm Data/BKM_*.csv

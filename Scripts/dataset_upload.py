@@ -13,7 +13,7 @@ def publish_to_kaggle(folder, message):
 
 if __name__ == "__main__":
 
-    prep_location = '../Data'
+    prep_location = 'Data'
 
     print("--> Publish to Kaggle")
     publish_to_kaggle(prep_location, str(date.today()))
