@@ -1,0 +1,144 @@
+name: Scrap and Update Kaggle Dataset
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+    DATASET_NAME: 'furkanzeki/kitap-yurdu-dataset'
+    FILE_NAME: 'KY_Datasets.csv'
+
+jobs:
+  scrape_categories:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10.6
+
+    - name: Install Python Dependencies
+      run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+    - name: Categories Scrape
+      run: |
+          python Scripts/KY/scrape_categories.py
+
+    - name: Download Kaggle Dataset
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        DATASET_NAME: ${{ env.DATASET_NAME }}
+      run: python Scripts/dataset_download.py
+    
+    - name: Upload dataset as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ky_dataset
+        path: data/
+        retention-days: 1
+
+    - name: Upload categories artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ky_categories
+        path: |
+            categories_1.json
+            categories_2.json
+            categories_3.json
+            categories_4.json
+            categories_5.json
+        retention-days: 1
+
+  scrape_job:
+    needs: scrape_categories
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job_id: [1, 2, 3, 4, 5]  # Job sayısını ihtiyacınıza göre artırabilirsiniz
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10.6
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Download ky_dataset artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: ky_dataset #Dataset ana dizine ekleniyor
+        path: Data/
+
+    - name: Download categories artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: ky_categories
+    
+    - name: Create Dataset File
+      run: mkdir -p Dataset
+
+    - name: Scraping Start
+      env:
+        categories_file: categories_${{ matrix.job_id }}.json
+        matrix_id: ${{ matrix.job_id }}
+      run: |
+        python Scripts/KY/scrape.py
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: scraping data
+        path: Dataset/KY_${{ matrix.job_id }}.csv
+
+  combine:
+    runs-on: ubuntu-latest
+    needs: scrape_job
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10.6
+
+    - name: Install dependencies
+      run: |
+        pip install pandas kaggle
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: ky_dataset
+        path: Data/
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: scraping data
+        path: Datasets/
+
+    - name: Combine datasets
+      run: |
+        python Scripts/combine.py
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+
+    - name: Cleanup artifacts
+      run: |
+        rm Dataset/KY_*.csv
