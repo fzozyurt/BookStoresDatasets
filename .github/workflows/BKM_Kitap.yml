@@ -131,7 +131,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: scraping data
-        path: Dataset/
+        path: Datasets/
 
     - name: Combine datasets
       run: |
