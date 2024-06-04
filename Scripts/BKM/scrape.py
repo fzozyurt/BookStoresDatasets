@@ -8,14 +8,13 @@ import re
 from datetime import datetime
 from pytz import timezone
 
-# Mevcut Veri İçe Aktarma
+#Parametreler
 format = "%Y-%m-%d %H:%M:%S"
-
 matrix=os.getenv('matrix_id')
 filename = "Dataset/BKM_"+matrix+".csv"
 
-links=[]
 # JSON dosyasını oku ve Kategorileri links değerine yaz
+links=[]
 categories_file = os.getenv('categories_file')
 
 with open(categories_file, 'r') as f:
@@ -27,7 +26,7 @@ columns=["Kitap İsmi", "Yazar", "Yayın Evi", "Fiyat",
                   "URL", "Platform", "Tarih", "Kapak Kucultulmus", "Kapak Resmi"]
 
 #Dataset Dosyasını Oku
-data = pd.DataFrame(columns=columns)
+data = pd.read_csv("Data/BKM_Datasets.csv", sep=";")
 column=data.columns
 # Yeni veri oluşturma
 df = pd.DataFrame(columns=column)
@@ -101,8 +100,8 @@ def veri_al(link):
 
 for link in links:
     print("Kategori : "+link)
-    data = pd.concat([data,pd.DataFrame(veri_al(link),columns = column)])
+    dataset = pd.DataFrame(veri_al(link),columns = column)
 
-data.reset_index(inplace=True)
-data.drop("index",axis=1,inplace=True)
-data.to_csv(filename,sep=';',index=False,encoding="utf-8")
+dataset.reset_index(inplace=True)
+dataset.drop("index",axis=1,inplace=True)
+dataset.to_csv(filename,sep=';',index=False,encoding="utf-8")

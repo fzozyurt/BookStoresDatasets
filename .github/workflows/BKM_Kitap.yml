@@ -31,19 +31,19 @@ jobs:
       run: |
           python Scripts/BKM/scrape_categories.py
 
-    # - name: Download Kaggle Dataset
-    #   env:
-    #     KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-    #     KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-    #     DATASET_NAME: ${{ env.DATASET_NAME }}
-    #   run: python Scripts/dataset_download.py
+    - name: Download Kaggle Dataset
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        DATASET_NAME: ${{ env.DATASET_NAME }}
+      run: python Scripts/dataset_download.py
     
-    # - name: Upload dataset as artifact
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: bkm_dataset
-    #     path: data/
-    #     retention-days: 1
+    - name: Upload dataset as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: bkm_dataset
+        path: data/
+        retention-days: 1
 
     - name: Upload categories artifact
       uses: actions/upload-artifact@v2
@@ -78,11 +78,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # - name: Download bkm_dataset artifact
-    #   uses: actions/download-artifact@v2
-    #   with:
-    #     name: bkm_dataset #Dataset ana dizine ekleniyor
-    #     path: data/
+    - name: Download bkm_dataset artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: bkm_dataset #Dataset ana dizine ekleniyor
+        path: Data/
 
     - name: Download categories artifact
       uses: actions/download-artifact@v2
@@ -124,12 +124,18 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
+        name: bkm_dataset
+        path: Data/
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
         name: scraping data
         path: Dataset/
 
     - name: Combine datasets
       run: |
-        python Script/combine.py
+        python Scripts/combine.py
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
