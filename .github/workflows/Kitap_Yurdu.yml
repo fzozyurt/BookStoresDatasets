@@ -30,7 +30,7 @@ jobs:
 
     - name: Categories Scrape
       run: |
-          python Scripts/KY_scrape_categories.py
+          python Scripts/ky_scrape_categories.py
 
     - name: Download Kaggle Dataset
       env:
