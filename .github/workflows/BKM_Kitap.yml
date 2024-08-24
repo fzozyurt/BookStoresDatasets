@@ -155,7 +155,7 @@ jobs:
     
     - name: Combine datasets
       run: |
-        python Scripts/BKM/combine.py
+        python Scripts/bkm_combine.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2

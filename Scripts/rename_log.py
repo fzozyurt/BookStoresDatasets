@@ -1,13 +1,15 @@
 import os
 from datetime import datetime
 
+ID= os.getenv('ID')
+
 def rename_log_file():
     # Get today's date in the format DDMMYYYY
     today = datetime.now().strftime('%d%m%Y')
 
     # Define the old and new file names
-    old_file = 'logs/BKM.log'
-    new_file = f'logs/BKM{today}.log'
+    old_file = 'logs/{ID}.log'
+    new_file = f'logs/{ID}{today}.log'
 
     # Rename the file
     if os.path.exists(old_file):

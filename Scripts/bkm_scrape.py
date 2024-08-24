@@ -16,7 +16,7 @@ format = "%Y-%m-%d %H:%M:%S"
 matrix= os.getenv('matrix_id')
 filename = "Dataset/BKM_"+matrix+".csv"
 
-log_config(os.getenv('CLUSTER_LOG_FILE'),f'%(asctime)s - %(name)s - %(levelname)s - {matrix} - %(message)s')
+log_config(os.getenv('CLUSTER_LOG_FILE'),f'%(asctime)s - %(levelname)s - {matrix} - %(message)s')
 
 # JSON dosyasını oku ve Kategorileri links değerine yaz
 links=[]
