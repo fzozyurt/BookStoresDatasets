@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from pytz import timezone
 
-from Scripts.Selenium import initialize_driver
+from Selenium import initialize_driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
