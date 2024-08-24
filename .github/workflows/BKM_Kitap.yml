@@ -8,6 +8,8 @@ on:
 env:
     DATASET_NAME: 'furkanzeki/bkm-book-dataset'
     FILE_NAME: 'BKM_Datasets.csv'
+    LOG_FILE: 'BKM.log'
+    ID: 'BKM'
 
 jobs:
   scrape_categories:
@@ -28,7 +30,7 @@ jobs:
 
     - name: Categories Scrape
       run: |
-          python Scripts/BKM/scrape_categories.py
+          python Scripts/bkm_scrape_categories.py
 
     - name: Download Kaggle Dataset
       env:
@@ -43,6 +45,12 @@ jobs:
         name: bkm_dataset
         path: data/
         retention-days: 1
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: LogFiles
+        path: logs/${{ env.LOG_FILE }}
 
     - name: Upload categories artifact
       uses: actions/upload-artifact@v2
@@ -95,14 +103,21 @@ jobs:
       env:
         categories_file: categories_${{ matrix.job_id }}.json
         matrix_id: ${{ matrix.job_id }}
+        CLUSTER_LOG_FILE: BKM_${{ matrix.job_id }}.log
       run: |
-        python Scripts/BKM/scrape.py
+        python Scripts/bkm_scrape.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: scraping data
         path: Dataset/BKM_${{ matrix.job_id }}.csv
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: LogFiles
+        path: logs/BKM_${{ matrix.job_id }}.log
 
   combine:
     runs-on: ubuntu-latest
@@ -125,6 +140,12 @@ jobs:
       with:
         name: bkm_dataset
         path: Data/
+    
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: LogFiles
+        path: logs/
 
     - name: Download artifacts
       uses: actions/download-artifact@v2
@@ -153,3 +174,17 @@ jobs:
       run: |
         rm Datasets/BKM_*.csv
         rm Data/BKM_*.csv
+    
+    - name: Rename log file with today's date
+      run: |
+        python Scripts/rename_log.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add logs/
+        git commit -m "Update logs"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
