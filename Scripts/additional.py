@@ -1,6 +1,7 @@
 import logging
 import json
 import numpy as np
+import os
 
 def data_partitioning(links):
     # Verileri numpy array'ine çevirme ve karıştırma
@@ -34,8 +35,8 @@ def log_config(file_name,log_format="%(asctime)s - %(levelname)s - %(message)s")
     )
 
 def log_combine():
-    ID=os.getenv('LOG_FILE')
-    import os
+    ID=os.getenv('ID')
+
     # Log dosyalarını birleştirme
     log_files = [f'logs/{ID}_{i}.log' for i in range(1, 6)]
     combined_logs = []
