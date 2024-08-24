@@ -6,7 +6,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 
 from additional import log_config
 
-log_config(os.getenv('LOG_FILE'),"BKM.log")
+log_config(os.getenv('LOG_FILE'))
 
 def publish_to_kaggle(folder, message):
     logging.info(f"Starting publish_to_kaggle with folder: {folder} and message: {message}")
