@@ -174,6 +174,13 @@ jobs:
       run: |
         rm Datasets/BKM_*.csv
         rm Data/BKM_*.csv
+        rm logs/BKM_*.log
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: LogFiles
+        path: logs/BKM.log
     
     - name: Rename log file with today's date
       run: |
@@ -185,7 +192,7 @@ jobs:
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
         git add logs/
-        git commit -m "Update logs"
+        git commit -m "Update BKM logs"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

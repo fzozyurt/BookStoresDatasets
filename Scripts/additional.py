@@ -34,23 +34,23 @@ def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"
         ]
     )
 
-def log_combine():
-    ID=os.getenv('ID')
+# def log_combine():
+#     ID=os.getenv('ID')
 
-    # Log dosyalarını birleştirme
-    log_files = [f'logs/{ID}_{i}.log' for i in range(1, 6)]
-    combined_logs = []
+#     # Log dosyalarını birleştirme
+#     log_files = [f'logs/{ID}_{i}.log' for i in range(1, 6)]
+#     combined_logs = []
 
-    for log_file in log_files:
-        with open(log_file, 'r') as file:
-            lines = file.readlines()
-            combined_logs.extend(lines)
+#     for log_file in log_files:
+#         with open(log_file, 'r') as file:
+#             lines = file.readlines()
+#             combined_logs.extend(lines)
 
-    # Mevcut BKM.log dosyasına ekleme
-    with open('logs/BKM.log', 'a') as outfile:
-        for log in combined_logs:
-            outfile.write(log.strip() + '\n')  # Her log girişinden sonra bir satır boşluk ekle
+#     # Mevcut BKM.log dosyasına ekleme
+#     with open('logs/BKM.log', 'a') as outfile:
+#         for log in combined_logs:
+#             outfile.write(log.strip() + '\n')  # Her log girişinden sonra bir satır boşluk ekle
 
-    # Okunan log dosyalarını silme
-    for log_file in log_files:
-        os.remove(log_file)
+#     # Okunan log dosyalarını silme
+#     for log_file in log_files:
+#         os.remove(log_file)

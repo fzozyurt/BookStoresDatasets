@@ -7,7 +7,6 @@ import logging
 # Configure logging
 from additional import log_combine, log_config
 
-log_combine()
 log_config(os.getenv('LOG_FILE'))
 
 # Read existing dataset

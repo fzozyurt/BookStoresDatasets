@@ -170,10 +170,17 @@ jobs:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: LogFiles
+        path: logs/KY.log
+
     - name: Cleanup artifacts
       run: |
         rm Datasets/KY_*.csv
         rm Data/KY_*.csv
+        rm logs/KY_*.log
 
     - name: Rename log file with today's date
       run: |
@@ -185,7 +192,7 @@ jobs:
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
         git add logs/
-        git commit -m "Update logs"
+        git commit -m "Update KY Logs"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

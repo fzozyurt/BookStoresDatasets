@@ -8,8 +8,7 @@ import logging
 # Configure logging
 from additional import log_combine, log_config
 
-log_combine()
-log_config(os.getenv('LOG_FILE'),"BKM.log")
+log_config(os.getenv('LOG_FILE'))
 
 # Mevcut dataset'i okuma
 existing_df = pd.read_csv('Data/BKM_Datasets.csv', sep=';')
