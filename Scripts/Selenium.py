@@ -13,11 +13,14 @@ def add_driver_options(options):
     """
     logging.info('add_driver_options function called')
     chrome_options = Options()
-    for opt in options:
-        chrome_options.add_argument(opt)
-        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        chrome_options.add_experimental_option('useAutomationExtension', False)
-    logging.info('Driver options configured')
+    try:
+        for opt in options:
+            chrome_options.add_argument(opt)
+            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            chrome_options.add_experimental_option('useAutomationExtension', False)
+        logging.debug('Driver options configured successfully')
+    except Exception as e:
+        logging.error(f'Error configuring driver options: {e}')
     return chrome_options
 
 def initialize_driver():
@@ -26,17 +29,12 @@ def initialize_driver():
     """
     logging.info('initialize_driver function called')
     driver_config = {
-        "options": [
-            "--headless",
-            "--no-sandbox",
-            "--start-fullscreen",
-            "--allow-insecure-localhost",
-            "--disable-dev-shm-usage",
-            "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
-        ],
+        "options": add_driver_options(["--headless", "--disable-gpu"])
     }
-    logging.info(f'Driver configuration: {driver_config}')
-    options = add_driver_options(driver_config["options"])
-    driver = webdriver.Chrome(options=options)
-    logging.info('Web driver initialized')
+    try:
+        driver = webdriver.Chrome(options=driver_config["options"])
+        logging.debug('Web driver initialized successfully')
+    except Exception as e:
+        logging.error(f'Error initializing web driver: {e}')
+        driver = None
     return driver

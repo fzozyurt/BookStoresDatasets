@@ -23,10 +23,10 @@ def data_partitioning(links):
         except IOError as e:
             logging.error("Error writing data to %s: %s", file_name, str(e))
 
-def log_config(file_name,log_format="%(asctime)s - %(levelname)s - %(message)s"):
-    file_name="./logs/"+file_name
+def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"):
+    file_name = "./logs/" + file_name
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format=log_format,
         handlers=[
             logging.FileHandler(file_name),

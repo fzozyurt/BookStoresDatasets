@@ -9,7 +9,7 @@ import logging
 from additional import log_combine, log_config
 
 log_combine()
-log_config(os.getenv('LOG_FILE'))
+log_config(os.getenv('LOG_FILE'),"BKM.log")
 
 # Mevcut dataset'i okuma
 existing_df = pd.read_csv('Data/BKM_Datasets.csv', sep=';')
@@ -26,24 +26,24 @@ logging.info('Scraped datasets loaded')
 
 # İki DataFrame'i birleştirme
 final_df = pd.concat([existing_df, combined_df], ignore_index=True)
-logging.info('Data combined')
+logging.debug('Data combined')
 final_df["Tarih"] = pd.to_datetime(final_df["Tarih"])
 final_df['Date'] = final_df.Tarih.dt.date
-logging.info('Date column converted to datetime')
+logging.debug('Date column converted to datetime')
 final_df.drop_duplicates(keep="first", subset=["Kitap İsmi", "URL", "Date", "Fiyat"], inplace=True)
-logging.info('Duplicates removed')
+logging.debug('Duplicates removed')
 final_df = final_df.sort_values(['Kitap İsmi', 'Date', 'Fiyat'])
-logging.info('Data sorted')
+logging.debug('Data sorted')
 final_df.drop("Date", axis=1, inplace=True)
 final_df.reset_index(inplace=True)
-logging.info('Data index reset')
+logging.debug('Data index reset')
 final_df.drop("index", axis=1, inplace=True)
 logging.info('Data merged and cleaned')
-logging.info(f"Total number of records: {len(final_df)}")
+logging.debug(f"Total number of records: {len(final_df)}")
 
 # Birleştirilen veriyi kaydetme
 final_df.to_csv('Data/BKM_Datasets.csv', sep=';', index=False, encoding="utf-8")
-logging.info('Final dataset saved')
+logging.debug('Final dataset saved')
 
 # Yeni dataset'i Kaggle'ye yükleme
 dictionary = {'title': "bkm-book-dataset", 'id': "furkanzeki/bkm-book-dataset",
@@ -52,7 +52,6 @@ jsonString = json.dumps(dictionary, indent=4)
 f = open("Data/dataset-metadata.json", "w")
 f.write(jsonString)
 f = open("Data/dataset-metadata.json", "r")
-logging.info('Dataset metadata file created')
-print(f.read())
+logging.debug('Dataset metadata file created')
 
 logging.shutdown()

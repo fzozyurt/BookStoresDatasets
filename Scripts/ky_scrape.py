@@ -26,7 +26,7 @@ log_config(os.getenv('CLUSTER_LOG_FILE'),f'%(asctime)s - %(levelname)s - {matrix
 # JSON dosyasını oku ve Kategorileri links değerine yaz
 links=[]
 categories_file = os.getenv('categories_file')
-logging.info("Reading categories file: %s", categories_file)
+logging.debug("Reading categories file: %s", categories_file)
 
 with open(categories_file, 'r') as f:
     data = json.load(f)
@@ -38,10 +38,10 @@ column=["Kitap İsmi","Yazar","Yayın Evi","ISBN","Dil","Sayfa","Kategori","Fiya
 #Dataset Dosyasını Oku
 data = pd.read_csv("Data/KY_Datasets.csv", sep=";")
 column=data.columns
-logging.info("Columns in dataset: %s", str(column))
+logging.debug("Columns in dataset: %s", str(column))
 # Yeni veri oluşturma
 df = pd.DataFrame(columns=column)
-logging.info("Empty dataset created with columns: %s", str(column))
+logging.debug("Empty dataset created with columns: %s", str(column))
 
 logging.info("Grouping data by 'URL' and aggregating 'Tarih'")
 grup = data.groupby(['URL']).agg(Tarih=('Tarih', np.max))
@@ -49,7 +49,7 @@ logging.info("Data grouped successfully")
 
 logging.info("Merging grouped data with original data on 'URL' and 'Tarih'")
 grup=pd.merge(grup,data[['URL','Tarih','Fiyat']],how='left', on=['URL','Tarih'])
-logging.info("Data merged successfully with %d rows", grup.shape[0])
+logging.debug("Data merged successfully with %d rows", grup.shape[0])
 
 def tur_degistir(fiyat):
     logging.info("Original price string: %s", fiyat)
@@ -106,7 +106,7 @@ def get_Data(soup):
                 logging.info("Price change detected for %s: %f -> %f", title, last_price, converted_price)
                 listeData.append([title, author, publisher, "", "", "", category, converted_price, url, "Kitap Yurdu", datetime.now(timezone('UTC')).astimezone(timezone('Asia/Istanbul')).strftime(format), img, rating, rating_count, NLP_Data])
             else:
-                logging.info("No price change for %s", title)
+                logging.warning("No price change for %s", title)
     except Exception as e:
         logging.error("Failed to read data in get_Data: %s", str(e))
     
@@ -139,7 +139,6 @@ def veri_al(link):
         except Exception as e:
             logging.warning("Failed to get number of pages, defaulting to 1: %s", str(e))
             sayfasayisi = 1
-        
         i = 1
         CurrentDF = pd.DataFrame(columns=column)
         while i <= int(sayfasayisi):
@@ -181,7 +180,7 @@ for link in links:
 df.reset_index(inplace=True)
 df.drop("index",axis=1,inplace=True)
 df.to_csv(filename,sep=';',index=False,encoding="utf-8")
-logging.info("Data scraping %s completed", filename)
+logging.debug("Data scraping %s completed", filename)
 
 logging.info("Data scraping completed")
 logging.shutdown()
