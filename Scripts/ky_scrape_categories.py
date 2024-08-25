@@ -1,12 +1,20 @@
 import logging
+import os
 import numpy as np
 import json
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-def scrape_categories(url):
+from additional import data_partitioning, log_config
+
+log_config("KY.LOG")
+
+def scrape_categories():
     logging.info('scrape_categories function called')
     links = []
+    site = 'https://www.bkmkitap.com'
+    logging.info("Starting to scrape categories from %s", site)
+    url = "https://www.bkmkitap.com/kategori-listesi"
     try:
         wd = webdriver.Chrome()
         wd.get(url)
@@ -28,23 +36,6 @@ def scrape_categories(url):
     data_partitioning(links)
     logging.info('scrape_categories function completed')
 
-def data_partitioning(links):
-    logging.info('data_partitioning function called')
-    try:
-        # Convert data to numpy array and shuffle
-        data_array = np.array(links)
-        np.random.shuffle(data_array)
-        logging.debug('Data shuffled')
-
-        # Split data into 5 parts
-        split_data = np.array_split(data_array, 5)
-        logging.debug('Data split into 5 parts')
-
-        # Write each part to separate JSON files
-        for i, chunk in enumerate(split_data):
-            file_name = f'categories_{i + 1}.json'
-            with open(file_name, 'w', encoding='utf-8') as file:
-                json.dump(chunk.tolist(), file, ensure_ascii=False, indent=4)
-            logging.info(f'Written to file: {file_name}')
-    except Exception as e:
-        logging.error(f'Error in data partitioning: {e}')
+if __name__ == "__main__":
+    scrape_categories()
+    logging.shutdown()

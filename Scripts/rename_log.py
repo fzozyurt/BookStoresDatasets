@@ -5,10 +5,10 @@ ID= os.getenv('ID')
 
 def rename_log_file():
     # Get today's date in the format DDMMYYYY
-    today = datetime.now().strftime('%d%m%Y')
+    today = datetime.now().strftime('%d%m%Y%H%M')
 
     # Define the old and new file names
-    old_file = 'logs/{ID}.log'
+    old_file = f'logs/{ID}.log'
     new_file = f'logs/{ID}{today}.log'
 
     # Rename the file
