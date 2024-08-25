@@ -1,10 +1,10 @@
+import json
 import logging
 import os
-import numpy as np
-import json
 from bs4 import BeautifulSoup
-from selenium import webdriver
+import numpy as np
 
+from Selenium import initialize_driver
 from additional import data_partitioning, log_config
 
 log_config("KY.LOG")
@@ -16,7 +16,7 @@ def scrape_categories():
     logging.info("Starting to scrape categories from %s", site)
     url = "https://www.bkmkitap.com/kategori-listesi"
     try:
-        wd = webdriver.Chrome()
+        wd = initialize_driver()
         wd.get(url)
         html_content = wd.page_source
         soup = BeautifulSoup(html_content, "html.parser")
@@ -34,7 +34,7 @@ def scrape_categories():
             logging.debug('Web driver closed after error')
 
     data_partitioning(links)
-    logging.info('scrape_categories function completed')
+    logging.info('data_partitioning function completed')
 
 if __name__ == "__main__":
     scrape_categories()
