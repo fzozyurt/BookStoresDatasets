@@ -18,7 +18,7 @@ from additional import log_config
 format = "%Y-%m-%d %H:%M:%S"
 matrix= os.getenv('matrix_id')
 filename = "Dataset/BKM_"+matrix+".csv"
-workers_count=os.getenv('WORKERS_COUNT')
+workers_count=int(os.getenv('WORKERS_COUNT'))
 
 log_config(os.getenv('CLUSTER_LOG_FILE'),f'%(asctime)s - %(levelname)s - {matrix} - %(message)s')
 
