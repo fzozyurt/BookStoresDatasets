@@ -104,6 +104,7 @@ jobs:
         categories_file: categories_${{ matrix.job_id }}.json
         matrix_id: ${{ matrix.job_id }}
         CLUSTER_LOG_FILE: KY_${{ matrix.job_id }}.log
+        WORKERS_COUNT: 5
       run: |
         python Scripts/ky_scrape.py
 
