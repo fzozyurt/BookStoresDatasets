@@ -6,7 +6,7 @@ import logging
 
 
 # Configure logging
-from additional import log_config
+from additional import log_combine, log_config
 
 log_config(os.getenv('LOG_FILE'))
 
@@ -53,4 +53,7 @@ f.write(jsonString)
 f = open("Data/dataset-metadata.json", "r")
 logging.debug('Dataset metadata file created')
 
+log_combine()
+
+logging.info('Script completed')
 logging.shutdown()
