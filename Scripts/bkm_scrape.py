@@ -133,7 +133,7 @@ def veri_al(link):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     sayfasayi=get_sayfa_sayisi(soup)
-    logging.info("Page Count: %s", +str(sayfasayi))
+    logging.info(f"Page Count: {sayfasayi}")
 
     urls = [f"{link}?pg={i}" for i in range(1, sayfasayi + 1)]
     
