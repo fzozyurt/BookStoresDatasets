@@ -38,23 +38,18 @@ def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"
         ]
     )
 
-# def log_combine():
-#     ID=os.getenv('ID')
+def log_combine():
+    # Log dosyalarının bulunduğu dizin
+    log_directory = 'logs'
+    # Birleştirilecek log dosyasının adı
+    combined_log_file = 'logs/KY.log'
 
-#     # Log dosyalarını birleştirme
-#     log_files = [f'logs/{ID}_{i}.log' for i in range(1, 6)]
-#     combined_logs = []
+    # Birleştirilmiş log dosyasını oluşturun veya var olanı temizleyin
+    with open(combined_log_file, 'w', encoding='utf-8') as outfile:
+        for log_file in os.listdir(log_directory):
+            if log_file.endswith('.log') and log_file.startswith('KY'):  # Sadece .log uzantılı ve KY ile başlayan dosyaları birleştir
+                with open(os.path.join(log_directory, log_file), 'r', encoding='utf-8') as infile:
+                    outfile.write(infile.read())
+                    outfile.write('\n')  # Dosyalar arasında boşluk bırakmak için
 
-#     for log_file in log_files:
-#         with open(log_file, 'r') as file:
-#             lines = file.readlines()
-#             combined_logs.extend(lines)
-
-#     # Mevcut BKM.log dosyasına ekleme
-#     with open('logs/BKM.log', 'a') as outfile:
-#         for log in combined_logs:
-#             outfile.write(log.strip() + '\n')  # Her log girişinden sonra bir satır boşluk ekle
-
-#     # Okunan log dosyalarını silme
-#     for log_file in log_files:
-#         os.remove(log_file)
+    print(f'Log dosyaları {combined_log_file} dosyasında birleştirildi.')

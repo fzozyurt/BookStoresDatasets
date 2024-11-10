@@ -7,7 +7,7 @@ import logging
 # Configure logging
 from additional import log_combine, log_config
 
-log_config(os.getenv('LOG_FILE'))
+log_config("KY.log")
 
 # Read existing dataset
 existing_df = pd.read_csv('Data/KY_Datasets.csv', sep=';')
@@ -56,4 +56,7 @@ try:
 except Exception as e:
     logging.error(f'Error creating or reading metadata JSON file: {e}')
 
+log_combine()
+
 logging.info('Script completed')
+logging.shutdown()
