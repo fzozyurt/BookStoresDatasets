@@ -20,23 +20,27 @@ def add_driver_options(options):
     logging.debug('Driver options configured')
     return chrome_options
 
-def initialize_driver():
+def initialize_driver(browser="edge"):
     """
     Initialize the web driver
     """
-    logging.info('initialize_driver function called')
-    driver_config = {
-        "options": [
-            "--headless",
-            "--no-sandbox",
-            "--start-fullscreen",
-            "--allow-insecure-localhost",
-            "--disable-dev-shm-usage",
-            "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
-        ],
-    }
-    logging.debug(f'Driver configuration: {driver_config}')
-    options = add_driver_options(driver_config["options"])
-    driver = webdriver.Chrome(options=options)
+    logging.info(f'İnitialize Browser : {browser}')
+    if browser == "chrome":
+        logging.info('initialize_driver function called')
+        driver_config = {
+            "options": [
+                "--headless",
+                "--no-sandbox",
+                "--start-fullscreen",
+                "--allow-insecure-localhost",
+                "--disable-dev-shm-usage",
+                "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.6668.71 Safari/537.36"
+            ],
+        }
+        logging.debug(f'Driver configuration: {driver_config}')
+        options = add_driver_options(driver_config["options"])
+        driver = webdriver.Chrome(options=options)
+    elif browser =="edge":
+        driver = webdriver.Edge()
     logging.debug('Web driver initialized')
     return driver

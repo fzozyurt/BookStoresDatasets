@@ -8,6 +8,9 @@ import re
 from datetime import datetime
 from pytz import timezone
 
+from concurrent.futures import ThreadPoolExecutor
+from tenacity import retry, stop_after_attempt, wait_fixed
+
 import logging
 from additional import log_config
 
@@ -74,16 +77,16 @@ def get_data(soup):
     listeData=[]
     try:
         logging.info("Extracting category and products from soup")
-        category=soup.find_all('span', property='name')[-1].text
-        urunler = soup.find_all("div", class_="productItem")
-        logging.info("Found %d products", len(urunler))
-        for urun in urunler:
-            title= urun.find("a", class_="fl col-12 text-description detailLink").text.strip()
-            author = urun.find("a", class_="fl col-12 text-title").text.strip()
-            publisher = urun.find("a", class_="col col-12 text-title mt").text.strip()
-            price = urun.find("div", class_="col col-12 currentPrice").text.strip().replace("\nTL", "").strip()
-            img = urun.find("img", class_="lazy stImage")["data-src"]
-            url = f"https://www.bkmkitap.com{urun.find('a', class_='fl col-12 text-description detailLink')['href']}"
+        category=soup.find("input", {"id": "category-name"}).get("value")
+        product_items = soup.find_all("div", class_="product-item")
+        logging.info("Found %d products", len(product_items))
+        for item in product_items:
+            title= item.find("a", class_="product-title").text.strip()
+            author = item.find("a", class_="model-title").text.strip()
+            publisher = item.find("a", class_="brand-title").text.strip()
+            price = item.find("span", class_="product-price").text.strip()
+            img = item.find('img')['data-src']
+            url = f"https://www.bkmkitap.com{item.find('a', class_='product-title')['href']}"
             logging.info("Processing product: %s", title)
             converted_price = tur_degistir(price)
             last_price = float(son_fiyat_sorgu(url))
@@ -99,23 +102,30 @@ def get_data(soup):
 def get_sayfa_sayisi(soup):
     try:
         logging.info("Extracting page count from BS4 Data")
-        sayi=[]
-        sayfasayi = soup.find_all("div", {"class": "fr col-sm-12 text-center productPager"})
-        sayfasayi = str(sayfasayi)
-        words = re.findall(r'>\S+</a>', sayfasayi)
-        for w in words:
-            w = w.replace('>', '')
-            w = w.replace('</a', '')
-            w = w.split(",")
-            if w != "...":
-                sayi.append(w[0])
-        page_count = int(sayi[-1])
-        logging.info("Page count: %d", page_count)
-        return page_count
+        # Sayfa numaralarını bulma
+        pagination = soup.find("div", class_="pagination")
+        page_numbers = []
+
+        if pagination:
+            for a in pagination.find_all("a"):
+                if 'pg=' in a['href']:
+                    page_number = int(a['href'].split('pg=')[-1])
+                    page_numbers.append(page_number)
+
+        # En yüksek sayfa numarasını alma
+        if page_numbers:
+            return max(page_numbers)
+        else:
+            return 1
     except:
         logging.error("Failed to extract page count from BS4 Data")
-        return int(1)
-    
+
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
+def process_page(url):
+    response = requests.get(url,verify=False,timeout=10)
+    soup = BeautifulSoup(response.content, "html.parser")
+    data = get_data(soup)
+    return data
 
 def veri_al(link):
     CurrentDF=pd.DataFrame(columns = column)
@@ -123,14 +133,16 @@ def veri_al(link):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     sayfasayi=get_sayfa_sayisi(soup)
-    print("Sayfa Sayisi : "+str(sayfasayi))
-    i=1
-    while i<= int(sayfasayi):
-        url = link+"?pg="+str(i)
-        response = requests.get(url)
-        soup = BeautifulSoup(response.content, "html.parser")
-        CurrentDF = pd.concat([CurrentDF,pd.DataFrame(get_data(soup),columns = column)])
-        i=i+1
+    logging.info("Page Count: %s", +str(sayfasayi))
+
+    urls = [f"{link}?pg={i}" for i in range(1, sayfasayi + 1)]
+    
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        results = list(executor.map(process_page, urls))
+    
+    for result in results:
+        CurrentDF = pd.concat([CurrentDF, pd.DataFrame(result, columns=columns)], ignore_index=True)
+
     return CurrentDF
 
 # LOG yapısı oluştur
