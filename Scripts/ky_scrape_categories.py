@@ -1,40 +1,47 @@
-import json
 import logging
 import os
 from bs4 import BeautifulSoup
+import requests
 import numpy as np
 
-from Selenium import initialize_driver
-from additional import data_partitioning, log_config
+from additional import log_config,data_partitioning
 
-log_config("KY.LOG")
+
+log_config(os.getenv('LOG_FILE'))
+
+headers = {
+    'User-Agent': 'Chrome/91.0.4472.124',
+    'Accept': 'text/html'
+}
 
 def scrape_categories():
-    logging.info('scrape_categories function called')
     links = []
-    site = 'https://www.bkmkitap.com'
+    site = 'https://www.kitapyurdu.com'
     logging.info("Starting to scrape categories from %s", site)
-    url = "https://www.bkmkitap.com/kategori-listesi"
+
+    # Kategori İçe Aktarma
+    url = "https://www.kitapyurdu.com/index.php?route=product/category"
     try:
-        wd = initialize_driver()
-        wd.get(url)
-        html_content = wd.page_source
-        soup = BeautifulSoup(html_content, "html.parser")
-        categories = soup.find_all("a", class_=["category-item"])
-        for a in range(len(categories)):
-            link_info = {'name': categories[a].text.strip(), 'url': str((categories[a]['href']))}
-            links.append(link_info)
-            logging.info(f'Category found: {link_info}')
-        wd.quit()
-        logging.debug('Web driver closed successfully')
-    except Exception as e:
-        logging.error(f'Error scraping categories: {e}')
-        if wd:
-            wd.quit()
-            logging.debug('Web driver closed after error')
+        response = requests.get(url,headers=headers)
+        if response.status_code == 200:
+            logging.info("Successfully fetched the category list from %s", url)
+        else:
+            logging.error(f"Failed to fetch the category list from {url} - Response Status: {response.status_code}")
+            return
+    except requests.RequestException as e:
+        logging.error("Error fetching the category list: %s", str(e))
+        return
+
+    html_icerigi = response.content
+    soup = BeautifulSoup(html_icerigi, "html.parser")
+    kategori=soup.find_all("div", class_="category")
+    for a in range(len(kategori)):
+        link = {'name': str(kategori[a].find("h2").text), 'url': str(kategori[1].find("a", class_="category-item")["href"])}
+        links.append(link)
+        logging.debug("Found category: %s", link)
 
     data_partitioning(links)
-    logging.info('data_partitioning function completed')
+
 
 if __name__ == "__main__":
     scrape_categories()
