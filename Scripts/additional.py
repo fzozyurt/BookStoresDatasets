@@ -3,6 +3,8 @@ import json
 import numpy as np
 import os
 
+ID=os.getenv('ID')
+
 def data_partitioning(links):
     # Verileri numpy array'ine çevirme ve karıştırma
     data_array = np.array(links)
@@ -47,7 +49,7 @@ def log_combine():
     # Birleştirilmiş log dosyasını oluşturun veya var olanı temizleyin
     with open(combined_log_file, 'w', encoding='utf-8') as outfile:
         for log_file in os.listdir(log_directory):
-            if log_file.endswith('.log') and log_file.startswith('KY'):  # Sadece .log uzantılı ve KY ile başlayan dosyaları birleştir
+            if log_file.endswith('.log') and log_file.startswith(ID):  # Sadece .log uzantılı ve ID değeri ile başlayan dosyaları birleştir
                 with open(os.path.join(log_directory, log_file), 'r', encoding='utf-8') as infile:
                     outfile.write(infile.read())
                     outfile.write('\n')  # Dosyalar arasında boşluk bırakmak için
