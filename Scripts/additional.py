@@ -9,6 +9,10 @@ def data_partitioning(links):
     np.random.shuffle(data_array)
     logging.debug("Data shuffled")
 
+    # Veriyi 5 parçaya bölmeden önce verilerin sıralarını karıştırma
+    np.random.shuffle(data_array)
+    logging.debug("Data shuffled again before splitting")
+
     # Veriyi 5 parçaya bölme
     split_data = np.array_split(data_array, 5)
     logging.info("Data split into 5 parts")
