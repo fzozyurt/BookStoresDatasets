@@ -2,6 +2,7 @@ import logging
 import os
 from bs4 import BeautifulSoup
 import requests
+import re
 import numpy as np
 
 from additional import log_config,data_partitioning
@@ -36,7 +37,7 @@ def scrape_categories():
     soup = BeautifulSoup(html_icerigi, "html.parser")
     kategori=soup.find_all("div", class_="category")
     for a in range(len(kategori)):
-        link = {'name': str(kategori[a].find("h2").text), 'url': str(kategori[1].find("a", class_="category-item")["href"])}
+        link = {'name': str(kategori[a].find("h2").text), 'url': str(kategori[a].find("a", class_="category-item")["href"]), 'categori_id': re.search(r'/(\d+)\.html$', kategori[a].find("a", class_="category-item")["href"]).group(1)}
         links.append(link)
         logging.debug("Found category: %s", link)
 

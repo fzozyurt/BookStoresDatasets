@@ -6,21 +6,25 @@ import re
 from bs4 import BeautifulSoup
 from datetime import datetime
 from pytz import timezone
-
-from Selenium import initialize_driver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+import requests
 
 import logging
+
+from concurrent.futures import ThreadPoolExecutor
+from tenacity import retry, stop_after_attempt, wait_fixed
+
 from additional import log_config
 
+headers = {
+    'User-Agent': 'Chrome/91.0.4472.124',
+    'Accept': 'text/html'
+}
 #Parametreler
 format = "%Y-%m-%d %H:%M:%S"
 matrix=os.getenv('matrix_id')
 filename = "Dataset/KY_"+matrix+".csv"
+workers_count=int(os.getenv('WORKERS_COUNT'))
+
 log_config(os.getenv('CLUSTER_LOG_FILE'),f'%(asctime)s - %(levelname)s - {matrix} - %(message)s')
 
 # JSON dosyasını oku ve Kategorileri links değerine yaz
@@ -31,7 +35,9 @@ logging.debug("Reading categories file: %s", categories_file)
 with open(categories_file, 'r') as f:
     data = json.load(f)
 for categori in data:
-    links.append(categori["url"])
+    categori_id=categori["categori_id"]
+    links.append(f"https://www.kitapyurdu.com/index.php?filter_category_all=true&filter_in_stock=1&sort=purchased_365&order=DESC&route=product/category&limit=100&category_id={categori_id}")
+    
 
 column=["Kitap İsmi","Yazar","Yayın Evi","ISBN","Dil","Sayfa","Kategori","Fiyat","URL","Platform","Tarih","Kapak Resmi","Reiting","Reiting Count","NLP-Data"]
 
@@ -71,7 +77,27 @@ def son_fiyat_sorgu(link):
     logging.info("Last price for link %s: %f", link, URL_filter_data)
     return URL_filter_data
 
-def get_Data(soup):
+def get_sayfa_sayisi(soup):
+    try:
+        logging.info("Extracting page count from BS4 Data")
+        # Sayfa numaralarını bulma
+        pagination_div = soup.find("div", class_="pagination")
+        if pagination_div:
+            results_div = pagination_div.find("div", class_="results")
+            if results_div:
+                match = re.search(r'\((\d+) Sayfa\)', results_div.text)
+                if match:
+                    return int(match.group(1))
+                else:
+                    return 1
+            else:
+                return 1
+        else:
+            return 1
+    except:
+        logging.error("Failed to extract page count from BS4 Data")
+
+def get_data(soup):
     listeData = []
     try:
         logging.info("Extracting category and products from soup")
@@ -112,67 +138,33 @@ def get_Data(soup):
     
     return listeData
 
+
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
+def process_page(url):
+    response = requests.get(url,headers=headers,verify=False,timeout=10)
+    soup = BeautifulSoup(response.content, "html.parser")
+    data = get_data(soup)
+    return data
+
 def veri_al(link):
+    CurrentDF=pd.DataFrame(columns = column)
     url = link
-    logging.info("Navigating to URL: %s", url)
-    wd.get(url)
-    try:
-        wd.find_element(By.XPATH, "//*[@id='list_product_carousel_best_sell-view-all']").click()
-        logging.info("Clicked on 'view all' for best selling products")
-    except Exception as e:
-        logging.warning("Kategori Seçim Atlandı: %s", str(e))
+    response = requests.get(url,headers=headers)
+    soup = BeautifulSoup(response.content, "html.parser")
+    sayfasayi=get_sayfa_sayisi(soup)
+    logging.info(f"Page Count: {sayfasayi}")
+
+    urls = [f"{link}&page={i}" for i in range(1, sayfasayi + 1)]
     
-    logging.info("Current URL: %s", wd.current_url)
-    try:
-        drop = wd.find_element(By.XPATH, "//*[@id='content']/div/div[1]/div/div[2]/select")  # 100 Öğre Gösterme Seçimi
-        drop = Select(drop)
-        drop.select_by_visible_text("100 Ürün")
-        logging.info("Selected '100 Ürün' from dropdown")
-    except Exception as e:
-        logging.error("Failed to select '100 Ürün' from dropdown: %s", str(e))
+    with ThreadPoolExecutor(max_workers=workers_count) as executor:
+        results = list(executor.map(process_page, urls))
     
-    logging.info("Current URL after dropdown selection: %s", wd.current_url)
-    if WebDriverWait(wd, 30).until(EC.url_changes(url=url)):
-        try:
-            sayfasayisi = wd.find_element(By.XPATH, "//*[@id='content']/div/div[3]/div[2]").text.split(" ")[7].replace("(", "")  # Sayfa Sayısı Kısmının TEXT ini alıyoruz
-            logging.info("Number of pages: %s", sayfasayisi)
-        except Exception as e:
-            logging.warning("Failed to get number of pages, defaulting to 1: %s", str(e))
-            sayfasayisi = 1
-        i = 1
-        CurrentDF = pd.DataFrame(columns=column)
-        while i <= int(sayfasayisi):
-            try:
-                products_container = wd.find_element(By.CSS_SELECTOR, "#content ")
-                soup = BeautifulSoup(products_container.get_attribute("outerHTML"), "html.parser")
-                CurrentDF = pd.concat([CurrentDF, pd.DataFrame(get_Data(soup), columns=column)])
-                logging.info("Extracted data from page %d", i)
-                
-                try:
-                    cur_url = wd.current_url
-                    wd.find_element(By.CSS_SELECTOR, "a.next").click()
-                    if WebDriverWait(wd, 30).until(EC.url_changes(url=cur_url)):
-                        i += 1
-                        logging.info("Navigated to next page: %d", i)
-                except Exception as e:
-                    try:
-                        if WebDriverWait(wd, 5).until(EC.visibility_of_element_located((By.ID, "cookiescript_accept"))):
-                            wd.find_element(By.ID, "cookiescript_accept").click()
-                            cur_url = wd.current_url
-                            wd.find_element(By.CSS_SELECTOR, "a.next").click()
-                            if WebDriverWait(wd, 30).until(EC.url_changes(url=cur_url)):
-                                i += 1
-                                logging.info("Accepted cookies and navigated to next page: %d", i)
-                    except Exception as e:
-                        logging.error("Failed to navigate to next page after accepting cookies: %s", str(e))
-                        break
-            except Exception as e:
-                logging.error("Failed to process page %d: %s", i, str(e))
-                break
+    for result in results:
+        CurrentDF = pd.concat([CurrentDF, pd.DataFrame(result, columns=column)], ignore_index=True)
+
     return CurrentDF
 
 logging.info("Starting data scraping")
-wd= initialize_driver()
 for link in links:
     logging.info("Scraping data for category: %s", link)
     df = pd.concat([df,pd.DataFrame(veri_al(link),columns = column)])
