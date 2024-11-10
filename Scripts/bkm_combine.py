@@ -6,7 +6,7 @@ import logging
 
 
 # Configure logging
-from additional import log_combine, log_config
+from additional import log_config
 
 log_config(os.getenv('LOG_FILE'))
 
