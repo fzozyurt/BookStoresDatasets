@@ -18,6 +18,7 @@ from additional import log_config
 format = "%Y-%m-%d %H:%M:%S"
 matrix= os.getenv('matrix_id')
 filename = "Dataset/BKM_"+matrix+".csv"
+workers_count=os.getenv('WORKERS_COUNT')
 
 log_config(os.getenv('CLUSTER_LOG_FILE'),f'%(asctime)s - %(levelname)s - {matrix} - %(message)s')
 
@@ -137,7 +138,7 @@ def veri_al(link):
 
     urls = [f"{link}?pg={i}" for i in range(1, sayfasayi + 1)]
     
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    with ThreadPoolExecutor(max_workers=workers_count) as executor:
         results = list(executor.map(process_page, urls))
     
     for result in results:
