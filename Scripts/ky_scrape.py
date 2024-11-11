@@ -44,42 +44,29 @@ column=["Kitap İsmi","Yazar","Yayın Evi","ISBN","Dil","Sayfa","Kategori","Fiya
 #Dataset Dosyasını Oku
 data = pd.read_csv("Data/KY_Datasets.csv", sep=";")
 column=data.columns
-logging.debug("Columns in dataset: %s", str(column))
 # Yeni veri oluşturma
 df = pd.DataFrame(columns=column)
-logging.debug("Empty dataset created with columns: %s", str(column))
-
-logging.info("Grouping data by 'URL' and aggregating 'Tarih'")
 grup = data.groupby(['URL']).agg(Tarih=('Tarih', np.max))
-logging.info("Data grouped successfully")
-
-logging.info("Merging grouped data with original data on 'URL' and 'Tarih'")
 grup=pd.merge(grup,data[['URL','Tarih','Fiyat']],how='left', on=['URL','Tarih'])
-logging.debug("Data merged successfully with %d rows", grup.shape[0])
 
 def tur_degistir(fiyat):
-    logging.info("Original price string: %s", fiyat)
     x=fiyat.rsplit(',',1)
     x[0]=x[0].replace(".", "")
     x=x[0]+"."+x[1]
     converted_price = float(x)
-    logging.info("Converted Price: %s", converted_price)
     return converted_price
 
 def son_fiyat_sorgu(link):
-    logging.info("Querying last price for link: %s", link)
     URL_filter_data = grup.query("URL ==@link")["Fiyat"]
     if URL_filter_data.count()!=0:
         URL_filter_data = float(URL_filter_data.iloc[0])
     else:
         URL_filter_data=0.0
         logging.warning("No price data found for link %s. Defaulting to %f", link, URL_filter_data)
-    logging.info("Last price for link %s: %f", link, URL_filter_data)
     return URL_filter_data
 
 def get_sayfa_sayisi(soup):
     try:
-        logging.info("Extracting page count from BS4 Data")
         # Sayfa numaralarını bulma
         pagination_div = soup.find("div", class_="pagination")
         if pagination_div:
@@ -100,7 +87,6 @@ def get_sayfa_sayisi(soup):
 def get_data(soup):
     listeData = []
     try:
-        logging.info("Extracting category and products from soup")
         category = soup.find("div", id="content").find("h1").text.strip()
         products = soup.find_all("div", class_="product-cr")
         logging.info("Found %d products", len(products))
@@ -118,7 +104,6 @@ def get_data(soup):
                 rating = product.find("div", class_="rating").find("div")["title"].strip().split(" ")[0]
                 rating_count = len(product.select(".rating .fa.fa-star.active"))
                 NLP_Data = product.find("div", class_="product-info").text.strip()
-                logging.info("Processed product details for %s", title)
             except Exception as e:
                 publisher = ""
                 author = ""
@@ -129,13 +114,10 @@ def get_data(soup):
             converted_price = tur_degistir(price)
             last_price = float(son_fiyat_sorgu(url))
             if converted_price != last_price:
-                logging.info("Price change detected for %s: %f -> %f", title, last_price, converted_price)
                 listeData.append([title, author, publisher, "", "", "", category, converted_price, url, "Kitap Yurdu", datetime.now(timezone('UTC')).astimezone(timezone('Asia/Istanbul')).strftime(format), img, rating, rating_count, NLP_Data])
-            else:
-                logging.warning("No price change for %s", title)
     except Exception as e:
         logging.error("Failed to read data in get_Data: %s", str(e))
-    
+
     return listeData
 
 
@@ -172,7 +154,6 @@ for link in links:
 df.reset_index(inplace=True)
 df.drop("index",axis=1,inplace=True)
 df.to_csv(filename,sep=';',index=False,encoding="utf-8")
-logging.debug("Data scraping %s completed", filename)
 
 logging.info("Data scraping completed")
 logging.shutdown()

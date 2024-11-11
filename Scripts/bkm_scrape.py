@@ -25,59 +25,45 @@ log_config(os.getenv('CLUSTER_LOG_FILE'),f'%(asctime)s - %(levelname)s - {matrix
 # JSON dosyasını oku ve Kategorileri links değerine yaz
 links=[]
 categories_file = os.getenv('categories_file')
-logging.debug("Reading categories file: %s", categories_file)
+logging.info("Reading categories file: %s", categories_file)
 
 with open(categories_file, 'r') as f:
     data = json.load(f)
-    logging.debug("Data read from categories file: %s", data)
 for categori in data:
     links.append(categori["url"])
-    logging.debug("Category URL added: %s", categori["url"])
 
 columns=["Kitap İsmi", "Yazar", "Yayın Evi", "Fiyat",
-                  "URL", "Platform", "Tarih", "Kapak Kucultulmus", "Kapak Resmi"]
+                  "URL", "Platform", "Tarih", "Kapak Kucultulmus", "Kapak Resmi","Category"]
 
 #Dataset Dosyasını Oku
-logging.debug("Reading dataset file: Data/BKM_Datasets.csv")
 data = pd.read_csv("Data/BKM_Datasets.csv", sep=";")
 column=data.columns
-logging.debug("Columns in dataset: %s", str(column))
 # Yeni veri oluşturma
 dataset = pd.DataFrame(columns=column)
-logging.debug("Empty dataset created with columns: %s", str(column))
 
-logging.info("Grouping data by 'URL' and aggregating 'Tarih'")
 grup = data.groupby(['URL']).agg(Tarih=('Tarih', np.max))
-logging.info("Data grouped successfully")
 
-logging.info("Merging grouped data with original data on 'URL' and 'Tarih'")
 grup=pd.merge(grup,data[['URL','Tarih','Fiyat']],how='left', on=['URL','Tarih'])
-logging.debug("Data merged successfully with %d rows", grup.shape[0])
 
 def tur_degistir(fiyat):
-    logging.info("Original price string: %s", fiyat)
     x=fiyat.rsplit(',',1)
     x[0]=x[0].replace(".", "")
     x=x[0]+"."+x[1]
     converted_price = float(x)
-    logging.info("Converted Price: %s", converted_price)
     return converted_price
 
 def son_fiyat_sorgu(link):
-    logging.info("Querying last price for link: %s", link)
     URL_filter_data = grup.query("URL ==@link")["Fiyat"]
     if URL_filter_data.count()!=0:
         URL_filter_data = float(URL_filter_data.iloc[0])
     else:
         URL_filter_data=0.0
         logging.warning("No price data found for link %s. Defaulting to %f", link, URL_filter_data)
-    logging.info("Last price for link %s: %f", link, URL_filter_data)
     return URL_filter_data
     
 def get_data(soup):
     listeData=[]
     try:
-        logging.info("Extracting category and products from soup")
         category=soup.find("input", {"id": "category-name"}).get("value")
         product_items = soup.find_all("div", class_="product-item")
         logging.info("Found %d products", len(product_items))
@@ -88,12 +74,10 @@ def get_data(soup):
             price = item.find("span", class_="product-price").text.strip()
             img = item.find('img')['data-src']
             url = f"https://www.bkmkitap.com{item.find('a', class_='product-title')['href']}"
-            logging.info("Processing product: %s", title)
             converted_price = tur_degistir(price)
             last_price = float(son_fiyat_sorgu(url))
             if converted_price != last_price:
-                logging.info("Price change detected for %s: %f -> %f", title, last_price, converted_price)
-                listeData.append([title, author, publisher, tur_degistir(price), url, "BKM Kitap",datetime.now(timezone('UTC')).astimezone(timezone('Asia/Istanbul')).strftime(format), img,img.replace('-K.jpg', '-O.jpg')])
+                listeData.append([title, author, publisher, tur_degistir(price), url, "BKM Kitap",datetime.now(timezone('UTC')).astimezone(timezone('Asia/Istanbul')).strftime(format), img,img.replace('-K.jpg', '-O.jpg'),category])
     except Exception as e:
         logging.error("Failed to read data in get_data: %s", str(e))
     return listeData
@@ -102,17 +86,14 @@ def get_data(soup):
     
 def get_sayfa_sayisi(soup):
     try:
-        logging.info("Extracting page count from BS4 Data")
         # Sayfa numaralarını bulma
         pagination = soup.find("div", class_="pagination")
         page_numbers = []
-
         if pagination:
             for a in pagination.find_all("a"):
                 if 'pg=' in a['href']:
                     page_number = int(a['href'].split('pg=')[-1])
                     page_numbers.append(page_number)
-
         # En yüksek sayfa numarasını alma
         if page_numbers:
             return max(page_numbers)

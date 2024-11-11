@@ -32,7 +32,7 @@ def data_partitioning(links):
 def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"):
     file_name = "./logs/" + file_name
     file_handler = logging.FileHandler(file_name)
-    file_handler.setLevel(logging.ERROR)  # Sadece ERROR seviyesindeki logları dosyaya yaz
+    file_handler.setLevel(logging.DEBUG)  # Sadece ERROR seviyesindeki logları dosyaya yaz
 
     stream_handler = logging.StreamHandler()
     stream_handler.setLevel(logging.DEBUG)  # Konsola tüm seviyelerdeki logları yaz
@@ -49,7 +49,7 @@ def log_combine():
     # Log dosyalarının bulunduğu dizin
     log_directory = 'logs'
     # Birleştirilecek log dosyasının adı
-    combined_log_file = 'logs/KY.log'
+    combined_log_file = f'logs/{ID}.log'
 
     # Birleştirilmiş log dosyasını oluşturun veya var olanı temizleyin
     with open(combined_log_file, 'w', encoding='utf-8') as outfile:

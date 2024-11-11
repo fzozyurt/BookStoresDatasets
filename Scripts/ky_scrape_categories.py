@@ -8,7 +8,7 @@ import numpy as np
 from additional import log_config,data_partitioning
 
 
-log_config(os.getenv('LOG_FILE'))
+log_config("KY.LOG")
 
 headers = {
     'User-Agent': 'Chrome/91.0.4472.124',
@@ -39,7 +39,7 @@ def scrape_categories():
     for a in range(len(kategori)):
         link = {'name': str(kategori[a].find("h2").text), 'url': str(kategori[a].find("a", class_="category-item")["href"]), 'categori_id': re.search(r'/(\d+)\.html$', kategori[a].find("a", class_="category-item")["href"]).group(1)}
         links.append(link)
-        logging.debug("Found category: %s", link)
+        logging.info("Found category: %s", link)
 
     data_partitioning(links)
 
