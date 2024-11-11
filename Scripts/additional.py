@@ -31,15 +31,20 @@ def data_partitioning(links):
 
 def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"):
     file_name = "./logs/" + file_name
+    file_handler = logging.FileHandler(file_name)
+    file_handler.setLevel(logging.ERROR)  # Sadece ERROR seviyesindeki logları dosyaya yaz
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.DEBUG)  # Konsola tüm seviyelerdeki logları yaz
+
     logging.basicConfig(
         level=logging.DEBUG,
         format=log_format,
         handlers=[
-            logging.FileHandler(file_name),
-            logging.StreamHandler()
+            file_handler,
+            stream_handler
         ]
     )
-
 def log_combine():
     # Log dosyalarının bulunduğu dizin
     log_directory = 'logs'
