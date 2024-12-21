@@ -101,7 +101,7 @@ if __name__ == "__main__":
     if args.data_path:
         data_path = args.data_path
     else :
-        data_dir = 'Data'
+        data_dir = 'data'
         data_files = [f for f in os.listdir(data_dir) if f.endswith('.csv')]
         data_path = os.path.join(data_dir, data_files[0])
     
