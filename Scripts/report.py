@@ -10,14 +10,14 @@ def compare_prices(data_path):
     data = pd.read_csv(data_path, delimiter=';', encoding='utf-8')
 
     # Sütun adlarını kontrol et
-    required_columns = ['Tarih', 'URL', 'Fiyat', 'Kitap İsmi', 'Kategori']
+    required_columns = ['Tarih', 'URL', 'Fiyat', 'Kitap İsmi']
     for col in required_columns:
         if col not in data.columns:
             raise KeyError(f"Column '{col}' is missing in the data.")
 
     data['Tarih'] = pd.to_datetime(data['Tarih'])
 
-    yesterday = datetime.now() - timedelta(days=2)
+    yesterday = datetime.now() - timedelta(days=1)
     recent_data = data[data['Tarih'] >= yesterday]
 
     if recent_data.empty:
@@ -59,7 +59,6 @@ def generate_html_report(report, price_changed):
         <table border="1">
             <tr>
                 <th>Book Name</th>
-                <th>Category</th>
                 <th>Date</th>
                 <th>Old Price</th>
                 <th>New Price</th>
@@ -71,7 +70,6 @@ def generate_html_report(report, price_changed):
         html += f"""
             <tr>
                 <td><a href="{row['URL']}">{row['Kitap İsmi']}</a></td>
-                <td>{row['Kategori']}</td>
                 <td>{row['Tarih']}</td>
                 <td>{row['Fiyat'] - row['price_change']}</td>
                 <td>{row['Fiyat']}</td>
