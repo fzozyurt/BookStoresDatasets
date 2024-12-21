@@ -40,3 +40,14 @@ jobs:
     - name: Generate Report
       run: |
         python Scripts/report.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git pull origin main
+        git add logs/
+        git commit -m "Add Report File"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
