@@ -32,10 +32,10 @@ def data_partitioning(links):
 def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"):
     file_name = "./logs/" + file_name
     file_handler = logging.FileHandler(file_name)
-    file_handler.setLevel(logging.DEBUG)  # Sadece ERROR seviyesindeki logları dosyaya yaz
+    file_handler.setLevel(logging.WARNING)  # Sadece WARNING ve ERROR seviyesindeki logları dosyaya yaz
 
     stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.DEBUG)  # Konsola tüm seviyelerdeki logları yaz
+    stream_handler.setLevel(logging.DEBUG)  # Konsola sadece WARNING ve ERROR seviyesindeki logları yaz
 
     logging.basicConfig(
         level=logging.DEBUG,
@@ -53,10 +53,17 @@ def log_combine():
 
     # Birleştirilmiş log dosyasını oluşturun veya var olanı temizleyin
     with open(combined_log_file, 'w', encoding='utf-8') as outfile:
+        all_files_empty = True
         for log_file in os.listdir(log_directory):
             if log_file.endswith('.log') and log_file.startswith(ID):  # Sadece .log uzantılı ve ID değeri ile başlayan dosyaları birleştir
                 with open(os.path.join(log_directory, log_file), 'r', encoding='utf-8') as infile:
-                    outfile.write(infile.read())
+                    content = infile.read()
+                    if content.strip():  # Dosya boş değilse
+                        all_files_empty = False
+                    outfile.write(content)
                     outfile.write('\n')  # Dosyalar arasında boşluk bırakmak için
+
+        if all_files_empty:
+            outfile.write('ERROR seviyesinde herhangi bir hata alınmadan süreç sonlandırıldı\n')
 
     print(f'Log dosyaları {combined_log_file} dosyasında birleştirildi.')
