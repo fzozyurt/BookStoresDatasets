@@ -40,6 +40,10 @@ jobs:
       run: |
         python Scripts/report.py
 
+    - name: Wait before commit and push
+      run: |
+        sleep $(( $RANDOM % 60 + 30 ))
+
     - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
