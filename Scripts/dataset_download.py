@@ -4,6 +4,7 @@ import logging
 from kaggle.api.kaggle_api_extended import KaggleApi
 
 from additional import log_config
+import argparse
 
 log_config(os.getenv('LOG_FILE'))
 
@@ -20,7 +21,11 @@ def download_kaggle_dataset(dataset_name):
         logging.error(f"Error downloading dataset {dataset_name}: {e}")
 
 if __name__ == "__main__":
-    dataset_name = os.getenv('DATASET_NAME')
+    parser = argparse.ArgumentParser(description='Download a dataset from Kaggle.')
+    parser.add_argument('--dataset_name', type=str, default=os.getenv('DATASET_NAME'), help='Name of the dataset to download')
+    args = parser.parse_args()
+
+    dataset_name = args.dataset_name
     logging.info("Script started")
     logging.info(f"Dataset Name: {dataset_name}")
 
