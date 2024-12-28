@@ -110,7 +110,7 @@ def get_data(soup):
                 rating = ""
                 rating_count = ""
                 NLP_Data = ""
-                logging.warning("Failed to extract some details for %s: %s", title, str(e))
+                logging.debug("Failed to extract some details for %s - %s: %s", title,url, str(e))
             converted_price = tur_degistir(price)
             last_price = float(son_fiyat_sorgu(url))
             if converted_price != last_price:
