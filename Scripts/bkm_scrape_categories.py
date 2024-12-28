@@ -30,7 +30,7 @@ def scrape_categories():
     soup = BeautifulSoup(html_icerigi, "html.parser")
     kategori=soup.find_all("a", class_=["w-100 d-block block-title"])
     for a in range(len(kategori)):
-        link = {'name': str(kategori[a].text), 'url': str(site + "" + (kategori[a]['href']))}
+        link = {'name': str(kategori[a].text), 'url': str(site + "" + (kategori[a]['href'])+'?&stock=1')}
         links.append(link)
         logging.debug("Found category: %s", link)
 
