@@ -79,7 +79,7 @@ def get_data(soup):
             if converted_price != last_price:
                 listeData.append([title, author, publisher, tur_degistir(price), url, "BKM Kitap",datetime.now(timezone('UTC')).astimezone(timezone('Asia/Istanbul')).strftime(format), img,img.replace('-K.jpg', '-O.jpg'),category])
     except Exception as e:
-        logging.error("Failed to read data in get_data: %s", str(e))
+        logging.debug("Failed to read data in get_data: %s", str(e))
     return listeData
 
 
