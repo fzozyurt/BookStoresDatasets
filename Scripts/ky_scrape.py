@@ -116,7 +116,7 @@ def get_data(soup):
             if converted_price != last_price:
                 listeData.append([title, author, publisher, "", "", "", category, converted_price, url, "Kitap Yurdu", datetime.now(timezone('UTC')).astimezone(timezone('Asia/Istanbul')).strftime(format), img, rating, rating_count, NLP_Data])
     except Exception as e:
-        logging.error("Failed to read data in get_Data: %s", str(e))
+        logging.debug("Failed to read data in get_Data: %s", str(e))
 
     return listeData
 
