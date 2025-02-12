@@ -40,20 +40,20 @@ jobs:
       run: python Scripts/dataset_download.py
     
     - name: Upload dataset as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bkm_dataset
         path: data/
         retention-days: 1
     
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: LogFiles
         path: logs/${{ env.LOG_FILE }}
 
     - name: Upload categories artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bkm_categories
         path: |
@@ -86,15 +86,17 @@ jobs:
         pip install -r requirements.txt
 
     - name: Download bkm_dataset artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: bkm_dataset #Dataset ana dizine ekleniyor
+        pattern: bkm_dataset*
+        merge-multiple: true
         path: Data/
 
     - name: Download categories artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: bkm_categories
+        pattern: bkm_categories
+        merge-multiple: true
     
     - name: Create Dataset File
       run: mkdir -p Dataset
@@ -109,15 +111,15 @@ jobs:
         python Scripts/bkm_scrape.py
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: scraping data
+        name: scraping data -${{ matrix.runs-on }}
         path: Dataset/BKM_${{ matrix.job_id }}.csv
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: LogFiles
+        name: LogFiles -${{ matrix.runs-on }}
         path: logs/BKM_${{ matrix.job_id }}.log
 
   combine:
@@ -137,21 +139,24 @@ jobs:
         pip install pandas kaggle
 
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: bkm_dataset
+        pattern: bkm_dataset*
+        merge-multiple: true
         path: Data/
     
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: LogFiles
+        pattern: LogFiles*
+        merge-multiple: true
         path: logs/
 
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: scraping data
+        pattern: scraping data*
+        merge-multiple: true
         path: Datasets/
     
     - name: Combine datasets
@@ -159,7 +164,7 @@ jobs:
         python Scripts/bkm_combine.py
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Finished BKM Dataset
         path: Data/BKM_Datasets.csv
@@ -178,9 +183,9 @@ jobs:
         rm logs/BKM_*.log
     
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: LogFiles
+        name: LogFiles - Finished
         path: logs/BKM.log
     
     - name: Rename log file with today's date
