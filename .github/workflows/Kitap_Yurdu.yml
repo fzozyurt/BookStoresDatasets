@@ -111,13 +111,13 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: scraping data-${{ matrix.runs-on }}
+        name: scraping data-${{ matrix.job_id }}
         path: Dataset/KY_${{ matrix.job_id }}.csv
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: LogFiles-${{ matrix.runs-on }}
+        name: LogFiles-${{ matrix.job_id }}
         path: logs/KY_${{ matrix.job_id }}.log
 
   combine:
