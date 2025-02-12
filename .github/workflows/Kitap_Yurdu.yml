@@ -89,12 +89,14 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         pattern: ky_dataset*
+        merge-multiple: true
         path: Data/
 
     - name: Download categories artifact
       uses: actions/download-artifact@v4
       with:
-        pattern: ky_categories*
+        pattern: ky_categories
+        merge-multiple: true
     
     - name: Create Dataset File
       run: mkdir -p Dataset
@@ -143,18 +145,21 @@ jobs:
       with:
         pattern: ky_dataset*
         path: Data/
+        merge-multiple: true
     
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
         pattern: LogFiles*
         path: logs/
+        merge-multiple: true
 
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
         pattern: scraping data*
         path: Datasets/
+        merge-multiple: true
 
     - name: Combine datasets
       run: |
@@ -188,6 +193,11 @@ jobs:
     - name: Rename log file with today's date
       run: |
         python Scripts/rename_log.py
+
+    - name: Zip log files and delete not zip file
+      run: |
+        zip logs/KY_logs.zip logs/KY_*.log
+        rm logs/KY_*.log
 
     - name: Commit and push changes
       run: |
