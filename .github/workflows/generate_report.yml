@@ -49,7 +49,8 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
-        git add Report/
+        ls
+        git add Report/BKM - *.html
         git commit -m "Add Report File"
         git push
       env:
