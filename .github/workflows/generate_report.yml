@@ -50,7 +50,7 @@ jobs:
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
         ls
-        git add Report/BKM - *.html
+        git add Report/*.html
         git commit -m "Add Report File"
         git push
       env:
