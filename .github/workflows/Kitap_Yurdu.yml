@@ -196,7 +196,7 @@ jobs:
 
     - name: Zip log files and delete not zip file
       run: |
-        zip logs/KY_logs_$(date +'%Y-%m-%d').zip logs/KY_*.log
+        zip logs/KY_logs_$(date +'%Y-%m-%d').zip logs/KY_.log
         rm logs/KY_*.log
 
     - name: Commit and push changes
