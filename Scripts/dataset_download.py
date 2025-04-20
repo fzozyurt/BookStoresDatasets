@@ -15,7 +15,7 @@ def download_kaggle_dataset(dataset_name):
     logging.info("Authenticated with Kaggle API")
 
     try:
-        api.dataset_download_files(dataset_name, path='data', unzip=True)
+        api.dataset_download_files(dataset_name, path='Data', unzip=True)
         logging.info(f"Dataset {dataset_name} has been downloaded and unzipped.")
     except Exception as e:
         logging.error(f"Error downloading dataset {dataset_name}: {e}")
