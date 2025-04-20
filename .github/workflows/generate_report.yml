@@ -1,9 +1,9 @@
-name: Generate Reports
+name: Haftalık Rapor ve Dashboard Oluşturma
 
 on:
   schedule:
-    - cron: '* 03 * * *'
-  workflow_dispatch:
+    - cron: '0 10 * * 0'  # Her Pazar saat 10:00 UTC'de çalışacak
+  workflow_dispatch:  # Manuel çalıştırma seçeneği
 
 env:
   LOG_FILE: 'report.log'
@@ -22,36 +22,48 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10.6
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas kaggle
+        pip install -r requirements.txt
+        pip install plotly pandas kaggle
     
-    - name: Kaggle Dataset Dawnload
+    - name: Kaggle Dataset Download
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
       run: |
-           python Scripts/dataset_download.py --dataset_name furkanzeki/${{matrix.Dataset}}
+        python -m Scripts.dataset_download --dataset_name furkanzeki/${{matrix.Dataset}}
 
-    - name: Generate Report
+    - name: Generate Report and Dashboard
       run: |
-        python Scripts/report.py
+        mkdir -p Report
+        python -m Scripts.report
+        echo "Rapor oluşturma işlemi tamamlandı: $(date)"
 
-    - name: Wait before commit and push
+    - name: Check Report Generation 
+      id: check_report
       run: |
-        sleep $(( $RANDOM % 60 + 30 ))
+        if [ -d "Report" ] && ls Report/*.html 1> /dev/null 2>&1; then
+          echo "Report başarıyla oluşturuldu."
+          echo "REPORT_GENERATED=true" >> $GITHUB_ENV
+        else
+          echo "Report oluşturma hatası!"
+          echo "REPORT_GENERATED=false" >> $GITHUB_ENV
+          exit 1
+        fi
 
-    - name: Commit and push changes
+    - name: Commit and push reports
+      if: env.REPORT_GENERATED == 'true'
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
-        ls
         git add Report/*.html
-        git commit -m "Add Report File"
+        TODAY=$(date +'%Y-%m-%d')
+        git commit -m "Haftalık Rapor ve Dashboard eklendi - ${{ matrix.Dataset }} - $TODAY"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
