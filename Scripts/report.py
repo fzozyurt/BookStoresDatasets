@@ -15,16 +15,54 @@ def load_data(data_path):
     """CSV dosyasını yükle ve başlangıç işlemlerini yap"""
     data = pd.read_csv(data_path, delimiter=';', encoding='utf-8')
     
-    # Sütun adlarını kontrol et
-    required_columns = ['Tarih', 'URL', 'Fiyat', 'Kitap İsmi', 'Site', 'Kategori']
-    for col in required_columns:
-        if col not in data.columns:
-            # Eğer Kategori sütunu yoksa başka bir sütundan tahmin etmeye çalış
-            if col == 'Kategori' and 'Kategori' not in data.columns:
-                print("'Kategori' sütunu bulunamadı. Genel kategori olarak işaretleniyor.")
-                data['Kategori'] = 'Genel'
-            else:
-                raise KeyError(f"Sütun '{col}' veride bulunamadı.")
+    # Sütun eşlemesi - farklı site formatlarını standart sütun isimlerine dönüştür
+    column_mappings = {
+        # BKM format
+        'Kitap İsmi': 'Kitap İsmi',
+        'Fiyat': 'Fiyat',
+        'URL': 'URL',
+        'Platform': 'Site',
+        'Tarih': 'Tarih',
+        'Yazar': 'Yazar',
+        'Yayın Evi': 'Yayın Evi',
+        'Kapak Resmi': 'Kapak Resmi',
+        
+        # Kitap Yurdu format
+        'ISBN': 'ISBN',
+        'Dil': 'Dil',
+        'Sayfa': 'Sayfa',
+        'Kategori': 'Kategori',
+        'Reiting': 'Reiting',
+        'Reiting Count': 'Reiting Count',
+        'NLP-Data': 'NLP-Data'
+    }
+    
+    # Sütun adlarını yeniden adlandır (varsa)
+    renamed_columns = {}
+    for old_col, new_col in column_mappings.items():
+        if old_col in data.columns and old_col != new_col:
+            renamed_columns[old_col] = new_col
+    
+    if renamed_columns:
+        data = data.rename(columns=renamed_columns)
+    
+    # Gerekli sütunların varlığını kontrol et
+    required_columns = ['Tarih', 'URL', 'Fiyat', 'Kitap İsmi', 'Site']
+    missing_columns = [col for col in required_columns if col not in data.columns]
+    
+    # Platform sütunu Site olarak yeniden adlandırılmamışsa
+    if 'Site' not in data.columns and 'Platform' in data.columns:
+        data = data.rename(columns={'Platform': 'Site'})
+        if 'Site' in missing_columns:
+            missing_columns.remove('Site')
+    
+    if missing_columns:
+        raise KeyError(f"Gerekli sütunlar veride bulunamadı: {missing_columns}")
+    
+    # Eğer Kategori sütunu yoksa oluştur
+    if 'Kategori' not in data.columns:
+        print("'Kategori' sütunu bulunamadı. Genel kategori olarak işaretleniyor.")
+        data['Kategori'] = 'Genel'
     
     # Tarih düzenleme ve indeksleme
     data['Tarih'] = pd.to_datetime(data['Tarih'])
@@ -63,6 +101,9 @@ def calculate_price_changes(data):
     # NaN değerleri temizle
     price_changes = price_changes.dropna(subset=['Değişim'])
     
+    # Değişim değeri 0 olan satırları filtrele
+    price_changes = price_changes[price_changes['Değişim'] != 0]
+    
     return price_changes.reset_index()
 
 def analyze_weekly_trends(data):
@@ -71,10 +112,89 @@ def analyze_weekly_trends(data):
     data['Hafta'] = data['Tarih'].dt.isocalendar().week
     
     # Haftalık ortalama fiyatları hesapla
-    weekly_avg = data.groupby(['Hafta', 'Site', 'Kategori'])['Fiyat'].mean().reset_index()
+    weekly_avg = data.groupby(['Hafta', 'Site'])['Fiyat'].mean().reset_index()
     weekly_avg['Hafta'] = weekly_avg['Hafta'].astype(str) + '. Hafta'
     
-    return weekly_avg
+    # Popüler kategorileri seç (maksimum 5 kategori)
+    top_categories = data['Kategori'].value_counts().head(5).index.tolist()
+    
+    # Popüler kategoriler için haftalık fiyat değişimi
+    category_weekly_avg = data[data['Kategori'].isin(top_categories)].groupby(['Hafta', 'Kategori', 'Site'])['Fiyat'].mean().reset_index()
+    category_weekly_avg['Hafta'] = category_weekly_avg['Hafta'].astype(str) + '. Hafta'
+    
+    return weekly_avg, category_weekly_avg
+
+def analyze_price_change_frequency(data):
+    """Son ay için ürün bazında fiyat değişim sıklığını analiz et"""
+    # URL'ye göre grupla ve tarihe göre sırala
+    data = data.sort_values(by=['URL', 'Tarih'])
+    
+    # Her URL için değişimleri tespit et
+    change_frequency = {}
+    unique_urls = data['URL'].unique()
+    
+    for url in unique_urls:
+        url_data = data[data['URL'] == url]
+        
+        if len(url_data) <= 1:
+            continue
+        
+        # İlk satırı al
+        first_row = url_data.iloc[0]
+        book_name = first_row['Kitap İsmi']
+        site = first_row['Site']
+        category = first_row['Kategori'] if 'Kategori' in first_row else 'Genel'
+        
+        # Fiyat değişimlerini bul
+        url_data = url_data.sort_values(by='Tarih')
+        prices = url_data['Fiyat'].tolist()
+        dates = url_data['Tarih'].tolist()
+        
+        changes = []
+        for i in range(1, len(prices)):
+            if prices[i] != prices[i-1]:
+                changes.append({
+                    'date': dates[i],
+                    'old_price': prices[i-1],
+                    'new_price': prices[i],
+                    'diff': prices[i] - prices[i-1],
+                    'percent': ((prices[i] - prices[i-1]) / prices[i-1]) * 100 if prices[i-1] > 0 else 0
+                })
+        
+        if len(changes) > 0:
+            change_frequency[url] = {
+                'book_name': book_name,
+                'site': site,
+                'category': category,
+                'total_changes': len(changes),
+                'changes': changes,
+                'last_price': prices[-1],
+                'first_price': prices[0],
+                'total_change': prices[-1] - prices[0],
+                'total_percent': ((prices[-1] - prices[0]) / prices[0]) * 100 if prices[0] > 0 else 0
+            }
+    
+    # Değişim sıklığı sözlüğünü DataFrame'e dönüştür
+    change_data = []
+    for url, data in change_frequency.items():
+        change_data.append({
+            'URL': url,
+            'Kitap İsmi': data['book_name'],
+            'Site': data['site'],
+            'Kategori': data['category'],
+            'Değişim Sayısı': data['total_changes'],
+            'İlk Fiyat': data['first_price'],
+            'Son Fiyat': data['last_price'],
+            'Toplam Değişim': data['total_change'],
+            'Değişim Yüzdesi': data['total_percent']
+        })
+    
+    if change_data:
+        change_df = pd.DataFrame(change_data)
+        return change_df
+    else:
+        return pd.DataFrame(columns=['URL', 'Kitap İsmi', 'Site', 'Kategori', 'Değişim Sayısı', 
+                                    'İlk Fiyat', 'Son Fiyat', 'Toplam Değişim', 'Değişim Yüzdesi'])
 
 def get_top_changes(price_changes, n=10, change_type='increase'):
     """En çok artan veya azalan ürünleri bul"""
@@ -165,18 +285,92 @@ def generate_dashboard_components(data, price_changes):
     )
     components['decreases_chart'] = decrease_fig.to_html(full_html=False, include_plotlyjs='cdn')
     
-    # 5. Haftalık trend grafiği
-    weekly_data = analyze_weekly_trends(data)
+    # 5. Haftalık trend grafiği (genel)
+    weekly_data, category_weekly_data = analyze_weekly_trends(data)
+    
     weekly_fig = px.line(
         weekly_data, 
         x='Hafta', 
         y='Fiyat', 
         color='Site',
-        facet_col='Kategori',
         title='Haftalık Ortalama Fiyat Değişimleri',
         markers=True
     )
     components['weekly_chart'] = weekly_fig.to_html(full_html=False, include_plotlyjs='cdn')
+    
+    # 6. Kategori bazlı haftalık trend grafiği
+    category_weekly_fig = px.line(
+        category_weekly_data, 
+        x='Hafta', 
+        y='Fiyat',
+        color='Site',
+        facet_col='Kategori',
+        facet_col_wrap=2,  # Her satırda 2 kategori göster
+        title='Kategori Bazında Haftalık Fiyat Değişimleri',
+        markers=True
+    )
+    category_weekly_fig.update_layout(height=800)  # Grafik yüksekliğini artır
+    components['category_weekly_chart'] = category_weekly_fig.to_html(full_html=False, include_plotlyjs='cdn')
+    
+    # 7. Fiyat değişim sıklığı analizi
+    change_frequency_data = analyze_price_change_frequency(data)
+    
+    if not change_frequency_data.empty:
+        # En sık fiyatı değişen 15 ürün
+        top_frequency = change_frequency_data.sort_values('Değişim Sayısı', ascending=False).head(15)
+        
+        frequency_fig = px.bar(
+            top_frequency,
+            x='Kitap İsmi',
+            y='Değişim Sayısı',
+            color='Site',
+            title='Fiyatı En Sık Değişen 15 Kitap',
+            hover_data=['İlk Fiyat', 'Son Fiyat', 'Toplam Değişim', 'Değişim Yüzdesi']
+        )
+        components['frequency_chart'] = frequency_fig.to_html(full_html=False, include_plotlyjs='cdn')
+        
+        # Site bazında ortalama değişim sıklığı
+        site_frequency = change_frequency_data.groupby('Site').agg({
+            'Değişim Sayısı': 'mean',
+            'URL': 'count'
+        }).reset_index()
+        
+        site_frequency.columns = ['Site', 'Ortalama Değişim Sayısı', 'Ürün Sayısı']
+        
+        site_freq_fig = px.bar(
+            site_frequency,
+            x='Site',
+            y='Ortalama Değişim Sayısı',
+            title='Siteler Arası Ortalama Fiyat Değişim Sıklığı',
+            text_auto='.2f',
+            color='Ortalama Değişim Sayısı',
+            hover_data=['Ürün Sayısı']
+        )
+        components['site_frequency_chart'] = site_freq_fig.to_html(full_html=False, include_plotlyjs='cdn')
+        
+        # Değişim sayısı vs. Değişim Yüzdesi karşılaştırması
+        # Toplam değişim değerini mutlak değer olarak alıyoruz çünkü size değeri pozitif olmalı
+        change_frequency_data['Mutlak Değişim'] = change_frequency_data['Toplam Değişim'].abs()
+        
+        scatter_fig = px.scatter(
+            change_frequency_data,
+            x='Değişim Sayısı',
+            y='Değişim Yüzdesi',
+            color='Site',
+            hover_name='Kitap İsmi',
+            title='Değişim Sayısı ve Değişim Yüzdesi İlişkisi',
+            size='Mutlak Değişim',  # Toplam değişimin mutlak değerini kullanıyoruz
+            size_max=20,
+            opacity=0.7
+        )
+        components['correlation_chart'] = scatter_fig.to_html(full_html=False, include_plotlyjs='cdn')
+        
+        components['change_frequency_data'] = change_frequency_data
+    else:
+        components['frequency_chart'] = "<p>Fiyat değişim sıklığı için yeterli veri yok.</p>"
+        components['site_frequency_chart'] = "<p>Fiyat değişim sıklığı için yeterli veri yok.</p>"
+        components['correlation_chart'] = "<p>Fiyat değişim sıklığı için yeterli veri yok.</p>"
+        components['change_frequency_data'] = pd.DataFrame()
     
     return components
 
@@ -303,9 +497,24 @@ def generate_html_report(data, price_changes, dashboard_components):
                 from {{opacity: 0;}}
                 to {{opacity: 1;}}
             }}
+            .back-to-home {{
+                display: block;
+                margin: 20px 0;
+                padding: 10px 15px;
+                background: #3498db;
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                text-align: center;
+                width: 200px;
+            }}
+            .back-to-home:hover {{
+                background: #2980b9;
+            }}
         </style>
     </head>
     <body>
+        <a href="../index.html" class="back-to-home">← Ana Sayfaya Dön</a>
         <h1>Kitap Fiyat Değişimleri Dashboard</h1>
         <p>Rapor Tarihi: {report_date}</p>
         
@@ -331,6 +540,7 @@ def generate_html_report(data, price_changes, dashboard_components):
             <button class="tablinks" onclick="openTab(event, 'CategoryAnalysis')">Kategori Analizi</button>
             <button class="tablinks" onclick="openTab(event, 'ProductAnalysis')">Ürün Analizi</button>
             <button class="tablinks" onclick="openTab(event, 'WeeklyTrends')">Haftalık Trend</button>
+            <button class="tablinks" onclick="openTab(event, 'FrequencyAnalysis')">Değişim Sıklığı</button>
             <button class="tablinks" onclick="openTab(event, 'DetailedData')">Detaylı Veri</button>
         </div>
         
@@ -363,7 +573,30 @@ def generate_html_report(data, price_changes, dashboard_components):
         <div id="WeeklyTrends" class="tabcontent">
             <h2>Haftalık Fiyat Değişim Trendi</h2>
             <div class="chart-container">
+                <h3>Genel Haftalık Ortalama Fiyat Değişimi</h3>
                 {dashboard_components['weekly_chart']}
+            </div>
+            <div class="chart-container">
+                <h3>Kategori Bazında Haftalık Fiyat Değişimleri</h3>
+                <p>En popüler 5 kategori için haftalık ortalama fiyat değişimleri gösterilmektedir.</p>
+                {dashboard_components['category_weekly_chart']}
+            </div>
+        </div>
+        
+        <div id="FrequencyAnalysis" class="tabcontent">
+            <h2>Fiyat Değişim Sıklığı Analizi</h2>
+            <div class="chart-container">
+                <h3>Fiyatı En Sık Değişen 15 Kitap</h3>
+                {dashboard_components['frequency_chart']}
+            </div>
+            <div class="chart-container">
+                <h3>Siteler Arası Ortalama Fiyat Değişim Sıklığı</h3>
+                {dashboard_components['site_frequency_chart']}
+            </div>
+            <div class="chart-container">
+                <h3>Değişim Sayısı ve Değişim Yüzdesi İlişkisi</h3>
+                <p>Bu grafik, bir kitabın fiyatının kaç kez değiştiği ile toplam değişim yüzdesi arasındaki ilişkiyi gösterir.</p>
+                {dashboard_components['correlation_chart']}
             </div>
         </div>
         
