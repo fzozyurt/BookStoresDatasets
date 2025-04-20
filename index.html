@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitap Fiyat Takip Raporları</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eee;
+        }
+        .filters {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .filter-label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        select, input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .reports-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .report-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .report-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        .report-site {
+            font-weight: bold;
+            color: #3498db;
+        }
+        .report-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .report-description {
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            color: #555;
+            flex-grow: 1;
+        }
+        .report-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+            text-align: center;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        #no-reports {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Kitap Fiyat Takip Raporları</h1>
+        <p>Çeşitli kitap satış sitelerinden toplanan fiyat verilerinin haftalık analizi ve raporları</p>
+    </div>
+    
+    <div class="filters">
+        <div class="filter-item">
+            <span class="filter-label">Site:</span>
+            <select id="siteFilter">
+                <option value="all">Tüm Siteler</option>
+                <option value="KY">Kitap Yurdu</option>
+                <option value="BKM">BKM Kitap</option>
+            </select>
+        </div>
+        
+        <div class="filter-item">
+            <span class="filter-label">Tarih:</span>
+            <select id="dateFilter">
+                <option value="all">Tüm Tarihler</option>
+                <option value="lastWeek">Son Hafta</option>
+                <option value="lastMonth">Son Ay</option>
+                <option value="last3Months">Son 3 Ay</option>
+            </select>
+        </div>
+        
+        <div class="filter-item">
+            <span class="filter-label">Sırala:</span>
+            <select id="sortOrder">
+                <option value="newest">En Yeni</option>
+                <option value="oldest">En Eski</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="reports-container" class="reports-container">
+        <!-- Raporlar JavaScript ile dinamik olarak yüklenecek -->
+        <div id="loading">Raporlar yükleniyor...</div>
+    </div>
+
+    <footer>
+        <p>© 2025 Kitap Fiyat Takip Sistemi</p>
+    </footer>
+
+    <script>
+        // Rapor listesi
+        const reports = [];
+        
+        // GitHub sayfalarında dinamik olarak dosyaları listeleyemediğimiz için
+        // raporları manuel olarak yapılandırma dosyası şeklinde tutuyoruz
+        // Her yeni rapor oluştuğunda bunu güncelleyin
+        
+        // Örnek: KY_Dashboard_20250420.html raporu
+        reports.push({
+            filePath: "Report/KY_Dashboard_20250420.html",
+            site: "KY",
+            siteName: "Kitap Yurdu",
+            date: "2025-04-20",
+            displayDate: "20 Nisan 2025",
+            title: "Kitap Yurdu Haftalık Fiyat Raporu",
+            description: "Kitap Yurdu platformundaki kitapların haftalık fiyat değişimlerini ve analizlerini içeren detaylı bir rapor."
+        });
+
+        // Tarih filtreleme fonksiyonu
+        function filterByDate(report, filter) {
+            if (filter === 'all') return true;
+            
+            const reportDate = new Date(report.date);
+            const now = new Date();
+            
+            if (filter === 'lastWeek') {
+                const lastWeek = new Date(now.setDate(now.getDate() - 7));
+                return reportDate >= lastWeek;
+            } else if (filter === 'lastMonth') {
+                const lastMonth = new Date(now.setMonth(now.getMonth() - 1));
+                return reportDate >= lastMonth;
+            } else if (filter === 'last3Months') {
+                const last3Months = new Date(now.setMonth(now.getMonth() - 3));
+                return reportDate >= last3Months;
+            }
+            
+            return true;
+        }
+        
+        // Raporları gösterme fonksiyonu
+        function displayReports() {
+            const siteFilter = document.getElementById('siteFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+            
+            // Filtreleme ve sıralama
+            let filteredReports = reports.filter(report => {
+                // Site filtresi
+                const siteMatch = siteFilter === 'all' || report.site === siteFilter;
+                
+                // Tarih filtresi
+                const dateMatch = filterByDate(report, dateFilter);
+                
+                return siteMatch && dateMatch;
+            });
+            
+            // Sıralama
+            filteredReports.sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                
+                if (sortOrder === 'newest') {
+                    return dateB - dateA;
+                } else {
+                    return dateA - dateB;
+                }
+            });
+            
+            // Raporları görüntüle
+            const container = document.getElementById('reports-container');
+            container.innerHTML = '';
+            
+            if (filteredReports.length === 0) {
+                container.innerHTML = `
+                    <div id="no-reports">
+                        <p>Seçilen kriterlere uygun rapor bulunamadı.</p>
+                        <p>Lütfen filtre seçeneklerini değiştirin veya yeni bir rapor oluşturun.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredReports.forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'report-card';
+                reportCard.innerHTML = `
+                    <div class="report-header">
+                        <div class="report-site">${report.siteName}</div>
+                        <div class="report-date">${report.displayDate}</div>
+                    </div>
+                    <div class="report-title">${report.title}</div>
+                    <div class="report-description">${report.description}</div>
+                    <a href="${report.filePath}" class="btn">Raporu Görüntüle</a>
+                `;
+                container.appendChild(reportCard);
+            });
+        }
+
+        // Sayfa yüklendiğinde raporları göster
+        document.addEventListener('DOMContentLoaded', () => {
+            // Filtreleme olaylarını ekle
+            document.getElementById('siteFilter').addEventListener('change', displayReports);
+            document.getElementById('dateFilter').addEventListener('change', displayReports);
+            document.getElementById('sortOrder').addEventListener('change', displayReports);
+            
+            // İlk yükleme
+            displayReports();
+        });
+        
+        // Rapor ekleme yardımcısı - konsol üzerinden yeni raporlar eklemek için
+        function addReport(filePath, site, siteName, date, title, description) {
+            const [year, month, day] = date.split('-');
+            const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 
+                           'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+            
+            const displayDate = `${day} ${months[parseInt(month)-1]} ${year}`;
+            
+            reports.push({
+                filePath,
+                site,
+                siteName,
+                date,
+                displayDate,
+                title,
+                description
+            });
+            
+            displayReports();
+            
+            // Daha sonra eklenmesi için kodu konsola yazdır
+            console.log(`reports.push({
+    filePath: "${filePath}",
+    site: "${site}",
+    siteName: "${siteName}",
+    date: "${date}",
+    displayDate: "${displayDate}",
+    title: "${title}",
+    description: "${description}"
+});`);
+        }
+    </script>
+</body>
+</html>
