@@ -3,7 +3,7 @@ import os
 import logging
 from kaggle.api.kaggle_api_extended import KaggleApi
 
-from additional import log_config
+from Scripts.additional import log_config
 import argparse
 
 log_config(os.getenv('LOG_FILE'))
