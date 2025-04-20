@@ -6,3 +6,4 @@ kaggle
 datetime
 beautifulsoup4
 tenacity
+plotly
