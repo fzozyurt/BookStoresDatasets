@@ -1,9 +1,9 @@
-name: KY Scrap and Update Kaggle Dataset
+name: KY Scraper ve Kaggle Dataset Güncelleme
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '00 06,09,12,18 * * *'
+    - cron: '00 06,12,18,00 * * *'  # Günde 4 kez çalıştırma yeterli
 
 env:
     DATASET_NAME: 'furkanzeki/kitap-yurdu-dataset'
@@ -21,47 +21,36 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10.6
+        python-version: '3.10'
 
     - name: Install Python Dependencies
       run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-    - name: Categories Scrape
+    - name: Categories Scrape and Split
       run: |
-          python Scripts/ky_scrape_categories.py
+          python -m Scripts.category_manager KY --parts 5 --output-dir Categories
 
     - name: Download Kaggle Dataset
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
         DATASET_NAME: ${{ env.DATASET_NAME }}
-      run: python Scripts/dataset_download.py
+      run: python -m Scripts.dataset_download
     
     - name: Upload dataset as artifact
       uses: actions/upload-artifact@v4
       with:
         name: ky_dataset
-        path: data/
+        path: Data/
         retention-days: 1
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: LogFiles
-        path: logs/${{ env.LOG_FILE }}
 
     - name: Upload categories artifact
       uses: actions/upload-artifact@v4
       with:
         name: ky_categories
-        path: |
-            categories_1.json
-            categories_2.json
-            categories_3.json
-            categories_4.json
-            categories_5.json
+        path: Categories/categories_*.json
         retention-days: 1
 
   scrape_job:
@@ -69,7 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        job_id: [1, 2, 3, 4, 5]  # Job sayısını ihtiyacınıza göre artırabilirsiniz
+        job_id: [1, 2, 3, 4, 5]
+      max-parallel: 5
 
     steps:
     - name: Checkout repository
@@ -78,7 +68,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10.6
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
@@ -95,28 +85,23 @@ jobs:
     - name: Download categories artifact
       uses: actions/download-artifact@v4
       with:
-        pattern: ky_categories
-        merge-multiple: true
+        name: ky_categories
+        path: Categories/
     
-    - name: Create Dataset File
-      run: mkdir -p Dataset
+    - name: Create directories
+      run: mkdir -p Dataset logs
 
-    - name: Scraping Start
-      env:
-        categories_file: categories_${{ matrix.job_id }}.json
-        matrix_id: ${{ matrix.job_id }}
-        CLUSTER_LOG_FILE: KY_${{ matrix.job_id }}.log
-        WORKERS_COUNT: 5
+    - name: Run scraper
       run: |
-        python Scripts/ky_scrape.py
+        python -m Scripts.run_scraper KY --matrix-id ${{ matrix.job_id }} --categories-file Categories/categories_${{ matrix.job_id }}.json --workers 5 --log-file KY_${{ matrix.job_id }}.log
 
-    - name: Upload artifact
+    - name: Upload scraped data
       uses: actions/upload-artifact@v4
       with:
-        name: scraping data-${{ matrix.job_id }}
+        name: scraping-data-${{ matrix.job_id }}
         path: Dataset/KY_${{ matrix.job_id }}.csv
     
-    - name: Upload artifact
+    - name: Upload log file
       uses: actions/upload-artifact@v4
       with:
         name: LogFiles-${{ matrix.job_id }}
@@ -134,78 +119,58 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: 3.10.6
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
-        pip install pandas kaggle
+        pip install pandas kaggle plotly
 
-    - name: Download artifacts
+    - name: Download dataset artifacts
       uses: actions/download-artifact@v4
       with:
         pattern: ky_dataset*
         path: Data/
         merge-multiple: true
     
-    - name: Download artifacts
+    - name: Download log artifacts
       uses: actions/download-artifact@v4
       with:
         pattern: LogFiles*
         path: logs/
         merge-multiple: true
 
-    - name: Download artifacts
+    - name: Download scraped data artifacts
       uses: actions/download-artifact@v4
       with:
-        pattern: scraping data*
-        path: Datasets/
+        pattern: scraping-data*
+        path: Dataset/
         merge-multiple: true
 
     - name: Combine datasets
       run: |
-          python Scripts/ky_combine.py
+        python -m Scripts.data_combiner KY --job-count 5
       
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Finished KY Dataset
-        path: Data/KY_Datasets.csv
-
-    - name: Dataset Upload
+    - name: Upload dataset to Kaggle
       run: |
-        python Scripts/dataset_upload.py
+        python -m Scripts.dataset_upload
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: LogFiles- Finished
-        path: logs/KY.log
-
-    - name: Cleanup artifacts
+    - name: Rename and zip log files
       run: |
-        rm Datasets/KY_*.csv
-        rm Data/KY_*.csv
-        rm logs/KY_*.log
-
-    - name: Rename log file with today's date
-      run: |
-        python Scripts/rename_log.py
-
-    - name: Zip log files and delete not zip file
-      run: |
-        zip logs/KY_logs_$(date +'%Y-%m-%d').zip logs/KY*.log
-        rm logs/KY_*.log
+        mkdir -p logs
+        python -m Scripts.rename_log
+        zip -j logs/KY_logs_$(date +'%Y-%m-%d').zip logs/KY*.log
+        find logs -name "KY_*.log" -type f -delete
 
     - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
-        git add logs/
-        git commit -m "Update KY Logs"
+        git add logs/ Data/KY_Datasets.csv
+        git commit -m "Update KY Data and Logs - $(date +'%Y-%m-%d')"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
