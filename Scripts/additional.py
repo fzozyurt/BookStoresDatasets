@@ -30,6 +30,9 @@ def data_partitioning(links):
             logging.error("Error writing data to %s: %s", file_name, str(e))
 
 def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"):
+    # Ensure the logs directory exists
+    os.makedirs("./logs", exist_ok=True)
+    
     file_name = "./logs/" + file_name
     file_handler = logging.FileHandler(file_name)
     file_handler.setLevel(logging.WARNING)  # Sadece WARNING ve ERROR seviyesindeki logları dosyaya yaz
@@ -45,6 +48,7 @@ def log_config(file_name, log_format="%(asctime)s - %(levelname)s - %(message)s"
             stream_handler
         ]
     )
+
 def log_combine():
     # Log dosyalarının bulunduğu dizin
     log_directory = 'logs'
