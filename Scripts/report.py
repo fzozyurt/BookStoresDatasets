@@ -374,6 +374,347 @@ def generate_dashboard_components(data, price_changes):
     
     return components
 
+def generate_modern_html_report(data, price_changes, dashboard_components):
+    """Generate modern HTML report with enhanced styling and interactivity"""
+    report_date = datetime.now().strftime('%d/%m/%Y')
+    summary = dashboard_components['summary']
+    
+    # Calculate additional modern stats
+    total_books = len(data['URL'].unique()) if 'URL' in data.columns else 0
+    total_sites = len(data['Site'].unique()) if 'Site' in data.columns else 0
+    total_price_changes = len(price_changes) if not price_changes.empty else 0
+    avg_discount = round(price_changes['Değişim Yüzdesi'].mean(), 2) if not price_changes.empty else 0
+    
+    # Generate chart scripts for modern dashboard
+    chart_scripts = f"""
+        // Site Comparison Chart
+        var siteData = {dashboard_components.get('site_chart', '').replace('div', 'site-comparison-chart')};
+        
+        // Price Increases Chart
+        var increasesData = {dashboard_components.get('increases_chart', '').replace('div', 'price-increases-chart')};
+        
+        // Price Decreases Chart
+        var decreasesData = {dashboard_components.get('decreases_chart', '').replace('div', 'price-decreases-chart')};
+        
+        // Weekly Trends Chart
+        var weeklyData = {dashboard_components.get('weekly_chart', '').replace('div', 'weekly-trends-chart')};
+        
+        // Correlation Chart
+        var correlationData = {dashboard_components.get('correlation_chart', '').replace('div', 'correlation-chart')};
+        
+        // Category Weekly Chart
+        var categoryData = {dashboard_components.get('category_weekly_chart', '').replace('div', 'category-weekly-chart')};
+        
+        // Frequency Chart
+        var frequencyData = {dashboard_components.get('frequency_chart', '').replace('div', 'frequency-chart')};
+        
+        // Site Frequency Chart
+        var siteFrequencyData = {dashboard_components.get('site_frequency_chart', '').replace('div', 'site-frequency-chart')};
+    """
+    
+    modern_template = f"""
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitap Fiyat Analizi - Modern Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        :root {{
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-bg: #f9fafb;
+        }}
+        
+        body {{
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }}
+        
+        .dashboard-container {{
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin: 20px auto;
+            padding: 40px;
+            max-width: 1400px;
+            backdrop-filter: blur(10px);
+        }}
+        
+        .header-section {{
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 16px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }}
+        
+        .header-section::before {{
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }}
+        
+        @keyframes pulse {{
+            0%, 100% {{ transform: scale(1); opacity: 0.5; }}
+            50% {{ transform: scale(1.05); opacity: 0.8; }}
+        }}
+        
+        .stats-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }}
+        
+        .stat-card {{
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }}
+        
+        .stat-card:hover {{
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+        }}
+        
+        .stat-value {{
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }}
+        
+        .stat-label {{
+            color: #6b7280;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }}
+        
+        .chart-container {{
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }}
+        
+        .chart-title {{
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }}
+        
+        .tab-container {{
+            margin-bottom: 2rem;
+        }}
+        
+        .tab-buttons {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }}
+        
+        .tab-button {{
+            padding: 0.75rem 1.5rem;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 8px;
+            color: #6b7280;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }}
+        
+        .tab-button.active {{
+            background: var(--primary-color);
+            color: white;
+        }}
+        
+        .tab-button:hover {{
+            background: #e5e7eb;
+        }}
+        
+        .tab-button.active:hover {{
+            background: #2563eb;
+        }}
+        
+        .tab-content {{
+            display: none;
+        }}
+        
+        .tab-content.active {{
+            display: block;
+        }}
+        
+        .footer {{
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 2rem;
+        }}
+        
+        @media (max-width: 768px) {{
+            .dashboard-container {{
+                margin: 10px;
+                padding: 20px;
+            }}
+            
+            .stats-grid {{
+                grid-template-columns: 1fr;
+            }}
+            
+            .tab-buttons {{
+                flex-direction: column;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header-section">
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700; position: relative; z-index: 1;">Kitap Fiyat Analizi</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9; position: relative; z-index: 1;">Modern Dashboard ve Fiyat Takip Sistemi</p>
+            <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.75; position: relative; z-index: 1;">
+                Son Güncelleme: {report_date}
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{total_books}</div>
+                <div class="stat-label">Toplam Kitap</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{total_sites}</div>
+                <div class="stat-label">Takip Edilen Site</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{total_price_changes}</div>
+                <div class="stat-label">Fiyat Değişimi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{avg_discount}%</div>
+                <div class="stat-label">Ortalama Değişim</div>
+            </div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="showTab('overview')">Genel Bakış</button>
+                <button class="tab-button" onclick="showTab('trends')">Fiyat Trendleri</button>
+                <button class="tab-button" onclick="showTab('categories')">Kategori Analizi</button>
+                <button class="tab-button" onclick="showTab('frequency')">Değişim Sıklığı</button>
+            </div>
+            
+            <div id="overview" class="tab-content active">
+                <div class="chart-container">
+                    <div class="chart-title">Site Bazlı Fiyat Karşılaştırması</div>
+                    <div id="site-comparison-chart">{dashboard_components.get('site_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">En Çok Fiyatı Artan Kitaplar</div>
+                    <div id="price-increases-chart">{dashboard_components.get('increases_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">En Çok Fiyatı Düşen Kitaplar</div>
+                    <div id="price-decreases-chart">{dashboard_components.get('decreases_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+            </div>
+            
+            <div id="trends" class="tab-content">
+                <div class="chart-container">
+                    <div class="chart-title">Haftalık Fiyat Trendleri</div>
+                    <div id="weekly-trends-chart">{dashboard_components.get('weekly_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Fiyat Değişim Korelasyonu</div>
+                    <div id="correlation-chart">{dashboard_components.get('correlation_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+            </div>
+            
+            <div id="categories" class="tab-content">
+                <div class="chart-container">
+                    <div class="chart-title">Kategori Bazlı Haftalık Değişimler</div>
+                    <div id="category-weekly-chart">{dashboard_components.get('category_weekly_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+            </div>
+            
+            <div id="frequency" class="tab-content">
+                <div class="chart-container">
+                    <div class="chart-title">Fiyat Değişim Sıklığı</div>
+                    <div id="frequency-chart">{dashboard_components.get('frequency_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Site Bazlı Ortalama Değişim Sıklığı</div>
+                    <div id="site-frequency-chart">{dashboard_components.get('site_frequency_chart', '<p>Grafik yüklenemedi</p>')}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Kitap Fiyat Takip Sistemi - Modern Dashboard</p>
+            <p style="font-size: 0.8rem; margin-top: 0.5rem;">Veriler otomatik olarak güncellenmekte ve analiz edilmektedir.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching functionality
+        function showTab(tabId) {{
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }}
+        
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {{
+            console.log('Modern dashboard loaded successfully');
+        }});
+    </script>
+</body>
+</html>
+"""
+    
+    return modern_template
+
 def generate_html_report(data, price_changes, dashboard_components):
     """HTML raporu ve dashboard oluştur"""
     report_date = datetime.now().strftime('%d/%m/%Y')
@@ -848,12 +1189,21 @@ def main():
         dashboard_components = generate_dashboard_components(data, price_changes)
         
         print("HTML raporu oluşturuluyor...")
-        html_report = generate_html_report(data, price_changes, dashboard_components)
+        # Generate modern report by default
+        html_report = generate_modern_html_report(data, price_changes, dashboard_components)
+        
+        # Also generate classic report for backward compatibility
+        classic_html_file_path = html_file_path.replace('_Dashboard_', '_Classic_Dashboard_')
+        classic_html_report = generate_html_report(data, price_changes, dashboard_components)
         
         print(f"Rapor kaydediliyor: {html_file_path}")
         save_html_report(html_report, html_file_path)
         
-        print(f"Rapor başarıyla oluşturuldu: {html_file_path}")
+        print(f"Klasik rapor kaydediliyor: {classic_html_file_path}")
+        save_html_report(classic_html_report, classic_html_file_path)
+        
+        print(f"Modern rapor başarıyla oluşturuldu: {html_file_path}")
+        print(f"Klasik rapor başarıyla oluşturuldu: {classic_html_file_path}")
         
     except Exception as e:
         print(f"Rapor oluşturulurken hata: {e}")

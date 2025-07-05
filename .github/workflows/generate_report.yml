@@ -85,12 +85,17 @@ jobs:
           git add Report/*.html
           echo "Added report files"
         fi
+        # Add index.html if it exists
+        if [ -f "index.html" ]; then
+          git add index.html
+          echo "Added index.html"
+        fi
         # Only commit if there are changes
         if git diff --cached --quiet; then
           echo "No changes to commit"
         else
           TODAY=$(date +'%Y-%m-%d')
-          git commit -m "Haftalık Rapor ve Dashboard eklendi - $TODAY"
+          git commit -m "Haftalık Rapor ve Dashboard eklendi - Modern UI güncellemesi - $TODAY"
           git push
         fi
       env:
