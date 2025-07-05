@@ -28,6 +28,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+    - name: Create directories
+      run: |
+        mkdir -p Dataset logs Data Categories
+
     - name: Categories Scrape and Split
       run: |
           python -m Scripts.category_manager BKM --parts 5 --output-dir Categories
@@ -89,7 +93,8 @@ jobs:
         path: Categories/
     
     - name: Create directories
-      run: mkdir -p Dataset logs
+      run: |
+        mkdir -p Dataset logs Data Categories
 
     - name: Run scraper
       run: |
@@ -123,6 +128,10 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+    - name: Create directories
+      run: |
+        mkdir -p Dataset logs Data Categories
+
     - name: Download dataset artifacts
       uses: actions/download-artifact@v4
       with:
@@ -155,11 +164,11 @@ jobs:
 
     - name: Combine datasets
       run: |
-        python Scripts/data_combiner.py BKM --job-count 5
+        python -m Scripts.data_combiner BKM --job-count 5
       
     - name: Upload dataset to Kaggle
       run: |
-        python Scripts/dataset_upload.py
+        python -m Scripts.dataset_upload
       env:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
@@ -176,8 +185,21 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
-        git add logs/ Data/BKM_Datasets.csv
-        git commit -m "Update BKM Data and Logs - $(date +'%Y-%m-%d')"
-        git push
+        # Check if there are changes to commit
+        if [ -f "Data/BKM_Datasets.csv" ]; then
+          git add Data/BKM_Datasets.csv
+          echo "Added BKM_Datasets.csv"
+        fi
+        if [ -d "logs" ] && [ "$(ls -A logs/)" ]; then
+          git add logs/
+          echo "Added logs directory"
+        fi
+        # Only commit if there are changes
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Update BKM Data and Logs - $(date +'%Y-%m-%d')"
+          git push
+        fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
