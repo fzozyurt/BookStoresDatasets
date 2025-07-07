@@ -1,0 +1,23 @@
+
+
+2025-07-06 13:23:34,165 - WARNING - 3 - No data to save
+
+2025-07-06 13:23:44,030 - WARNING - 5 - No data to save
+
+2025-07-06 13:24:15,790 - WARNING - Could not load dataset chunk Dataset/BKM_3.csv: [Errno 2] No such file or directory: 'Dataset/BKM_3.csv'
+2025-07-06 13:24:15,790 - WARNING - Could not load dataset chunk Dataset/BKM_4.csv: [Errno 2] No such file or directory: 'Dataset/BKM_4.csv'
+2025-07-06 13:24:15,791 - WARNING - Could not load dataset chunk Dataset/BKM_5.csv: [Errno 2] No such file or directory: 'Dataset/BKM_5.csv'
+
+
+
+
+2025-07-06 13:23:37,660 - WARNING - 4 - No data to save
+
+
+2025-07-07 13:30:06,986 - WARNING - Could not load dataset chunk Dataset/BKM_4.csv: [Errno 2] No such file or directory: 'Dataset/BKM_4.csv'
+
+
+
+
+2025-07-07 13:29:30,421 - WARNING - 4 - No data to save
+
