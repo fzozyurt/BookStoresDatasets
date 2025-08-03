@@ -1,0 +1,2032 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kitap Fiyat Değişimleri Raporu</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            h1, h2, h3 {
+                color: #2c3e50;
+            }
+            .dashboard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .stat-box {
+                text-align: center;
+                padding: 10px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                flex: 1;
+                margin: 0 10px;
+            }
+            .stat-value {
+                font-size: 24px;
+                font-weight: bold;
+            }
+            .increase {
+                color: #e74c3c;
+            }
+            .decrease {
+                color: #27ae60;
+            }
+            .chart-container {
+                margin: 30px 0;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .filters {
+                margin: 20px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 8px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+            th, td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+            .positive-change {
+                color: #e74c3c;
+            }
+            .negative-change {
+                color: #27ae60;
+            }
+            .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+                border-radius: 5px 5px 0 0;
+            }
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+            .tab button:hover {
+                background-color: #ddd;
+            }
+            .tab button.active {
+                background-color: #fff;
+                border-bottom: 2px solid #2c3e50;
+            }
+            .tabcontent {
+                display: none;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-top: none;
+                border-radius: 0 0 5px 5px;
+                animation: fadeEffect 1s;
+            }
+            @keyframes fadeEffect {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+            .back-to-home {
+                display: block;
+                margin: 20px 0;
+                padding: 10px 15px;
+                background: #3498db;
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                text-align: center;
+                width: 200px;
+            }
+            .back-to-home:hover {
+                background: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="../index.html" class="back-to-home">← Ana Sayfaya Dön</a>
+        <h1>Kitap Fiyat Değişimleri Dashboard</h1>
+        <p>Rapor Tarihi: 03/08/2025</p>
+        
+        <div class="dashboard-header">
+            <div class="stat-box">
+                <div>Toplam İncelenen Ürün</div>
+                <div class="stat-value">149</div>
+            </div>
+            <div class="stat-box">
+                <div>Fiyatı Artan Ürün</div>
+                <div class="stat-value increase">76</div>
+                <div>Ort. %20.30</div>
+            </div>
+            <div class="stat-box">
+                <div>Fiyatı Düşen Ürün</div>
+                <div class="stat-value decrease">73</div>
+                <div>Ort. %-13.60</div>
+            </div>
+        </div>
+        
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'SiteAnalysis')">Site Analizi</button>
+            <button class="tablinks" onclick="openTab(event, 'CategoryAnalysis')">Kategori Analizi</button>
+            <button class="tablinks" onclick="openTab(event, 'ProductAnalysis')">Ürün Analizi</button>
+            <button class="tablinks" onclick="openTab(event, 'WeeklyTrends')">Haftalık Trend</button>
+            <button class="tablinks" onclick="openTab(event, 'FrequencyAnalysis')">Değişim Sıklığı</button>
+            <button class="tablinks" onclick="openTab(event, 'DetailedData')">Detaylı Veri</button>
+        </div>
+        
+        <div id="SiteAnalysis" class="tabcontent" style="display: block;">
+            <h2>Siteler Arası Fiyat Değişimi Karşılaştırması</h2>
+            <div class="chart-container">
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="50dd36e4-d357-4a0d-b8d9-7e4be76edc22" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("50dd36e4-d357-4a0d-b8d9-7e4be76edc22")) {                    Plotly.newPlot(                        "50dd36e4-d357-4a0d-b8d9-7e4be76edc22",                        [{"customdata":{"dtype":"i2","bdata":"lQA=","shape":"1, 1"},"hovertemplate":"Site=%{x}\u003cbr\u003eOrtalama De\u011fi\u015fim %=%{marker.color}\u003cbr\u003e\u00dcr\u00fcn Say\u0131s\u0131=%{customdata[0]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":{"dtype":"f8","bdata":"3ByxkPeEDUA="},"coloraxis":"coloraxis","pattern":{"shape":""}},"name":"","orientation":"v","showlegend":false,"textposition":"auto","texttemplate":"%{y:.2f}","x":["BKM Kitap"],"xaxis":"x","y":{"dtype":"f8","bdata":"3ByxkPeEDUA="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Site"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Ortalama De\u011fi\u015fim %"}},"coloraxis":{"colorbar":{"title":{"text":"Ortalama De\u011fi\u015fim %"}},"colorscale":[[0.0,"green"],[0.5,"yellow"],[1.0,"red"]]},"legend":{"tracegroupgap":0},"title":{"text":"Siteler Aras\u0131 Fiyat De\u011fi\u015fimi Kar\u015f\u0131la\u015ft\u0131rmas\u0131"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="CategoryAnalysis" class="tabcontent">
+            <h2>Kategori Bazında Fiyat Değişimleri</h2>
+            <div class="chart-container">
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="7716132e-4db0-4e68-aa8b-049ad674ee9d" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("7716132e-4db0-4e68-aa8b-049ad674ee9d")) {                    Plotly.newPlot(                        "7716132e-4db0-4e68-aa8b-049ad674ee9d",                        [{"alignmentgroup":"True","customdata":{"dtype":"i1","bdata":"AwMBAgEBAgQCAQMFAQoBAQEBBgsBAwUMAwMCAQQEAgIBAwIJAgMFBAEBBQMHAQ==","shape":"46, 1"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=%{x}\u003cbr\u003eOrtalama De\u011fi\u015fim %=%{y}\u003cbr\u003e\u00dcr\u00fcn Say\u0131s\u0131=%{customdata[0]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","offsetgroup":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","x":["Aile Kitapl\u0131\u011f\u0131","Akademik Kitaplar","Bilim ve M\u00fchendislik Kitaplar\u0131","Dahiler S\u0131n\u0131f\u0131 Kitaplar\u0131","En \u00c7ok Okunan Kitaplar","En \u00c7ok Satan 100 Kitap","En \u00c7ok Satan \u00c7ocuk Kitaplar\u0131","En \u00c7ok Satan \u015eiir Kitaplar\u0131","Evde Yabanc\u0131 Dil \u00d6\u011frenmek \u0130steyenler \u0130\u00e7in E\u011fitici Kitaplar ","E\u011fitim Bilimleri Kitaplar\u0131","E\u011fitim Kitaplar\u0131","E\u011fitim ve Okula Yard\u0131mc\u0131 Kitaplar","Felsefe Kitaplar\u0131","Foto\u011frafl\u0131 Klasikler","Genel Konular","Gezi ve Rehber Kitaplar\u0131","Hobi Kitaplar\u0131","Hukuk Kitaplar\u0131","Klasik Kad\u0131nlar","K\u0131sa Klasikler","M\u00fczik Kitaplar\u0131","Politika Siyaset Kitaplar\u0131","Psikolojik Kitaplar","Saftirik Kitaplar\u0131","Sanat ve Mimarl\u0131k Kitaplar\u0131","Sa\u011fl\u0131k Kitaplar\u0131","Sen Yeter Ki Okumak \u0130ste","Sosyoloji Kitaplar\u0131","Spor \u00dczerine Kitaplar","S\u00fcreli Yay\u0131nlar","Tarih Kitaplar\u0131","Tavsiye Kitaplar\u0131","Turizm - Gezi Kitaplar\u0131","T\u00fcrk Edebiyat\u0131n\u0131n En \u0130yi 100 Eseri","T\u00fcrlerine G\u00f6re En \u00c7ok Satan Kitaplar","Wattpad Kitaplar\u0131","Yabanc\u0131 Dilde Kitaplar","Yeni \u00c7\u0131kan Kitaplar","\u00c7ocuk Fuar\u0131","\u00c7ocuk Kitaplar\u0131","\u00c7ok Satan Kitaplar","\u00d6d\u00fcll\u00fc Kitaplar","\u0130leti\u015fim ve Medya Kitaplar\u0131","\u0130nsan ve Toplum Kitaplar\u0131","\u0130thaki Yay\u0131nlar\u0131 Bilim Kurgu Klasikleri","\u0130\u015f Bankas\u0131 K\u00fclt\u00fcr Yay\u0131nlar\u0131 Modern Klasikler Dizisi"],"xaxis":"x","y":{"dtype":"f8","bdata":"wKwBV6wBx78YYzEWYzESwFQz\u002f8QwD05A7WlpkoqbM0AkSZIkSZIswN\u002fOkJi3MzRAsG3btm3bBsC+7\u002fu+7\u002ftAQMdxHMdxHDVAJEmSJEmSPMBFMIiSZmElQBM7sRM7sStAchzHcRzHIUAjSZIkSZIswC+66KKLLiJAAAAAAAAAN8Bm5SfEWfkZwAAAAAAAADfAJEmSJEmSLMAkSZIkSZIswCRJkiRJkizAC0VRFEVR5L9pM3D0cOAlQNAo8TNK\u002fCxAHcIhHMIhHECwmNm30pcWQKZf+qVf+iXAQPDMt6YuMkC4GfvDYKEsQPBFJflv\u002f0pAuJqruZqrLcAkSZIkSZIswAAAAAAAAERAK2bQ4dOruD\u002fIMoJ9LYgvQOS5MlBMV\u002fk\u002fLsuyLMvyMsDDj9SWDvMcQCNJkiRJkizAZUVWZEXWHMAAAAAAAAA0QCRJkiRJkizAqy8pLLVMK0A5hu9ZWh0jQAe\u002fglBRpyVA\u002fDTCck8jOEA="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kategori"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Ortalama De\u011fi\u015fim %"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Kategori Baz\u0131nda Fiyat De\u011fi\u015fimleri"},"barmode":"group"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="ProductAnalysis" class="tabcontent">
+            <h2>Ürün Bazında Fiyat Değişimleri</h2>
+            <div class="chart-container">
+                <h3>Fiyatı En Çok Artan 10 Kitap</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="8079c036-53d3-4c0f-b941-bbdceda8446e" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("8079c036-53d3-4c0f-b941-bbdceda8446e")) {                    Plotly.newPlot(                        "8079c036-53d3-4c0f-b941-bbdceda8446e",                        [{"customdata":{"dtype":"f8","bdata":"AAAAAAAAS0AAAAAAAIBgQOF6FK5HMWFAcT0K16M4cUCkcD0K1wNoQFK4HoXrOXNAexSuR+HKZUBxPQrXozhxQArXo3A9EnBAcT0K16P4dkAAAAAAAFB0QAAAAAAAcHxAAAAAAADgXkAAAAAAAFBkQM3MzMzMTGlAmpmZmZkZcEAAAAAAAIBmQAAAAAAAgGxAZmZmZmZmQUCamZmZmZlFQA==","shape":"10, 2"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKitap \u0130smi=%{x}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{y}\u003cbr\u003e\u0130lk Fiyat=%{customdata[0]}\u003cbr\u003eSon Fiyat=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","texttemplate":"%{y:.2f}","x":["D\u00fcnyan\u0131n En G\u00fczel Arabistan\u0131","Yarg\u0131 Denetiminde Adli Muhasebecilik ve Hile \u0130ncelemesi","National Geographic \u00c7arp\u0131c\u0131 Detaylar","Temel Kavram ve Uygulamalar\u0131 ile Tesis Y\u00f6netimi","\u0130\u015f Hukuku Uygulamas\u0131","Yalan D\u00fcnyay\u0131 Ad\u0131mlarken 1. Hamur","Yasaks\u0131z Diyet","Aile \u0130\u00e7i \u0130li\u015fkiler Odakl\u0131 \u0130leti\u015fim","\u0130lyada","GEN\u00c7 B\u0130R DOKTORUN ANILARI"],"xaxis":"x","y":{"dtype":"f8","bdata":"4ziO4zgOYkAs7UGZZxVZQFQz\u002f8QwD05AE9KLQxQGTUD+FTAZh3dFQAAAAAAAAERAQ3kN5TWUP0BIF1100UU7QKuqqqqqqjpA\u002fDTCck8jOEA="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kitap \u0130smi"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Y\u00fczdesi"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Fiyat\u0131 En \u00c7ok Artan 10 Kitap"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Fiyatı En Çok Düşen 10 Kitap</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="98045b80-cfd8-4c0d-8270-323b1f2929c6" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("98045b80-cfd8-4c0d-8270-323b1f2929c6")) {                    Plotly.newPlot(                        "98045b80-cfd8-4c0d-8270-323b1f2929c6",                        [{"customdata":{"dtype":"f8","bdata":"AAAAAACgXkAAAAAAAOBVQAAAAAAAgF9AAAAAAAAQWEAAAAAAAFiLQAAAAAAADoVAAAAAAABAb0AAAAAAABBoQDMzMzMzO2RAZmZmZmYeYUAzMzMzM1tsQGZmZmZm\u002fmdAMzMzMzMrYEDNzMzMzFxbQM3MzMzMnGVAZmZmZmaGYkAAAAAAAMBdQAAAAAAAgFlAAAAAAACAYUAAAAAAAABeQA==","shape":"10, 2"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKitap \u0130smi=%{x}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{y}\u003cbr\u003e\u0130lk Fiyat=%{customdata[0]}\u003cbr\u003eSon Fiyat=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","texttemplate":"%{y:.2f}","x":["Okyanus Yay\u0131nlar\u0131 2. S\u0131n\u0131f Master Matematik Soru Bankas\u0131","A Ticket to Nature","Kente ve \u00c7evreye Kar\u015f\u0131 \u0130\u015flenen Su\u00e7lar - 2","Ankara\u2019da Mekan, K\u00fclt\u00fcr ve E\u011flence","Hekaton\u2019la Son Tango","Korkulu\u011fun Dostu","Dil ve \u0130\u015fgal","Reader at Work 1","Bir \u00d6yk\u00fc Yazal\u0131m m\u0131?","B\u00fcy\u00fck Atat\u00fcrk\u2019ten K\u00fc\u00e7\u00fck \u00d6yk\u00fcler - 1"],"xaxis":"x","y":{"dtype":"f8","bdata":"JEmSJEmSPMDHcRzHcZw3wAAAAAAAADfAAAAAAAAAN8BR7MRO7MQuwFHsxE7sxC7ATOzETuzELsAqSZIkSZIswCRJkiRJkizAJEmSJEmSLMA="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kitap \u0130smi"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Y\u00fczdesi"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Fiyat\u0131 En \u00c7ok D\u00fc\u015fen 10 Kitap"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="WeeklyTrends" class="tabcontent">
+            <h2>Haftalık Fiyat Değişim Trendi</h2>
+            <div class="chart-container">
+                <h3>Genel Haftalık Ortalama Fiyat Değişimi</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="118bfbc8-f16c-44c5-a79e-8cb53030e2bd" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("118bfbc8-f16c-44c5-a79e-8cb53030e2bd")) {                    Plotly.newPlot(                        "118bfbc8-f16c-44c5-a79e-8cb53030e2bd",                        [{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":true,"x":["27. Hafta","28. Hafta","29. Hafta","30. Hafta","31. Hafta"],"xaxis":"x","y":{"dtype":"f8","bdata":"Rg8muSjKa0DZ943U+utzQMnJycnJEHdA0D5DkoZ9gUAzNStTswlwQA=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Hafta"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Fiyat"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Haftal\u0131k Ortalama Fiyat De\u011fi\u015fimleri"}},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Kategori Bazında Haftalık Fiyat Değişimleri</h3>
+                <p>En popüler 5 kategori için haftalık ortalama fiyat değişimleri gösterilmektedir.</p>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="fa2672ac-d0ce-4ddf-9dcb-b520e6c58da9" class="plotly-graph-div" style="height:800px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("fa2672ac-d0ce-4ddf-9dcb-b520e6c58da9")) {                    Plotly.newPlot(                        "fa2672ac-d0ce-4ddf-9dcb-b520e6c58da9",                        [{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=Ekonomi Kitaplar\u0131\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":true,"x":["27. Hafta","28. Hafta","29. Hafta","30. Hafta","31. Hafta"],"xaxis":"x5","y":{"dtype":"f8","bdata":"YCP+NeKPd0AK16NwPbZpQPV3slrecHRAHVpkO989d0AFJR2fvop0QA=="},"yaxis":"y5","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=Hukuk Kitaplar\u0131\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["27. Hafta","28. Hafta","29. Hafta","30. Hafta","31. Hafta"],"xaxis":"x6","y":{"dtype":"f8","bdata":"RERERETggkCIh4eHh0eEQAAAAAAAZHlAAAAAALCJjUBmZmZmZrV2QA=="},"yaxis":"y6","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=M\u00fczik Kitaplar\u0131\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["27. Hafta","28. Hafta","29. Hafta","30. Hafta","31. Hafta"],"xaxis":"x3","y":{"dtype":"f8","bdata":"GEKDITSKgEBmZmZmZh5yQAAAAAAA3oRAQ4ts5\u002ftpcEDe3d3d3eVyQA=="},"yaxis":"y3","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=Sosyoloji Kitaplar\u0131\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["27. Hafta","28. Hafta","29. Hafta","30. Hafta","31. Hafta"],"xaxis":"x4","y":{"dtype":"f8","bdata":"exSuR+GiZkDiehSuR7F0QEjhehSuknRAk18s+cWmcEBcj8L1aK2BQA=="},"yaxis":"y4","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=\u0130nan\u00e7 ve Mitoloji Kitaplar\u0131\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["27. Hafta","28. Hafta","29. Hafta","30. Hafta","31. Hafta"],"xaxis":"x","y":{"dtype":"f8","bdata":"iIiIiIhIeUCg0wY6bUBpQCPb+X5qaH1AzczMzMzNc0Dv7u7u7nx1QA=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,0.49],"title":{"text":"Hafta"}},"yaxis":{"anchor":"x","domain":[0.0,0.2866666666666666],"title":{"text":"Fiyat"}},"xaxis2":{"anchor":"y2","domain":[0.51,1.0],"matches":"x","title":{"text":"Hafta"}},"yaxis2":{"anchor":"x2","domain":[0.0,0.2866666666666666],"matches":"y","showticklabels":false},"xaxis3":{"anchor":"y3","domain":[0.0,0.49],"matches":"x","showticklabels":false},"yaxis3":{"anchor":"x3","domain":[0.35666666666666663,0.6433333333333333],"matches":"y","title":{"text":"Fiyat"}},"xaxis4":{"anchor":"y4","domain":[0.51,1.0],"matches":"x","showticklabels":false},"yaxis4":{"anchor":"x4","domain":[0.35666666666666663,0.6433333333333333],"matches":"y","showticklabels":false},"xaxis5":{"anchor":"y5","domain":[0.0,0.49],"matches":"x","showticklabels":false},"yaxis5":{"anchor":"x5","domain":[0.7133333333333333,0.9999999999999999],"matches":"y","title":{"text":"Fiyat"}},"xaxis6":{"anchor":"y6","domain":[0.51,1.0],"matches":"x","showticklabels":false},"yaxis6":{"anchor":"x6","domain":[0.7133333333333333,0.9999999999999999],"matches":"y","showticklabels":false},"annotations":[{"font":{},"showarrow":false,"text":"Kategori=\u0130nan\u00e7 ve Mitoloji Kitaplar\u0131","x":0.245,"xanchor":"center","xref":"paper","y":0.2866666666666666,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=M\u00fczik Kitaplar\u0131","x":0.245,"xanchor":"center","xref":"paper","y":0.6433333333333333,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=Sosyoloji Kitaplar\u0131","x":0.755,"xanchor":"center","xref":"paper","y":0.6433333333333333,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=Ekonomi Kitaplar\u0131","x":0.245,"xanchor":"center","xref":"paper","y":0.9999999999999999,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=Hukuk Kitaplar\u0131","x":0.755,"xanchor":"center","xref":"paper","y":0.9999999999999999,"yanchor":"bottom","yref":"paper"}],"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Kategori Baz\u0131nda Haftal\u0131k Fiyat De\u011fi\u015fimleri"},"height":800},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="FrequencyAnalysis" class="tabcontent">
+            <h2>Fiyat Değişim Sıklığı Analizi</h2>
+            <div class="chart-container">
+                <h3>Fiyatı En Sık Değişen 15 Kitap</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="2c25e2e7-61ef-4a1b-a83a-73bc22fec460" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("2c25e2e7-61ef-4a1b-a83a-73bc22fec460")) {                    Plotly.newPlot(                        "2c25e2e7-61ef-4a1b-a83a-73bc22fec460",                        [{"customdata":{"dtype":"f8","bdata":"AAAAAADgbEAzMzMzM\u002f9xQJiZmZmZeUxAXZ2+jFenOECuR+F6FEZ1QDMzMzMz33JA2KNwPQo3Q8CWUkoppZQmwAAAAAAAFHJAMzMzMzPzeEDMzMzMzHxbQO32VICMAUNAmpmZmZlFdEAzMzMzM\u002fN8QDIzMzMzW2FAZ5uSS4NnRUCamZmZmalzQJqZmZmZqXNAAAAAAAAAAAAAAAAAAAAAAJqZmZmZPXJAMzMzMzPzekAyMzMzM2thQIWm1\u002feh30dAAAAAAADgVUAAAAAAAOBVQAAAAAAAAAAAAAAAAAAAAABmZmZmZmZcQM3MzMzM3GBA0MzMzMxMNUADAAAAAMAyQM3MzMzMTGlAmpmZmZkZcECcmZmZmZlLQEgXXXTRRTtAAAAAAACQdUCamZmZmbl4QNDMzMzMTElAWFVVVVVVLUBmZmZmZqJxQGZmZmZmMnVAAAAAAACATEDfzpCYtzM0QAAAAAAAkHJAAAAAAABQdkAAAAAAAABOQN7OkJi3MzRAAAAAAAAAZUAAAAAAABBoQAAAAAAAgDhAq6qqqqoqLUAAAAAAAKBeQAAAAAAAQFpAAAAAAACAMcAkSZIkSZIswAAAAAAA4GVAAAAAAADAYkAAAAAAAAA5wCRJkiRJkizA","shape":"15, 4"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKitap \u0130smi=%{x}\u003cbr\u003eDe\u011fi\u015fim Say\u0131s\u0131=%{y}\u003cbr\u003e\u0130lk Fiyat=%{customdata[0]}\u003cbr\u003eSon Fiyat=%{customdata[1]}\u003cbr\u003eToplam De\u011fi\u015fim=%{customdata[2]}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{customdata[3]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","x":["Miray Yay\u0131nlar\u0131 Miray TYT Matematik Soru Bankas\u0131","2025 Paragraf S\u0131f\u0131r Risk","IQ Yay\u0131nlar\u0131 AYT Matematik Hedef \u0130lk Ad\u0131m Soru Bankas\u0131","IQ Yay\u0131nlar\u0131 TYT Hedef 30 Net Matematik Soru Bankas\u0131","3D Yay\u0131nlar\u0131 TYT T\u00fcrk\u00e7e Soru Bankas\u0131","IQ Yay\u0131nlar\u0131 TYT Matematik Hedef 15 Net Soru Bankas\u0131","Okyanus Yay\u0131nlar\u0131 2. S\u0131n\u0131f Master Matematik Soru Bankas\u0131","Sihirli K\u00fct\u00fcphane","Aile \u0130\u00e7i \u0130li\u015fkiler Odakl\u0131 \u0130leti\u015fim","Adli Delil Y\u00f6netimi Bak\u0131\u015f A\u00e7\u0131s\u0131yla Ulusal ve Uluslararas\u0131 Polis Y\u00f6netimi","Antrenmanlarla Matematik 1","Antrenmanlarla Matematik 2","Aral\u0131kl\u0131 Oru\u00e7 ve D\u00fc\u015f\u00fck Karbonhidratl\u0131 Beslenme","Atat\u00fcrk Hangi Tak\u0131m\u0131 Tutuyordu?","Ate\u015ften G\u00f6mlek"],"xaxis":"x","y":{"dtype":"i1","bdata":"BwICAgICAgIBAQEBAQEB"},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kitap \u0130smi"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Say\u0131s\u0131"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Fiyat\u0131 En S\u0131k De\u011fi\u015fen 15 Kitap"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Siteler Arası Ortalama Fiyat Değişim Sıklığı</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="0ef40e67-e810-4bdc-8bd1-0bdda04f9698" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("0ef40e67-e810-4bdc-8bd1-0bdda04f9698")) {                    Plotly.newPlot(                        "0ef40e67-e810-4bdc-8bd1-0bdda04f9698",                        [{"customdata":{"dtype":"i2","bdata":"lQA=","shape":"1, 1"},"hovertemplate":"Site=%{x}\u003cbr\u003eOrtalama De\u011fi\u015fim Say\u0131s\u0131=%{marker.color}\u003cbr\u003e\u00dcr\u00fcn Say\u0131s\u0131=%{customdata[0]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":{"dtype":"f8","bdata":"nhQkf15l8T8="},"coloraxis":"coloraxis","pattern":{"shape":""}},"name":"","orientation":"v","showlegend":false,"textposition":"auto","texttemplate":"%{y:.2f}","x":["BKM Kitap"],"xaxis":"x","y":{"dtype":"f8","bdata":"nhQkf15l8T8="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Site"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Ortalama De\u011fi\u015fim Say\u0131s\u0131"}},"coloraxis":{"colorbar":{"title":{"text":"Ortalama De\u011fi\u015fim Say\u0131s\u0131"}},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"legend":{"tracegroupgap":0},"title":{"text":"Siteler Aras\u0131 Ortalama Fiyat De\u011fi\u015fim S\u0131kl\u0131\u011f\u0131"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Değişim Sayısı ve Değişim Yüzdesi İlişkisi</h3>
+                <p>Bu grafik, bir kitabın fiyatının kaç kez değiştiği ile toplam değişim yüzdesi arasındaki ilişkiyi gösterir.</p>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js" integrity="sha256-oy6Be7Eh6eiQFs5M7oXuPxxm9qbJXEtTpfSI93dW16Q=" crossorigin="anonymous"></script>                <div id="dfeec711-21af-4fa9-b053-d12b271545bd" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("dfeec711-21af-4fa9-b053-d12b271545bd")) {                    Plotly.newPlot(                        "dfeec711-21af-4fa9-b053-d12b271545bd",                        [{"hovertemplate":"\u003cb\u003e%{hovertext}\u003c\u002fb\u003e\u003cbr\u003e\u003cbr\u003eSite=BKM Kitap\u003cbr\u003eDe\u011fi\u015fim Say\u0131s\u0131=%{x}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{y}\u003cbr\u003eMutlak De\u011fi\u015fim=%{marker.size}\u003cextra\u003e\u003c\u002fextra\u003e","hovertext":["1984","3D Yay\u0131nlar\u0131 TYT T\u00fcrk\u00e7e Soru Bankas\u0131","2025 Paragraf S\u0131f\u0131r Risk","39 Derste Almanca Gramer 1. Hamur","A Ticket to Nature","Adli Delil Y\u00f6netimi Bak\u0131\u015f A\u00e7\u0131s\u0131yla Ulusal ve Uluslararas\u0131 Polis Y\u00f6netimi","Aile \u0130\u00e7i \u0130li\u015fkiler Odakl\u0131 \u0130leti\u015fim","Ak\u0131lc\u0131 ve Bilimsel Takviye Rehberi","Ankara\u2019da Mekan, K\u00fclt\u00fcr ve E\u011flence","Antrenmanlarla Geometri 1","Antrenmanlarla Matematik 1","Antrenmanlarla Matematik 2","Aral\u0131kl\u0131 Oru\u00e7 ve D\u00fc\u015f\u00fck Karbonhidratl\u0131 Beslenme","Atat\u00fcrk Hangi Tak\u0131m\u0131 Tutuyordu?","Ate\u015ften G\u00f6mlek","Atomik Al\u0131\u015fkanl\u0131klar","Babalar ve O\u011fullar","Beyaz Geceler","Beyaz Leke","Bir Kibritle Yok Olmak 1 \u00d6zel Kutulu Set","Bir \u00d6yk\u00fc Yazal\u0131m m\u0131?","Birlikte \u0130yile\u015fece\u011fiz","B\u00f6cek Orkestras\u0131n\u0131n Muhte\u015fem Turnesi","Bu Bir Masal De\u011fildir","B\u00fcy\u00fck Atat\u00fcrk\u2019ten K\u00fc\u00e7\u00fck \u00d6yk\u00fcler - 1","B\u00fcy\u00fck Umutlar","National Geographic \u00c7arp\u0131c\u0131 Detaylar","\u00c7ocukta \u00d6zg\u00fcven Nas\u0131l Geli\u015fir?","Da\u011f\u0131n\u0131k Zihinler","De Profundis","Deniz K\u0131y\u0131s\u0131nda Bir Dram","Dil ve \u0130\u015fgal","Doksan Art\u0131 D\u00f6rt - 2 Kutulu Set","Dost Kazanma ve \u0130nsanlar\u0131 Etkileme Sanat\u0131","D\u00fcnyan\u0131n En G\u00fczel Arabistan\u0131","Emare - Sarma\u015f\u0131k","Emma","Ergenlik: Bir \u0130li\u015fki Ba\u011flanmas\u0131","Eridik Bittik! - Saftirik Greg`in G\u00fcnl\u00fc\u011f\u00fc 13","Etkili \u0130li\u015fkinin 7 Al\u0131\u015fkanl\u0131\u011f\u0131","Eugenie Grandet - Klasik Kad\u0131nlar","GEN\u00c7 B\u0130R DOKTORUN ANILARI","Gen\u00e7 Werther\u2019in Ac\u0131lar\u0131","G\u00f6ky\u00fcz\u00fcne Bakman\u0131n Faydalar\u0131","Goriot Baba","G\u00f6r\u00fcnmez \u0130p","G\u00fcm\u00fc\u015f Y\u00fcrek 1: Kay\u0131p D\u00fcnyan\u0131n Ba\u015flang\u0131c\u0131 \u00d6zel Kutulu","G\u00fcn\u00fcbirlik Hayatlar","Halkla \u0130li\u015fkiler Perspektifinden Medya","Halkla \u0130li\u015fkiler`de Uzmanla\u015fma 2","Hat Bek\u00e7isi Thiel","Havala","Hekaton\u2019la Son Tango","H\u0131zl\u0131 Frans\u0131zca 2. Basamak 2Kitap + 3 CD","H\u00fck\u00fcmran: \u0130ki Yabanc\u0131","I\u00b7\u00e7inde Bir Sen 4 - Azlem","Ikigai","\u0130lyada","\u0130nsan\u0131n Anlam Aray\u0131\u015f\u0131","\u0130nsanlar\u0131 Kitap Gibi Okuyun","IQ Yay\u0131nlar\u0131 AYT Matematik Hedef \u0130lk Ad\u0131m Soru Bankas\u0131","IQ Yay\u0131nlar\u0131 TYT Hedef 30 Net Matematik Soru Bankas\u0131","IQ Yay\u0131nlar\u0131 TYT Matematik Hedef 15 Net Soru Bankas\u0131","\u0130\u015f Hukuku Uygulamas\u0131","\u0130\u015fkencecinin G\u00f6lgesi","Karamazov Karde\u015fler","Karanl\u0131\u011f\u0131n \u015eehri 2","Karanl\u0131\u011f\u0131n Y\u00fcre\u011fi","Kayg\u0131 D\u00f6ng\u00fcs\u00fcn\u00fc K\u0131rmak","Kazazede - 1","Kazazede - 1 Kutulu Set","Kente ve \u00c7evreye Kar\u015f\u0131 \u0130\u015flenen Su\u00e7lar - 2","Ketojenik Diyet","Kinyas ve Kayra","Kom\u015fum Bay Tesla","Korkulu\u011fun Dostu","K\u00fc\u00e7\u00fck Prens","Kumsalda","Ku\u015f U\u00e7ar Kanat A\u011flar","Lady Susan","Ma\u00e7a K\u0131z\u0131","Madam Bovary - Klasik Kad\u0131nlar","Maeve Kerrigan Serisi 10 - \u00c7\u0131kmaz","Mars Y\u0131ll\u0131klar\u0131","Mart\u0131 Jonathan Livingston D\u00f6rd\u00fcnc\u00fc B\u00f6l\u00fcm \u0130lavesiyle","Melek Ter\u00f6rist Fahi\u015fe","Miray Yay\u0131nlar\u0131 Miray TYT Matematik Soru Bankas\u0131","Moll Flanders - Klasik Kad\u0131nlar","Mutlu Olma Sanat\u0131","Nas\u0131l \u00d6l\u00fcn\u00fcr","Ne Yiyece\u011fimi \u015ea\u015f\u0131rd\u0131m","Okyanus Yay\u0131nlar\u0131 2. S\u0131n\u0131f Master Matematik Soru Bankas\u0131","Oyuncak M\u00fczesi 1","Oyuncak M\u00fczesi 1 Ciltli \u00d6zel Kutulu Set","Palto","Peter Schlemihl`in Acayip Serg\u00fcze\u015fti","Phlebas\u2019\u0131 Hat\u0131rla","Postac\u0131","PS\u0130K\u0130YATR\u0130ST","Reader at Work 1","Reader at Work 2","Tam Bir Felaket! - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 12","Hey Gidi G\u00fcnler - Saftirik Greg`in G\u00fcnl\u00fc\u011f\u00fc 10","Kar\u0131\u015f\u0131k \u0130\u015fler Bunlar! - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 11","Rodrick Kurallar\u0131 - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 2","T\u00fcr\u00fcn\u00fcn Son \u00d6rne\u011fi - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 3","\u0130\u015fte \u015eimdi Yand\u0131k! - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 4","Panik Yok! - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 6","Bats\u0131n Bu D\u00fcnya! - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 8","Bende Bu \u015eans Varken - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc 9","Kendin Yap Kitab\u0131 - Saftirik Greg\u2019in G\u00fcnl\u00fc\u011f\u00fc","Sak\u0131z \u00c7i\u011fneyen Kedi","Sanal Ortamda \u0130leti\u015fim","Sava\u015f Sanat\u0131","Sava\u015f Ve Bar\u0131\u015f","Sayfalar Aras\u0131nda Renkli D\u00fcnyalar","\u015eeker Portakal\u0131","Sesinle \u0130z B\u0131rak","Sevme Sanat\u0131 Modern Kapak","Sicilya`da Bir A\u015fk Hikayesi - Klasik Kad\u0131nlar","Sihirli K\u00fct\u00fcphane","Siyasi Bir Hikaye","Son \u0130nsan - Klasik Kad\u0131nlar","Stoac\u0131n\u0131n G\u00fcnl\u00fc\u011f\u00fc","S\u00fcper Ba\u011flant\u0131l\u0131","Ta\u011fut - Kutsal Aldan\u0131\u015f\u0131n Soya\u011fac\u0131","Tatil Gezegeni - 1. S\u0131n\u0131f T\u00fcm Dersler","Tehlikeli Oyunlar","Temel Kavram ve Uygulamalar\u0131 ile Tesis Y\u00f6netimi","Timsah","Toparlac\u0131k Nokta ve Arkada\u015flar\u0131","T\u00fcfek, Mikrop ve \u00c7elik","Turna Turna Kal Burada","U\u011fultulu Tepeler","U\u011fultulu Tepeler - Klasik Kad\u0131nlar","\u00dctopya ve Masalbilim - Binbir Gece Masallar\u0131","Uzla\u015ft\u0131r\u0131c\u0131n\u0131n Pen\u00e7esi","Yaban","Ya\u011f Yiyin Ya\u011f Yak\u0131n","Yak\u0131n","Yalan D\u00fcnyay\u0131 Ad\u0131mlarken 1. Hamur","Yarg\u0131 Denetiminde Adli Muhasebecilik ve Hile \u0130ncelemesi","Yar\u0131n","Yasaks\u0131z Diyet","Ya\u015f\u0131yoruz Sessizce","Yer\u00e7ekimli Karanfil","Yere Yak\u0131n Y\u0131ld\u0131zlara Uzak","Y\u0131kt\u0131 Ge\u00e7ti! - Saftirik Greg`in G\u00fcnl\u00fc\u011f\u00fc 14","Zaman Bisikleti - Zaman Bisikleti 1"],"legendgroup":"BKM Kitap","marker":{"color":"#636efa","opacity":0.7,"size":{"dtype":"f8","bdata":"AAAAAAAAK0AAAAAAAAAAANijcD0KN0NAAAAAAADAUUAAAAAAAMA9QNDMzMzMTElAnJmZmZmZS0BoZmZmZqY0QAAAAAAAwExAAAAAAAAATkAAAAAAAIBMQAAAAAAAAE5AAAAAAACAOEAAAAAAAIAxQAAAAAAAADlAAAAAAAAAREAAAAAAAAAvQAAAAAAAACNAQDMzMzPzOEBAMzMzM3M6QAAAAAAAADFAAAAAAAAAOEAAAAAAAAAyQAAAAAAAACJAAAAAAAAANEAAAAAAAIA\u002fQAAAAAAA4FxAQGZmZmZmDEAAAAAAAABMQAAAAAAAACtAAAAAAAAAJUBkZmZmZuYzQDAzMzMzc0ZAAAAAAACAQUAAAAAAAIBTQDgzMzMz8zRAAAAAAAAAOEAAAAAAAAAxQAAAAAAAgEFAAAAAAAAAKEAAAAAAAAAwQNDMzMzMzCBAAAAAAAAAKkAAAAAAAAAaQAAAAAAAgDJAAAAAAACAN0BAMzMzM\u002fM9QAAAAAAAAD5AaGZmZmZmQkDAzMzMzMweQAAAAAAAACJAAAAAAAAAOUBoZmZmZuY4QKRwPQrX42NAMDMzMzNzM0AAAAAAAABCQAAAAAAAACRAAAAAAAAASEAAAAAAAAAsQGhmZmZm5j1AzMzMzMx8W0AyMzMzM1thQDIzMzMza2FAnJmZmZmZW0AAAAAAAAAoQAAAAAAAwENAQDMzMzPzOEAAAAAAAAArQAAAAAAAgEFANDMzMzPzQUAwMzMzM3NHQAAAAAAAKGlAmJmZmZmZP0AAAAAAAABGQAAAAAAAAChANDMzMzNzQUAAAAAAAAAkQAAAAAAAAChAAAAAAAAALEAAAAAAAAAlQAAAAAAAACNAAAAAAAAANUAAAAAAAIAwQAAAAAAAAChA0MzMzMyMMkAAAAAAAABFQJiZmZmZeUxAAAAAAACANUAAAAAAAAAiQAAAAAAAACJAAAAAAADAQkAAAAAAAAAAADgzMzMz8zNAQDMzMzNzOkAAAAAAAAAiQAAAAAAAACVAAAAAAAAAS0AAAAAAAAA4QAAAAAAAQEVAODMzMzOzOEAAAAAAAIBAQAAAAAAAgEFAAAAAAACAQUAAAAAAAIBBQAAAAAAAgEFAAAAAAACAQUAAAAAAAIBBQAAAAAAAgEFAAAAAAACAQUAAAAAAAIBBQAAAAAAAgEFAAAAAAAAAL0AEAAAAAEBDQAAAAAAAAAhAAAAAAAAARUAAAAAAAIAqQAAAAAAAADlAAAAAAAAASUAAAAAAAIBBQAAAAAAAgDVA0MzMzMxMNUAAAAAAAAAiQAAAAAAAAD5AAAAAAAAASUBoZmZmZmZCQAAAAAAAAD5AAAAAAACAIkAAAAAAAAA4QM7MzMzMTFlAAAAAAAAAJEAAAAAAAAAvQAAAAAAAAFRAAAAAAAAAMkAAAAAAAAA2QAAAAAAAADZAaGZmZmZGQEAAAAAAAAAoQAAAAAAAAChAaGZmZmbmP0AAAAAAAAA4QAAAAAAAQGBAAQAAAABAYUAAAAAAAAAiQAAAAAAAgENAAAAAAAAAKkAAAAAAAAAoQAAAAAAAgEFAAAAAAACAQUAAAAAAAIAwQA=="},"sizemode":"area","sizeref":0.503125,"symbol":"circle"},"mode":"markers","name":"BKM Kitap","orientation":"v","showlegend":true,"x":{"dtype":"i1","bdata":"AQICAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgICAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEHAQEBAQIBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAgEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE="},"xaxis":"x","y":{"dtype":"f8","bdata":"JEmSJEmSLMAAAAAAAAAAAJZSSimllCbAjuM4juM4NkDHcRzHcZw3wFhVVVVVVS1ASBdddNFFO0BeuhtpEbktQAAAAAAAADfA3s6QmLczNEDfzpCYtzM0QN7OkJi3MzRAq6qqqqoqLUAkSZIkSZIswCRJkiRJkizAtdMBzcEuMkAkSZIkSZIswCRJkiRJkizAXezETuzEHsBd7MRO7MQewCRJkiRJkizAAAAAAAAAKcAkSZIkSZIswCRJkiRJkizAJEmSJEmSLMAkSZIkSZIswFQz\u002f8QwD05ANV9fX19f\u002fz\u002fXUF5DeQ01QCRJkiRJkizAJEmSJEmSLMBM7MRO7MQuwP3\u002f\u002f\u002f\u002f\u002f\u002fzNAT+zETuzELkDjOI7jOA5iQFbsxE7sxB7AJEmSJEmSLMAAAAAAAAApwNAo8TNK\u002fCxAAAAAAAAAJEAkSZIkSZIswPw0wnJPIzhAJEmSJEmSLMAvuuiiiy4iQCRJkiRJkizAJEmSJEmSLMBc7MRO7MQewNHoUdvTLjJAuW3btm3bJkDPUF5DeQ0FQCRJkiRJkizAJEmSJEmSLMBR7MRO7MQuwAAAAAAAADRAS+zETuzEHsAAAAAAAAA0QE\u002fsxE7sxB7Aq6qqqqqqOkByHMdxHMchQDC66KKLLjJA7fZUgIwBQ0Bnm5JLg2dFQIWm1\u002feh30dA\u002fhUwGYd3RUAkSZIkSZIcQCRJkiRJkizAXezETuzEHsAkSZIkSZIswKLSkT0DUSlAAQAAAAAANED9\u002f\u002f\u002f\u002f\u002f\u002f8zQAAAAAAAADfA\u002f\u002f\u002f\u002f\u002f\u002f\u002f\u002fM0AAAAAAAAApwKuqqqqqqipAUezETuzELsAkSZIkSZIswCRJkiRJkhxAJEmSJEmSLMAkSZIkSZIswCRJkiRJkizAJEmSJEmSLMDYTaEJDM8iQCRJkiRJkhxAMfEytUOzKkBDeQ3lNZQvQF2dvoxXpzhAJEmSJEmSLMAkSZIkSZIswCRJkiRJkizAAAAAAAAAKcAAAAAAAAAAAFbsxE7sxB7AXezETuzEHsAkSZIkSZIswCRJkiRJkizAAAAAAAAANECrqqqqqqoqQC+66KKLLjJAKkmSJEmSLMAkSZIkSZIswNAo8TNK\u002fCxA0CjxM0r8LEDQKPEzSvwsQNAo8TNK\u002fCxA0CjxM0r8LEDQKPEzSvwsQNAo8TNK\u002fCxA0CjxM0r8LEDQKPEzSvwsQNAo8TNK\u002fCxAJEmSJEmSLMBUNtlkk00uQE\u002fsxE7sxB7AJEmSJEmSLMBm5SfEWfkZwCRJkiRJkizAJEmSJEmSLMAAAAAAAAA0QCRJkiRJkizAAwAAAADAMkAkSZIkSZIswCRJkiRJkizAOsqv97YuMkCJh4eHh4cnQCRJkiRJkizAqqqqqqqqIMCrqqqqqqoaQBPSi0MUBk1AJEmSJEmSLMAkSZIkSZIswEDwzLemLjJAAAAAAAAAKcAkSZIkSZIswCRJkiRJkizAORdMMvpsN0BP7MRO7MQeQB8a60NjfRhAL7rooosuMkCrqqqqqqoqQAAAAAAAAERALO1BmWcVWUAkSZIkSZIswEN5DeU1lD9AJEmSJEmSLMAAAAAAAAA0QBrrQ2N9aDRA0CjxM0r8LEAkSZIkSZIswA=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Say\u0131s\u0131"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Y\u00fczdesi"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0,"itemsizing":"constant"},"title":{"text":"De\u011fi\u015fim Say\u0131s\u0131 ve De\u011fi\u015fim Y\u00fczdesi \u0130li\u015fkisi"}},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="DetailedData" class="tabcontent">
+            <h2>Detaylı Fiyat Değişim Verileri</h2>
+            <div class="filters">
+                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Kitap adı ara..." style="width: 300px; padding: 8px;">
+                <select id="siteFilter" onchange="filterTable()">
+                    <option value="">Tüm Siteler</option>
+                    <option value="Kitap Yurdu">Kitap Yurdu</option>
+                    <option value="BKM Kitap">BKM Kitap</option>
+                </select>
+                <select id="changeFilter" onchange="filterTable()">
+                    <option value="">Tüm Değişimler</option>
+                    <option value="increase">Fiyatı Artanlar</option>
+                    <option value="decrease">Fiyatı Düşenler</option>
+                </select>
+            </div>
+            <table id="priceTable">
+                <tr>
+                    <th onclick="sortTable(0)">Kitap Adı</th>
+                    <th onclick="sortTable(1)">Site</th>
+                    <th onclick="sortTable(2)">Kategori</th>
+                    <th onclick="sortTable(3)">İlk Fiyat (₺)</th>
+                    <th onclick="sortTable(4)">Son Fiyat (₺)</th>
+                    <th onclick="sortTable(5)">Değişim (₺)</th>
+                    <th onclick="sortTable(6)">Değişim (%)</th>
+                    <th>Tarih</th>
+                </tr>
+    
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/1984" target="_blank">1984</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Okunan Kitaplar</td>
+                    <td>94.50</td>
+                    <td>81.00</td>
+                    <td class="negative-change">-13.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/2023-tyt-turkce-soru-bankasi-3d-yayinlari" target="_blank">3D Yayınları TYT Türkçe Soru Bankası</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim ve Okula Yardımcı Kitaplar</td>
+                    <td>290.40</td>
+                    <td>314.60</td>
+                    <td class="positive-change">24.20</td>
+                    <td class="positive-change">8.33%</td>
+                    <td>28/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/2025-tyt-paragraf-sifir-risk-soru-bankasi-video-cozumlu-uc-dort-bes-yayinlari" target="_blank">2025 Paragraf Sıfır Risk</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim ve Okula Yardımcı Kitaplar</td>
+                    <td>329.40</td>
+                    <td>301.95</td>
+                    <td class="negative-change">-27.45</td>
+                    <td class="negative-change">-8.33%</td>
+                    <td>07/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/39-derste-almanca-gramer-kapadokya-yayinlari" target="_blank">39 Derste Almanca Gramer 1. Hamur</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Evde Yabancı Dil Öğrenmek İsteyenler İçin Eğitici Kitaplar </td>
+                    <td>319.50</td>
+                    <td>390.50</td>
+                    <td class="positive-change">71.00</td>
+                    <td class="positive-change">22.22%</td>
+                    <td>13/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/a-ticket-to-nature" target="_blank">A Ticket to Nature</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Yabancı Dilde Kitaplar</td>
+                    <td>126.00</td>
+                    <td>96.25</td>
+                    <td class="negative-change">-29.75</td>
+                    <td class="negative-change">-23.61%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/adli-delil-yonetimi-bakis-acisiyla-ulusal-ve-uluslararasi-polis-yonetimi" target="_blank">Adli Delil Yönetimi Bakış Açısıyla Ulusal ve Uluslararası Polis Yönetimi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Süreli Yayınlar</td>
+                    <td>345.00</td>
+                    <td>395.60</td>
+                    <td class="positive-change">50.60</td>
+                    <td class="positive-change">14.67%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/aile-ici-iliskiler-odakli-iletisim" target="_blank">Aile İçi İlişkiler Odaklı İletişim</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İletişim ve Medya Kitapları</td>
+                    <td>202.40</td>
+                    <td>257.60</td>
+                    <td class="positive-change">55.20</td>
+                    <td class="positive-change">27.27%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/akilci-ve-bilimsel-takviye-rehberi" target="_blank">Akılcı ve Bilimsel Takviye Rehberi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sağlık Kitapları</td>
+                    <td>138.95</td>
+                    <td>159.60</td>
+                    <td class="positive-change">20.65</td>
+                    <td class="positive-change">14.86%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ankarada-mekan-kultur-ve-eglence" target="_blank">Ankara’da Mekan, Kültür ve Eğlence</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Gezi ve Rehber Kitapları</td>
+                    <td>250.00</td>
+                    <td>192.50</td>
+                    <td class="negative-change">-57.50</td>
+                    <td class="negative-change">-23.00%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/antrenmanlarla-geometri-224688" target="_blank">Antrenmanlarla Geometri 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim Kitapları</td>
+                    <td>297.00</td>
+                    <td>357.00</td>
+                    <td class="positive-change">60.00</td>
+                    <td class="positive-change">20.20%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/antrenmanlarla-matematik-1" target="_blank">Antrenmanlarla Matematik 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Satan 100 Kitap</td>
+                    <td>282.15</td>
+                    <td>339.15</td>
+                    <td class="positive-change">57.00</td>
+                    <td class="positive-change">20.20%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/antrenmanlarla-matematik-2" target="_blank">Antrenmanlarla Matematik 2</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim Kitapları</td>
+                    <td>297.00</td>
+                    <td>357.00</td>
+                    <td class="positive-change">60.00</td>
+                    <td class="positive-change">20.20%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/aralikli-oruc-ve-dusuk-karbonhidratli-beslenme" target="_blank">Aralıklı Oruç ve Düşük Karbonhidratlı Beslenme</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sağlık Kitapları</td>
+                    <td>168.00</td>
+                    <td>192.50</td>
+                    <td class="positive-change">24.50</td>
+                    <td class="positive-change">14.58%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ataturk-hangi-takimi-tutuyordu" target="_blank">Atatürk Hangi Takımı Tutuyordu?</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Fuarı</td>
+                    <td>122.50</td>
+                    <td>105.00</td>
+                    <td class="negative-change">-17.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/atesten-gomlek" target="_blank">Ateşten Gömlek</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Tarih Kitapları</td>
+                    <td>175.00</td>
+                    <td>150.00</td>
+                    <td class="negative-change">-25.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/atomik-aliskanliklar" target="_blank">Atomik Alışkanlıklar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Psikolojik Kitaplar</td>
+                    <td>219.99</td>
+                    <td>259.99</td>
+                    <td class="positive-change">40.00</td>
+                    <td class="positive-change">18.18%</td>
+                    <td>02/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/babalar-ve-ogullar-fotografli-klasikler" target="_blank">Babalar ve Oğullar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>108.50</td>
+                    <td>93.00</td>
+                    <td class="negative-change">-15.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/beyaz-geceler-fotografli-klasikler" target="_blank">Beyaz Geceler</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>66.50</td>
+                    <td>57.00</td>
+                    <td class="negative-change">-9.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/beyaz-leke-858550" target="_blank">Beyaz Leke</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>324.35</td>
+                    <td>299.40</td>
+                    <td class="negative-change">-24.95</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/bir-kibritle-yok-olmak-1-ozel-kutulu-set" target="_blank">Bir Kibritle Yok Olmak 1 Özel Kutulu Set</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>343.85</td>
+                    <td>317.40</td>
+                    <td class="negative-change">-26.45</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/bir-oyku-yazalim-mi" target="_blank">Bir Öykü Yazalım mı?</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Fuarı</td>
+                    <td>119.00</td>
+                    <td>102.00</td>
+                    <td class="negative-change">-17.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/birlikte-iyilesecegiz" target="_blank">Birlikte İyileşeceğiz</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sağlık Kitapları</td>
+                    <td>192.00</td>
+                    <td>168.00</td>
+                    <td class="negative-change">-24.00</td>
+                    <td class="negative-change">-12.50%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/bocek-orkestrasinin-muhtesem-turnesi" target="_blank">Böcek Orkestrasının Muhteşem Turnesi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Fuarı</td>
+                    <td>126.00</td>
+                    <td>108.00</td>
+                    <td class="negative-change">-18.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/bu-bir-masal-degildir" target="_blank">Bu Bir Masal Değildir</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>63.00</td>
+                    <td>54.00</td>
+                    <td class="negative-change">-9.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/buyuk-ataturkten-kucuk-oykuler-1" target="_blank">Büyük Atatürk’ten Küçük Öyküler - 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Fuarı</td>
+                    <td>140.00</td>
+                    <td>120.00</td>
+                    <td class="negative-change">-20.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/buyuk-umutlar-fotografli-klasikler" target="_blank">Büyük Umutlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>220.50</td>
+                    <td>189.00</td>
+                    <td class="negative-change">-31.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/carpici-detaylar-national-geographic" target="_blank">National Geographic Çarpıcı Detaylar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Bilim ve Mühendislik Kitapları</td>
+                    <td>192.12</td>
+                    <td>307.62</td>
+                    <td class="positive-change">115.50</td>
+                    <td class="positive-change">60.12%</td>
+                    <td>28/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/cocukta-ozguven-nasil-gelisir" target="_blank">Çocukta Özgüven Nasıl Gelişir?</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Aile Kitaplığı</td>
+                    <td>181.05</td>
+                    <td>184.60</td>
+                    <td class="positive-change">3.55</td>
+                    <td class="positive-change">1.96%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/daginik-zihinler" target="_blank">Dağınık Zihinler</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Psikolojik Kitaplar</td>
+                    <td>266.00</td>
+                    <td>322.00</td>
+                    <td class="positive-change">56.00</td>
+                    <td class="positive-change">21.05%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/de-profundis-fotografli-klasikler" target="_blank">De Profundis</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>94.50</td>
+                    <td>81.00</td>
+                    <td class="negative-change">-13.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/deniz-kiyisinda-bir-dram" target="_blank">Deniz Kıyısında Bir Dram</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>73.50</td>
+                    <td>63.00</td>
+                    <td class="negative-change">-10.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/dil-ve-isgal" target="_blank">Dil ve İşgal</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Tarih Kitapları</td>
+                    <td>129.35</td>
+                    <td>109.45</td>
+                    <td class="negative-change">-19.90</td>
+                    <td class="negative-change">-15.38%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/doksan-arti-dort-2-kutulu-set" target="_blank">Doksan Artı Dört - 2 Kutulu Set</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Yeni Çıkan Kitaplar</td>
+                    <td>224.50</td>
+                    <td>269.40</td>
+                    <td class="positive-change">44.90</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/dost-kazanma-ve-insanlari-etkileme-sanati-165094" target="_blank">Dost Kazanma ve İnsanları Etkileme Sanatı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sanat ve Mimarlık Kitapları</td>
+                    <td>227.50</td>
+                    <td>262.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">15.38%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/dunyanin-en-guzel-arabistani" target="_blank">Dünyanın En Güzel Arabistanı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Satan Şiir Kitapları</td>
+                    <td>54.00</td>
+                    <td>132.00</td>
+                    <td class="positive-change">78.00</td>
+                    <td class="positive-change">144.44%</td>
+                    <td>24/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/emare-sarmasik-791432" target="_blank">Emare - Sarmaşık</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>272.35</td>
+                    <td>251.40</td>
+                    <td class="negative-change">-20.95</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/emma-fotografli-klasikler" target="_blank">Emma</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>168.00</td>
+                    <td>144.00</td>
+                    <td class="negative-change">-24.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ergenlik-bir-iliski-baglanmasi" target="_blank">Ergenlik: Bir İlişki Bağlanması</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Aile Kitaplığı</td>
+                    <td>136.00</td>
+                    <td>119.00</td>
+                    <td class="negative-change">-17.00</td>
+                    <td class="negative-change">-12.50%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/eridik-bittik-saftirik-gregin-gunlugu-13" target="_blank">Eridik Bittik! - Saftirik Greg`in Günlüğü 13</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/etkili-iliskinin-7-aliskanligi" target="_blank">Etkili İlişkinin 7 Alışkanlığı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Aile Kitaplığı</td>
+                    <td>120.00</td>
+                    <td>132.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/eugenie-grandet-514111" target="_blank">Eugenie Grandet - Klasik Kadınlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Klasik Kadınlar</td>
+                    <td>112.00</td>
+                    <td>96.00</td>
+                    <td class="negative-change">-16.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/genc-bir-doktorun-anilari" target="_blank">GENÇ BİR DOKTORUN ANILARI</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İş Bankası Kültür Yayınları Modern Klasikler Dizisi</td>
+                    <td>34.80</td>
+                    <td>43.20</td>
+                    <td class="positive-change">8.40</td>
+                    <td class="positive-change">24.14%</td>
+                    <td>08/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/genc-wertherin-acilari-fotografli-klasikler" target="_blank">Genç Werther’in Acıları</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>91.00</td>
+                    <td>78.00</td>
+                    <td class="negative-change">-13.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gokyuzune-bakmanin-faydalari" target="_blank">Gökyüzüne Bakmanın Faydaları</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Genel Konular</td>
+                    <td>71.50</td>
+                    <td>78.00</td>
+                    <td class="positive-change">6.50</td>
+                    <td class="positive-change">9.09%</td>
+                    <td>22/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/goriot-baba-fotografli-klasikler" target="_blank">Goriot Baba</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>129.50</td>
+                    <td>111.00</td>
+                    <td class="negative-change">-18.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gorunmez-ip" target="_blank">Görünmez İp</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Kitapları</td>
+                    <td>164.50</td>
+                    <td>141.00</td>
+                    <td class="negative-change">-23.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gumus-yurek-1-kayip-dunyanin-baslangici-ozel-kutulu" target="_blank">Gümüş Yürek 1: Kayıp Dünyanın Başlangıcı Özel Kutulu</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Yeni Çıkan Kitaplar</td>
+                    <td>389.35</td>
+                    <td>359.40</td>
+                    <td class="negative-change">-29.95</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gunubirlik-hayatlar" target="_blank">Günübirlik Hayatlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Psikolojik Kitaplar</td>
+                    <td>164.99</td>
+                    <td>194.99</td>
+                    <td class="positive-change">30.00</td>
+                    <td class="positive-change">18.18%</td>
+                    <td>02/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/halkla-iliskiler-perspektifinden-medya" target="_blank">Halkla İlişkiler Perspektifinden Medya</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İletişim ve Medya Kitapları</td>
+                    <td>322.00</td>
+                    <td>358.80</td>
+                    <td class="positive-change">36.80</td>
+                    <td class="positive-change">11.43%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/halkla-iliskilerde-uzmanlasma-ii" target="_blank">Halkla İlişkiler`de Uzmanlaşma 2</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İletişim ve Medya Kitapları</td>
+                    <td>292.60</td>
+                    <td>300.30</td>
+                    <td class="positive-change">7.70</td>
+                    <td class="positive-change">2.63%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/hat-bekcisi-thiel" target="_blank">Hat Bekçisi Thiel</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>63.00</td>
+                    <td>54.00</td>
+                    <td class="negative-change">-9.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/havala" target="_blank">Havala</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Politika Siyaset Kitapları</td>
+                    <td>175.00</td>
+                    <td>150.00</td>
+                    <td class="negative-change">-25.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/hekatonla-son-tango" target="_blank">Hekaton’la Son Tango</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Psikolojik Kitaplar</td>
+                    <td>161.85</td>
+                    <td>136.95</td>
+                    <td class="negative-change">-24.90</td>
+                    <td class="negative-change">-15.38%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/hizli-fransizca-2-basamak-2kitap-3-cd" target="_blank">Hızlı Fransızca 2. Basamak 2Kitap + 3 CD</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Evde Yabancı Dil Öğrenmek İsteyenler İçin Eğitici Kitaplar </td>
+                    <td>795.60</td>
+                    <td>954.72</td>
+                    <td class="positive-change">159.12</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>24/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/hukumran-iki-yabanci" target="_blank">Hükümran: İki Yabancı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Akademik Kitaplar</td>
+                    <td>252.85</td>
+                    <td>233.40</td>
+                    <td class="negative-change">-19.45</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/icinde-bir-sen-4-azlem-872755" target="_blank">I·çinde Bir Sen 4 - Azlem</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çok Satan Kitaplar</td>
+                    <td>180.00</td>
+                    <td>216.00</td>
+                    <td class="positive-change">36.00</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ikigai" target="_blank">Ikigai</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İnsan ve Toplum Kitapları</td>
+                    <td>130.00</td>
+                    <td>120.00</td>
+                    <td class="negative-change">-10.00</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ilyada-63556" target="_blank">İlyada</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Politika Siyaset Kitapları</td>
+                    <td>180.00</td>
+                    <td>228.00</td>
+                    <td class="positive-change">48.00</td>
+                    <td class="positive-change">26.67%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/insanin-anlam-arayisi" target="_blank">İnsanın Anlam Arayışı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Felsefe Kitapları</td>
+                    <td>157.50</td>
+                    <td>171.50</td>
+                    <td class="positive-change">14.00</td>
+                    <td class="positive-change">8.89%</td>
+                    <td>23/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/insanlari-kitap-gibi-okuyun" target="_blank">İnsanları Kitap Gibi Okuyun</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İnsan ve Toplum Kitapları</td>
+                    <td>164.45</td>
+                    <td>194.35</td>
+                    <td class="positive-change">29.90</td>
+                    <td class="positive-change">18.18%</td>
+                    <td>02/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/iq-yayinlari-ayt-matematik-hedef-ilk-adim-soru-bankasi" target="_blank">IQ Yayınları AYT Matematik Hedef İlk Adım Soru Bankası</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim ve Okula Yardımcı Kitaplar</td>
+                    <td>324.35</td>
+                    <td>399.20</td>
+                    <td class="positive-change">74.85</td>
+                    <td class="positive-change">23.08%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/iq-yayinlari-tyt-hedef-30-net-matematik-soru-bankasi" target="_blank">IQ Yayınları TYT Hedef 30 Net Matematik Soru Bankası</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim ve Okula Yardımcı Kitaplar</td>
+                    <td>376.35</td>
+                    <td>463.20</td>
+                    <td class="positive-change">86.85</td>
+                    <td class="positive-change">23.08%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/iq-yayinlari-tyt-matematik-hedef-15-soru-bankasi" target="_blank">IQ Yayınları TYT Matematik Hedef 15 Net Soru Bankası</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim ve Okula Yardımcı Kitaplar</td>
+                    <td>350.35</td>
+                    <td>431.20</td>
+                    <td class="positive-change">80.85</td>
+                    <td class="positive-change">23.08%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/is-hukuku-uygulamasi-287845" target="_blank">İş Hukuku Uygulaması</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Süreli Yayınlar</td>
+                    <td>257.14</td>
+                    <td>367.54</td>
+                    <td class="positive-change">110.40</td>
+                    <td class="positive-change">42.93%</td>
+                    <td>28/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/iskencecinin-golgesi" target="_blank">İşkencecinin Gölgesi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İthaki Yayınları Bilim Kurgu Klasikleri</td>
+                    <td>168.00</td>
+                    <td>180.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">7.14%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/karamazov-kardesler-fotografli-klasikler" target="_blank">Karamazov Kardeşler</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>276.50</td>
+                    <td>237.00</td>
+                    <td class="negative-change">-39.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/karanligin-sehri-2" target="_blank">Karanlığın Şehri 2</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>324.35</td>
+                    <td>299.40</td>
+                    <td class="negative-change">-24.95</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/karanligin-yuregi-fotografli-klasikler" target="_blank">Karanlığın Yüreği</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>94.50</td>
+                    <td>81.00</td>
+                    <td class="negative-change">-13.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kaygi-dongusunu-kirmak" target="_blank">Kaygı Döngüsünü Kırmak</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Psikolojik Kitaplar</td>
+                    <td>276.50</td>
+                    <td>311.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">12.66%</td>
+                    <td>23/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kazazede-1" target="_blank">Kazazede - 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>179.50</td>
+                    <td>215.40</td>
+                    <td class="positive-change">35.90</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kazazede-1-kutulu-set" target="_blank">Kazazede - 1 Kutulu Set</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>234.50</td>
+                    <td>281.40</td>
+                    <td class="positive-change">46.90</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kente-ve-cevreye-karsi-islenen-suclar-2" target="_blank">Kente ve Çevreye Karşı İşlenen Suçlar - 2</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Hukuk Kitapları</td>
+                    <td>875.00</td>
+                    <td>673.75</td>
+                    <td class="negative-change">-201.25</td>
+                    <td class="negative-change">-23.00%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ketojenik-diyet" target="_blank">Ketojenik Diyet</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Spor Üzerine Kitaplar</td>
+                    <td>158.00</td>
+                    <td>189.60</td>
+                    <td class="positive-change">31.60</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kinyas-ve-kayra" target="_blank">Kinyas ve Kayra</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Türk Edebiyatının En İyi 100 Eseri</td>
+                    <td>352.00</td>
+                    <td>308.00</td>
+                    <td class="negative-change">-44.00</td>
+                    <td class="negative-change">-12.50%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/komsum-bay-tesla" target="_blank">Komşum Bay Tesla</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Kitapları</td>
+                    <td>90.00</td>
+                    <td>102.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">13.33%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/korkulugun-kalbi-843078" target="_blank">Korkuluğun Dostu</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Kitapları</td>
+                    <td>226.85</td>
+                    <td>191.95</td>
+                    <td class="negative-change">-34.90</td>
+                    <td class="negative-change">-15.38%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kucuk-prens-138332" target="_blank">Küçük Prens</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sen Yeter Ki Okumak İste</td>
+                    <td>70.00</td>
+                    <td>60.00</td>
+                    <td class="negative-change">-10.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kumsalda-378340" target="_blank">Kumsalda</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İthaki Yayınları Bilim Kurgu Klasikleri</td>
+                    <td>168.00</td>
+                    <td>180.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">7.14%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/kus-ucar-kanat-aglar" target="_blank">Kuş Uçar Kanat Ağlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Satan Şiir Kitapları</td>
+                    <td>98.00</td>
+                    <td>84.00</td>
+                    <td class="negative-change">-14.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/lady-susan-792103" target="_blank">Lady Susan</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>73.50</td>
+                    <td>63.00</td>
+                    <td class="negative-change">-10.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/maca-kizi-792102" target="_blank">Maça Kızı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>66.50</td>
+                    <td>57.00</td>
+                    <td class="negative-change">-9.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/madam-bovary-514106" target="_blank">Madam Bovary - Klasik Kadınlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Klasik Kadınlar</td>
+                    <td>147.00</td>
+                    <td>126.00</td>
+                    <td class="negative-change">-21.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/maeve-kerrigan-serisi-10-cikmaz" target="_blank">Maeve Kerrigan Serisi 10 - Çıkmaz</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Yeni Çıkan Kitaplar</td>
+                    <td>175.45</td>
+                    <td>191.95</td>
+                    <td class="positive-change">16.50</td>
+                    <td class="positive-change">9.40%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/mars-yilliklari-384390" target="_blank">Mars Yıllıkları</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İthaki Yayınları Bilim Kurgu Klasikleri</td>
+                    <td>168.00</td>
+                    <td>180.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">7.14%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/marti-jonathan-livingston-dorduncu-bolum-ilavesiyle" target="_blank">Martı Jonathan Livingston Dördüncü Bölüm İlavesiyle</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Türlerine Göre En Çok Satan Kitaplar</td>
+                    <td>138.95</td>
+                    <td>157.50</td>
+                    <td class="positive-change">18.55</td>
+                    <td class="positive-change">13.35%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/melek-terorist-fahise" target="_blank">Melek Terörist Fahişe</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Dahiler Sınıfı Kitapları</td>
+                    <td>266.00</td>
+                    <td>308.00</td>
+                    <td class="positive-change">42.00</td>
+                    <td class="positive-change">15.79%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/miray-tyt-matematik-soru-bankasi" target="_blank">Miray Yayınları Miray TYT Matematik Soru Bankası</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Akademik Kitaplar</td>
+                    <td>265.80</td>
+                    <td>287.95</td>
+                    <td class="positive-change">22.15</td>
+                    <td class="positive-change">8.33%</td>
+                    <td>28/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/moll-flanders" target="_blank">Moll Flanders - Klasik Kadınlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Klasik Kadınlar</td>
+                    <td>150.50</td>
+                    <td>129.00</td>
+                    <td class="negative-change">-21.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/mutlu-olma-sanati-431515" target="_blank">Mutlu Olma Sanatı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sanat ve Mimarlık Kitapları</td>
+                    <td>63.00</td>
+                    <td>54.00</td>
+                    <td class="negative-change">-9.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/nasil-olunur" target="_blank">Nasıl Ölünür</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>63.00</td>
+                    <td>54.00</td>
+                    <td class="negative-change">-9.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ne-yiyecegimi-sasirdim" target="_blank">Ne Yiyeceğimi Şaşırdım</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Spor Üzerine Kitaplar</td>
+                    <td>300.00</td>
+                    <td>262.50</td>
+                    <td class="negative-change">-37.50</td>
+                    <td class="negative-change">-12.50%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/okyanus-yayinlari-2-sinif-master-matematik-soru-bankasi" target="_blank">Okyanus Yayınları 2. Sınıf Master Matematik Soru Bankası</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim Bilimleri Kitapları</td>
+                    <td>122.50</td>
+                    <td>87.50</td>
+                    <td class="negative-change">-35.00</td>
+                    <td class="negative-change">-28.57%</td>
+                    <td>12/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/oyuncak-muzesi-1" target="_blank">Oyuncak Müzesi 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>259.35</td>
+                    <td>239.40</td>
+                    <td class="negative-change">-19.95</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/oyuncak-muzesi-1-ciltli-ozel-kutulu-set" target="_blank">Oyuncak Müzesi 1 Ciltli Özel Kutulu Set</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>343.85</td>
+                    <td>317.40</td>
+                    <td class="negative-change">-26.45</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/palto-468240" target="_blank">Palto</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>63.00</td>
+                    <td>54.00</td>
+                    <td class="negative-change">-9.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/peter-schlemihlin-acayip-serguzesti" target="_blank">Peter Schlemihl`in Acayip Sergüzeşti</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>73.50</td>
+                    <td>63.00</td>
+                    <td class="negative-change">-10.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/phlebasi-hatirla" target="_blank">Phlebas’ı Hatırla</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İthaki Yayınları Bilim Kurgu Klasikleri</td>
+                    <td>270.00</td>
+                    <td>324.00</td>
+                    <td class="positive-change">54.00</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/postaci-397480" target="_blank">Postacı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İthaki Yayınları Bilim Kurgu Klasikleri</td>
+                    <td>180.00</td>
+                    <td>204.00</td>
+                    <td class="positive-change">24.00</td>
+                    <td class="positive-change">13.33%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/psikiyatrist" target="_blank">PSİKİYATRİST</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Türlerine Göre En Çok Satan Kitaplar</td>
+                    <td>233.75</td>
+                    <td>276.25</td>
+                    <td class="positive-change">42.50</td>
+                    <td class="positive-change">18.18%</td>
+                    <td>02/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/reader-at-work-1" target="_blank">Reader at Work 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Yabancı Dilde Kitaplar</td>
+                    <td>172.90</td>
+                    <td>148.20</td>
+                    <td class="negative-change">-24.70</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>22/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/reader-at-work-472755" target="_blank">Reader at Work 2</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Akademik Kitaplar</td>
+                    <td>231.00</td>
+                    <td>198.00</td>
+                    <td class="negative-change">-33.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>22/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu" target="_blank">Tam Bir Felaket! - Saftirik Greg’in Günlüğü 12</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-10-hey-gidi-gunler-ciltli" target="_blank">Hey Gidi Günler - Saftirik Greg`in Günlüğü 10</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-11-karisik-isler-bunlar-ciltli" target="_blank">Karışık İşler Bunlar! - Saftirik Greg’in Günlüğü 11</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-2-rodrick-kurallari-ciltli" target="_blank">Rodrick Kuralları - Saftirik Greg’in Günlüğü 2</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-3-turunun-son-ornegi-ciltli" target="_blank">Türünün Son Örneği - Saftirik Greg’in Günlüğü 3</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-4-iste-simdi-yandik-ciltli" target="_blank">İşte Şimdi Yandık! - Saftirik Greg’in Günlüğü 4</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-6-panik-yok-ciltli" target="_blank">Panik Yok! - Saftirik Greg’in Günlüğü 6</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-8-batsin-bu-dunya-ciltli" target="_blank">Batsın Bu Dünya! - Saftirik Greg’in Günlüğü 8</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-9-bende-bu-sans-varken-ciltli" target="_blank">Bende Bu Şans Varken - Saftirik Greg’in Günlüğü 9</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/saftirik-gregin-gunlugu-kendin-yap-kitabi-ciltli" target="_blank">Kendin Yap Kitabı - Saftirik Greg’in Günlüğü</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sakiz-cigneyen-kedi-148116" target="_blank">Sakız Çiğneyen Kedi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Ödüllü Kitaplar</td>
+                    <td>108.50</td>
+                    <td>93.00</td>
+                    <td class="negative-change">-15.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sanal-ortamda-iletisim-bir-halkla-iliskiler-perspektifi" target="_blank">Sanal Ortamda İletişim</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İletişim ve Medya Kitapları</td>
+                    <td>254.10</td>
+                    <td>292.60</td>
+                    <td class="positive-change">38.50</td>
+                    <td class="positive-change">15.15%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/savas-sanati-262596" target="_blank">Savaş Sanatı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sen Yeter Ki Okumak İste</td>
+                    <td>39.00</td>
+                    <td>36.00</td>
+                    <td class="negative-change">-3.00</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/savas-ve-baris-fotografli-klasikler" target="_blank">Savaş Ve Barış</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Fotoğraflı Klasikler</td>
+                    <td>294.00</td>
+                    <td>252.00</td>
+                    <td class="negative-change">-42.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sayfalar-arasinda-renkli-dunyalar" target="_blank">Sayfalar Arasında Renkli Dünyalar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Hobi Kitapları</td>
+                    <td>204.05</td>
+                    <td>190.80</td>
+                    <td class="negative-change">-13.25</td>
+                    <td class="negative-change">-6.49%</td>
+                    <td>11/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/seker-portakali-346759" target="_blank">Şeker Portakalı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Tavsiye Kitapları</td>
+                    <td>175.00</td>
+                    <td>150.00</td>
+                    <td class="negative-change">-25.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sesinle-iz-birak" target="_blank">Sesinle İz Bırak</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Müzik Kitapları</td>
+                    <td>350.00</td>
+                    <td>300.00</td>
+                    <td class="negative-change">-50.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sevme-sanati-modern-kapak" target="_blank">Sevme Sanatı Modern Kapak</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sanat ve Mimarlık Kitapları</td>
+                    <td>175.00</td>
+                    <td>210.00</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>24/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sicilyada-bir-ask-hikâyesi-514144" target="_blank">Sicilya`da Bir Aşk Hikayesi - Klasik Kadınlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Klasik Kadınlar</td>
+                    <td>150.50</td>
+                    <td>129.00</td>
+                    <td class="negative-change">-21.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sihirli-kutuphane" target="_blank">Sihirli Kütüphane</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Satan Çocuk Kitapları</td>
+                    <td>124.25</td>
+                    <td>134.90</td>
+                    <td class="positive-change">10.65</td>
+                    <td class="positive-change">8.57%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/siyasi-bir-hikaye" target="_blank">Siyasi Bir Hikaye</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>63.00</td>
+                    <td>54.00</td>
+                    <td class="negative-change">-9.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/son-insan-514109" target="_blank">Son İnsan - Klasik Kadınlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Klasik Kadınlar</td>
+                    <td>210.00</td>
+                    <td>180.00</td>
+                    <td class="negative-change">-30.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/stoacinin-gunlugu" target="_blank">Stoacının Günlüğü</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İnsan ve Toplum Kitapları</td>
+                    <td>274.99</td>
+                    <td>324.99</td>
+                    <td class="positive-change">50.00</td>
+                    <td class="positive-change">18.18%</td>
+                    <td>02/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/super-baglantili-internet-dijital-medya-tekno-sosyal-hayat" target="_blank">Süper Bağlantılı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İletişim ve Medya Kitapları</td>
+                    <td>312.80</td>
+                    <td>349.60</td>
+                    <td class="positive-change">36.80</td>
+                    <td class="positive-change">11.76%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/tagut-kutsal-aldanisin-soyagaci" target="_blank">Tağut - Kutsal Aldanışın Soyağacı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Politika Siyaset Kitapları</td>
+                    <td>210.00</td>
+                    <td>180.00</td>
+                    <td class="negative-change">-30.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/tatil-gezegeni-1-sinif-tum-dersler" target="_blank">Tatil Gezegeni - 1. Sınıf Tüm Dersler</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim Kitapları</td>
+                    <td>111.00</td>
+                    <td>101.75</td>
+                    <td class="negative-change">-9.25</td>
+                    <td class="negative-change">-8.33%</td>
+                    <td>22/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/tehlikeli-oyunlar" target="_blank">Tehlikeli Oyunlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Türk Edebiyatının En İyi 100 Eseri</td>
+                    <td>360.00</td>
+                    <td>384.00</td>
+                    <td class="positive-change">24.00</td>
+                    <td class="positive-change">6.67%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/temel-kavram-ve-uygulamalari-ile-tesis-yonetimi" target="_blank">Temel Kavram ve Uygulamaları ile Tesis Yönetimi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Süreli Yayınlar</td>
+                    <td>174.34</td>
+                    <td>275.54</td>
+                    <td class="positive-change">101.20</td>
+                    <td class="positive-change">58.05%</td>
+                    <td>28/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/timsah-792101" target="_blank">Timsah</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>70.00</td>
+                    <td>60.00</td>
+                    <td class="negative-change">-10.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/toparlacik-nokta-ve-arkadaslari" target="_blank">Toparlacık Nokta ve Arkadaşları</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Fuarı</td>
+                    <td>108.50</td>
+                    <td>93.00</td>
+                    <td class="negative-change">-15.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/tufek-mikrop-ve-celik-347353" target="_blank">Tüfek, Mikrop ve Çelik</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Sosyoloji Kitapları</td>
+                    <td>439.99</td>
+                    <td>519.99</td>
+                    <td class="positive-change">80.00</td>
+                    <td class="positive-change">18.18%</td>
+                    <td>02/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/turna-turna-kal-burada" target="_blank">Turna Turna Kal Burada</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Çocuk Kitapları</td>
+                    <td>144.00</td>
+                    <td>126.00</td>
+                    <td class="negative-change">-18.00</td>
+                    <td class="negative-change">-12.50%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ugultulu-tepeler-356785" target="_blank">Uğultulu Tepeler</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Tavsiye Kitapları</td>
+                    <td>154.00</td>
+                    <td>132.00</td>
+                    <td class="negative-change">-22.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/ugultulu-tepeler-514102" target="_blank">Uğultulu Tepeler - Klasik Kadınlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Klasik Kadınlar</td>
+                    <td>154.00</td>
+                    <td>132.00</td>
+                    <td class="negative-change">-22.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/utopya-ve-masalbilim-binbir-gece-masallari" target="_blank">Ütopya ve Masalbilim - Binbir Gece Masalları</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Dahiler Sınıfı Kitapları</td>
+                    <td>138.95</td>
+                    <td>171.50</td>
+                    <td class="positive-change">32.55</td>
+                    <td class="positive-change">23.43%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/uzlastiricinin-pencesi" target="_blank">Uzlaştırıcının Pençesi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İthaki Yayınları Bilim Kurgu Klasikleri</td>
+                    <td>156.00</td>
+                    <td>168.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">7.69%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yaban" target="_blank">Yaban</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Türk Edebiyatının En İyi 100 Eseri</td>
+                    <td>196.00</td>
+                    <td>208.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">6.12%</td>
+                    <td>01/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yag-yiyin-yag-yakin" target="_blank">Yağ Yiyin Yağ Yakın</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Spor Üzerine Kitaplar</td>
+                    <td>175.45</td>
+                    <td>207.35</td>
+                    <td class="positive-change">31.90</td>
+                    <td class="positive-change">18.18%</td>
+                    <td>02/08/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yakin-374095" target="_blank">Yakın</a></td>
+                    <td>BKM Kitap</td>
+                    <td>İthaki Yayınları Bilim Kurgu Klasikleri</td>
+                    <td>180.00</td>
+                    <td>204.00</td>
+                    <td class="positive-change">24.00</td>
+                    <td class="positive-change">13.33%</td>
+                    <td>30/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yalan-dunyayi-adimlarken" target="_blank">Yalan Dünyayı Adımlarken 1. Hamur</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Turizm - Gezi Kitapları</td>
+                    <td>325.00</td>
+                    <td>455.00</td>
+                    <td class="positive-change">130.00</td>
+                    <td class="positive-change">40.00%</td>
+                    <td>27/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yargi-denetiminde-adli-muhasebecilik-ve-hile-incelemesi" target="_blank">Yargı Denetiminde Adli Muhasebecilik ve Hile İncelemesi</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Süreli Yayınlar</td>
+                    <td>137.54</td>
+                    <td>275.54</td>
+                    <td class="positive-change">138.00</td>
+                    <td class="positive-change">100.33%</td>
+                    <td>28/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yarin-792098" target="_blank">Yarın</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kısa Klasikler</td>
+                    <td>63.00</td>
+                    <td>54.00</td>
+                    <td class="negative-change">-9.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yasaksiz-diyet" target="_blank">Yasaksız Diyet</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Spor Üzerine Kitaplar</td>
+                    <td>123.50</td>
+                    <td>162.50</td>
+                    <td class="positive-change">39.00</td>
+                    <td class="positive-change">31.58%</td>
+                    <td>22/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yasiyoruz-sessizce" target="_blank">Yaşıyoruz Sessizce</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Satan Şiir Kitapları</td>
+                    <td>91.00</td>
+                    <td>78.00</td>
+                    <td class="negative-change">-13.00</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yercekimli-karanfil" target="_blank">Yerçekimli Karanfil</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Satan Şiir Kitapları</td>
+                    <td>60.00</td>
+                    <td>72.00</td>
+                    <td class="positive-change">12.00</td>
+                    <td class="positive-change">20.00%</td>
+                    <td>29/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yere-yakin-yildizlara-uzak" target="_blank">Yere Yakın Yıldızlara Uzak</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>171.50</td>
+                    <td>206.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">20.41%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/yikti-gecti-saftirik-gregin-gunlugu-14" target="_blank">Yıktı Geçti! - Saftirik Greg`in Günlüğü 14</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Saftirik Kitapları</td>
+                    <td>241.50</td>
+                    <td>276.50</td>
+                    <td class="positive-change">35.00</td>
+                    <td class="positive-change">14.49%</td>
+                    <td>21/07/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/zaman-bisikleti" target="_blank">Zaman Bisikleti - Zaman Bisikleti 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>En Çok Satan Çocuk Kitapları</td>
+                    <td>115.50</td>
+                    <td>99.00</td>
+                    <td class="negative-change">-16.50</td>
+                    <td class="negative-change">-14.29%</td>
+                    <td>31/07/2025</td>
+                </tr>
+        
+            </table>
+        </div>
+        
+        <script>
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+            
+            function filterTable() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchInput");
+                filter = input.value.toUpperCase();
+                siteFilter = document.getElementById("siteFilter").value;
+                changeFilter = document.getElementById("changeFilter").value;
+                
+                table = document.getElementById("priceTable");
+                tr = table.getElementsByTagName("tr");
+                
+                for (i = 1; i < tr.length; i++) {
+                    let nameMatch = true, siteMatch = true, changeMatch = true;
+                    
+                    // Name filter
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            nameMatch = true;
+                        } else {
+                            nameMatch = false;
+                        }
+                    }
+                    
+                    // Site filter
+                    if (siteFilter !== "") {
+                        td = tr[i].getElementsByTagName("td")[1];
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue === siteFilter) {
+                                siteMatch = true;
+                            } else {
+                                siteMatch = false;
+                            }
+                        }
+                    }
+                    
+                    // Change filter
+                    if (changeFilter !== "") {
+                        td = tr[i].getElementsByTagName("td")[5];
+                        if (td) {
+                            value = parseFloat(td.textContent || td.innerText);
+                            if ((changeFilter === "increase" && value > 0) || 
+                                (changeFilter === "decrease" && value < 0)) {
+                                changeMatch = true;
+                            } else {
+                                changeMatch = false;
+                            }
+                        }
+                    }
+                    
+                    if (nameMatch && siteMatch && changeMatch) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+            
+            function sortTable(n) {
+                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                table = document.getElementById("priceTable");
+                switching = true;
+                dir = "asc";
+                
+                while (switching) {
+                    switching = false;
+                    rows = table.rows;
+                    
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        shouldSwitch = false;
+                        x = rows[i].getElementsByTagName("td")[n];
+                        y = rows[i + 1].getElementsByTagName("td")[n];
+                        
+                        // Parse as number if it's a numeric column
+                        if (n >= 3 && n <= 6) {
+                            if (dir == "asc") {
+                                if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            } else if (dir == "desc") {
+                                if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            if (dir == "asc") {
+                                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            } else if (dir == "desc") {
+                                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (shouldSwitch) {
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                        switchcount++;
+                    } else {
+                        if (switchcount == 0 && dir == "asc") {
+                            dir = "desc";
+                            switching = true;
+                        }
+                    }
+                }
+            }
+        </script>
+    </body>
+    </html>
+    
