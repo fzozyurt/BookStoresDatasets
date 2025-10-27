@@ -1,14 +1,13 @@
 from datetime import date
 import logging
 import os
-from kaggle.api.kaggle_api_extended import KaggleApi
 
-
-from additional import log_config
-
-log_config(os.getenv('LOG_FILE'))
+from Scripts.additional import log_config
 
 def publish_to_kaggle(folder, message):
+    # Import kaggle here to avoid authentication issues on module load
+    from kaggle.api.kaggle_api_extended import KaggleApi
+    
     logging.info(f"Starting publish_to_kaggle with folder: {folder} and message: {message}")
     api = KaggleApi()
     api.authenticate()
@@ -24,6 +23,8 @@ def publish_to_kaggle(folder, message):
         logging.error(f"Error creating dataset version: {e}")
 
 if __name__ == "__main__":
+    log_config(os.getenv('LOG_FILE'))
+    
     prep_location = 'Data'
     logging.info("Script started")
 
