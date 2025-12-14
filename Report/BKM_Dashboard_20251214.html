@@ -1,0 +1,624 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kitap Fiyat Değişimleri Raporu</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            h1, h2, h3 {
+                color: #2c3e50;
+            }
+            .dashboard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .stat-box {
+                text-align: center;
+                padding: 10px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                flex: 1;
+                margin: 0 10px;
+            }
+            .stat-value {
+                font-size: 24px;
+                font-weight: bold;
+            }
+            .increase {
+                color: #e74c3c;
+            }
+            .decrease {
+                color: #27ae60;
+            }
+            .chart-container {
+                margin: 30px 0;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .filters {
+                margin: 20px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 8px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+            th, td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+            .positive-change {
+                color: #e74c3c;
+            }
+            .negative-change {
+                color: #27ae60;
+            }
+            .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+                border-radius: 5px 5px 0 0;
+            }
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+            .tab button:hover {
+                background-color: #ddd;
+            }
+            .tab button.active {
+                background-color: #fff;
+                border-bottom: 2px solid #2c3e50;
+            }
+            .tabcontent {
+                display: none;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-top: none;
+                border-radius: 0 0 5px 5px;
+                animation: fadeEffect 1s;
+            }
+            @keyframes fadeEffect {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+            .back-to-home {
+                display: block;
+                margin: 20px 0;
+                padding: 10px 15px;
+                background: #3498db;
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                text-align: center;
+                width: 200px;
+            }
+            .back-to-home:hover {
+                background: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="../index.html" class="back-to-home">← Ana Sayfaya Dön</a>
+        <h1>Kitap Fiyat Değişimleri Dashboard</h1>
+        <p>Rapor Tarihi: 14/12/2025</p>
+        
+        <div class="dashboard-header">
+            <div class="stat-box">
+                <div>Toplam İncelenen Ürün</div>
+                <div class="stat-value">21</div>
+            </div>
+            <div class="stat-box">
+                <div>Fiyatı Artan Ürün</div>
+                <div class="stat-value increase">19</div>
+                <div>Ort. %10.00</div>
+            </div>
+            <div class="stat-box">
+                <div>Fiyatı Düşen Ürün</div>
+                <div class="stat-value decrease">2</div>
+                <div>Ort. %-8.13</div>
+            </div>
+        </div>
+        
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'SiteAnalysis')">Site Analizi</button>
+            <button class="tablinks" onclick="openTab(event, 'CategoryAnalysis')">Kategori Analizi</button>
+            <button class="tablinks" onclick="openTab(event, 'ProductAnalysis')">Ürün Analizi</button>
+            <button class="tablinks" onclick="openTab(event, 'WeeklyTrends')">Haftalık Trend</button>
+            <button class="tablinks" onclick="openTab(event, 'FrequencyAnalysis')">Değişim Sıklığı</button>
+            <button class="tablinks" onclick="openTab(event, 'DetailedData')">Detaylı Veri</button>
+        </div>
+        
+        <div id="SiteAnalysis" class="tabcontent" style="display: block;">
+            <h2>Siteler Arası Fiyat Değişimi Karşılaştırması</h2>
+            <div class="chart-container">
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="2ced07e0-9f6b-49d5-8ac5-c38989dbaa19" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("2ced07e0-9f6b-49d5-8ac5-c38989dbaa19")) {                    Plotly.newPlot(                        "2ced07e0-9f6b-49d5-8ac5-c38989dbaa19",                        [{"customdata":{"dtype":"i1","bdata":"FQ==","shape":"1, 1"},"hovertemplate":"Site=%{x}\u003cbr\u003eOrtalama De\u011fi\u015fim %=%{marker.color}\u003cbr\u003e\u00dcr\u00fcn Say\u0131s\u0131=%{customdata[0]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":{"dtype":"f8","bdata":"lv\u002fUBtuLIEA="},"coloraxis":"coloraxis","pattern":{"shape":""}},"name":"","orientation":"v","showlegend":false,"textposition":"auto","texttemplate":"%{y:.2f}","x":["BKM Kitap"],"xaxis":"x","y":{"dtype":"f8","bdata":"lv\u002fUBtuLIEA="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Site"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Ortalama De\u011fi\u015fim %"}},"coloraxis":{"colorbar":{"title":{"text":"Ortalama De\u011fi\u015fim %"}},"colorscale":[[0.0,"green"],[0.5,"yellow"],[1.0,"red"]]},"legend":{"tracegroupgap":0},"title":{"text":"Siteler Aras\u0131 Fiyat De\u011fi\u015fimi Kar\u015f\u0131la\u015ft\u0131rmas\u0131"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="CategoryAnalysis" class="tabcontent">
+            <h2>Kategori Bazında Fiyat Değişimleri</h2>
+            <div class="chart-container">
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="e57bf193-ac48-4415-9c41-41a7e3608548" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("e57bf193-ac48-4415-9c41-41a7e3608548")) {                    Plotly.newPlot(                        "e57bf193-ac48-4415-9c41-41a7e3608548",                        [{"alignmentgroup":"True","customdata":{"dtype":"i1","bdata":"CAEBBwIC","shape":"6, 1"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=%{x}\u003cbr\u003eOrtalama De\u011fi\u015fim %=%{y}\u003cbr\u003e\u00dcr\u00fcn Say\u0131s\u0131=%{customdata[0]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","offsetgroup":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","x":["Edebiyat Kitaplar\u0131","E\u011fitim ve Okula Yard\u0131mc\u0131 Kitaplar","Japon Klasikleri","Kampanyalar\u0131m\u0131z","Wattpad Kitaplar\u0131","Yeni \u00c7\u0131kan Kitaplar"],"xaxis":"x","y":{"dtype":"f8","bdata":"\u002ff\u002f\u002f\u002f\u002f\u002f\u002fI0BLkiRJkiQhwE\u002fsxE7sxB7A+\u002f\u002f\u002f\u002f\u002f\u002f\u002fI0D+\u002f\u002f\u002f\u002f\u002f\u002f8jQP7\u002f\u002f\u002f\u002f\u002f\u002fyNA"},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kategori"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Ortalama De\u011fi\u015fim %"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Kategori Baz\u0131nda Fiyat De\u011fi\u015fimleri"},"barmode":"group"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="ProductAnalysis" class="tabcontent">
+            <h2>Ürün Bazında Fiyat Değişimleri</h2>
+            <div class="chart-container">
+                <h3>Fiyatı En Çok Artan 10 Kitap</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="7656d4ed-57bc-487c-b961-7965e01fa894" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("7656d4ed-57bc-487c-b961-7965e01fa894")) {                    Plotly.newPlot(                        "7656d4ed-57bc-487c-b961-7965e01fa894",                        [{"customdata":{"dtype":"f8","bdata":"AAAAAAAYckAzMzMzM+dzQAAAAAAAGHJAMzMzMzPnc0AAAAAAABhyQDMzMzMz53NAAAAAAAC4ckAzMzMzM5d0QAAAAAAAGHJAMzMzMzPnc0AAAAAAANBqQGZmZmZmfm1AAAAAAADQakBmZmZmZn5tQAAAAAAA0GpAZmZmZmZ+bUAAAAAAANBqQGZmZmZmfm1AAAAAAADQakBmZmZmZn5tQA==","shape":"10, 2"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKitap \u0130smi=%{x}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{y}\u003cbr\u003e\u0130lk Fiyat=%{customdata[0]}\u003cbr\u003eSon Fiyat=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","texttemplate":"%{y:.2f}","x":["Bir Kibritle Yok Olmak 1 \u00d6zel Kutulu Set","Oyuncak Mah\u015feri - Hediyeli Kutu","Oyuncak M\u00fczesi 1 Ciltli \u00d6zel Kutulu Set","G\u00fcm\u00fc\u015f Y\u00fcrek 1: Kay\u0131p D\u00fcnyan\u0131n Ba\u015flang\u0131c\u0131 \u00d6zel Kutulu","G\u00f6k\u00e7en 3: G\u00fcz Ya\u011fmurlar\u0131 - Hediyeli \u00d6zel Kutu","Oyuncak M\u00fczesi 1","\u00d6tanazi Okulu","G\u00f6k\u00e7en - 3: G\u00fcz Ya\u011fmurlar\u0131","G\u00f6k\u00e7en 1: Unutulan \u00c7i\u00e7ekler","Medusa`n\u0131n \u00d6l\u00fc Kumlar\u0131 2"],"xaxis":"x","y":{"dtype":"f8","bdata":"\u002fv\u002f\u002f\u002f\u002f\u002f\u002fI0D+\u002f\u002f\u002f\u002f\u002f\u002f8jQP7\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002fv\u002f\u002f\u002f\u002f\u002f\u002fI0D+\u002f\u002f\u002f\u002f\u002f\u002f8jQP3\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002ff\u002f\u002f\u002f\u002f\u002f\u002fI0D9\u002f\u002f\u002f\u002f\u002f\u002f8jQP3\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002ff\u002f\u002f\u002f\u002f\u002f\u002fI0A="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kitap \u0130smi"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Y\u00fczdesi"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Fiyat\u0131 En \u00c7ok Artan 10 Kitap"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Fiyatı En Çok Düşen 10 Kitap</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="28ca584f-f780-4de2-b096-4832cdd5845e" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("28ca584f-f780-4de2-b096-4832cdd5845e")) {                    Plotly.newPlot(                        "28ca584f-f780-4de2-b096-4832cdd5845e",                        [{"customdata":{"dtype":"f8","bdata":"AAAAAABgeUAzMzMzMzN3QAAAAAAAQFBAAAAAAAAATkAAAAAAAHBmQGZmZmZmrmhAAAAAAABwZkBmZmZmZq5oQAAAAAAAcGZAZmZmZmauaEAAAAAAAFBoQGZmZmZmvmpAAAAAAABwZkBmZmZmZq5oQAAAAAAAcGZAZmZmZmauaEAAAAAAAFBoQGZmZmZmvmpAAAAAAADQakBmZmZmZn5tQA==","shape":"10, 2"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKitap \u0130smi=%{x}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{y}\u003cbr\u003e\u0130lk Fiyat=%{customdata[0]}\u003cbr\u003eSon Fiyat=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","texttemplate":"%{y:.2f}","x":["TYT T\u00fcrk\u00e7e Soru Bankas\u0131","Bir Adam\u0131n Sava\u015f\u0131","Erken R\u00fcya Zamanlar","G\u00f6lge ve Kan","G\u00fcnd\u00fcz D\u00fc\u015f\u00fc","Mekanik A\u015fk","Pusu","Sen Yokken","Tatl\u0131 Tesad\u00fcf","Oyuncak Mah\u015feri"],"xaxis":"x","y":{"dtype":"f8","bdata":"S5IkSZIkIcBP7MRO7MQewPz\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002fP\u002f\u002f\u002f\u002f\u002f\u002fI0D8\u002f\u002f\u002f\u002f\u002f\u002f8jQPz\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002fP\u002f\u002f\u002f\u002f\u002f\u002fI0D8\u002f\u002f\u002f\u002f\u002f\u002f8jQPz\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002ff\u002f\u002f\u002f\u002f\u002f\u002fI0A="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kitap \u0130smi"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Y\u00fczdesi"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Fiyat\u0131 En \u00c7ok D\u00fc\u015fen 10 Kitap"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="WeeklyTrends" class="tabcontent">
+            <h2>Haftalık Fiyat Değişim Trendi</h2>
+            <div class="chart-container">
+                <h3>Genel Haftalık Ortalama Fiyat Değişimi</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="a128d910-13b9-4709-a9f6-0591a13aaecb" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("a128d910-13b9-4709-a9f6-0591a13aaecb")) {                    Plotly.newPlot(                        "a128d910-13b9-4709-a9f6-0591a13aaecb",                        [{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":true,"x":["46. Hafta","47. Hafta","48. Hafta","49. Hafta","50. Hafta"],"xaxis":"x","y":{"dtype":"f8","bdata":"AAAAAADEa0AdWmQ737VpQOXwsezGW2FAIrJgxehxZ0Aq8lk3mEptQA=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Hafta"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Fiyat"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Haftal\u0131k Ortalama Fiyat De\u011fi\u015fimleri"}},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Kategori Bazında Haftalık Fiyat Değişimleri</h3>
+                <p>En popüler 5 kategori için haftalık ortalama fiyat değişimleri gösterilmektedir.</p>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="9fe8196b-0c55-41f2-9f65-810210e3bf24" class="plotly-graph-div" style="height:800px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("9fe8196b-0c55-41f2-9f65-810210e3bf24")) {                    Plotly.newPlot(                        "9fe8196b-0c55-41f2-9f65-810210e3bf24",                        [{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=Edebiyat Kitaplar\u0131\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":true,"x":["47. Hafta","48. Hafta","49. Hafta","50. Hafta"],"xaxis":"x5","y":{"dtype":"f8","bdata":"MzMzMzN3cECamZmZmSNuQKEO6qAOynBAMzMzMzPEcEA="},"yaxis":"y5","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=K\u0131sa Klasikler\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["47. Hafta","49. Hafta"],"xaxis":"x6","y":{"dtype":"f8","bdata":"AAAAAADAS0CrqqqqqmpPQA=="},"yaxis":"y6","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=Wattpad Kitaplar\u0131\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["47. Hafta","48. Hafta","49. Hafta","50. Hafta"],"xaxis":"x3","y":{"dtype":"f8","bdata":"MzMzMzNTcUAAAAAAAPBtQJUgTwnyrHBAMzMzMzNTcUA="},"yaxis":"y3","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=Japon Klasikleri\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["48. Hafta","49. Hafta","50. Hafta"],"xaxis":"x4","y":{"dtype":"f8","bdata":"AAAAAAAgUUAXXXTRRRdcQAAAAAAAgFlA"},"yaxis":"y4","type":"scatter"},{"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKategori=Kampanyalar\u0131m\u0131z\u003cbr\u003eHafta=%{x}\u003cbr\u003eFiyat=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"BKM Kitap","orientation":"v","showlegend":false,"x":["48. Hafta","49. Hafta","50. Hafta"],"xaxis":"x","y":{"dtype":"f8","bdata":"kiRJkiT5ZkCZmZmZmXlmQNNBHdRBRWlA"},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,0.49],"title":{"text":"Hafta"}},"yaxis":{"anchor":"x","domain":[0.0,0.2866666666666666],"title":{"text":"Fiyat"}},"xaxis2":{"anchor":"y2","domain":[0.51,1.0],"matches":"x","title":{"text":"Hafta"}},"yaxis2":{"anchor":"x2","domain":[0.0,0.2866666666666666],"matches":"y","showticklabels":false},"xaxis3":{"anchor":"y3","domain":[0.0,0.49],"matches":"x","showticklabels":false},"yaxis3":{"anchor":"x3","domain":[0.35666666666666663,0.6433333333333333],"matches":"y","title":{"text":"Fiyat"}},"xaxis4":{"anchor":"y4","domain":[0.51,1.0],"matches":"x","showticklabels":false},"yaxis4":{"anchor":"x4","domain":[0.35666666666666663,0.6433333333333333],"matches":"y","showticklabels":false},"xaxis5":{"anchor":"y5","domain":[0.0,0.49],"matches":"x","showticklabels":false},"yaxis5":{"anchor":"x5","domain":[0.7133333333333333,0.9999999999999999],"matches":"y","title":{"text":"Fiyat"}},"xaxis6":{"anchor":"y6","domain":[0.51,1.0],"matches":"x","showticklabels":false},"yaxis6":{"anchor":"x6","domain":[0.7133333333333333,0.9999999999999999],"matches":"y","showticklabels":false},"annotations":[{"font":{},"showarrow":false,"text":"Kategori=Kampanyalar\u0131m\u0131z","x":0.245,"xanchor":"center","xref":"paper","y":0.2866666666666666,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=Wattpad Kitaplar\u0131","x":0.245,"xanchor":"center","xref":"paper","y":0.6433333333333333,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=Japon Klasikleri","x":0.755,"xanchor":"center","xref":"paper","y":0.6433333333333333,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=Edebiyat Kitaplar\u0131","x":0.245,"xanchor":"center","xref":"paper","y":0.9999999999999999,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"Kategori=K\u0131sa Klasikler","x":0.755,"xanchor":"center","xref":"paper","y":0.9999999999999999,"yanchor":"bottom","yref":"paper"}],"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Kategori Baz\u0131nda Haftal\u0131k Fiyat De\u011fi\u015fimleri"},"height":800},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="FrequencyAnalysis" class="tabcontent">
+            <h2>Fiyat Değişim Sıklığı Analizi</h2>
+            <div class="chart-container">
+                <h3>Fiyatı En Sık Değişen 15 Kitap</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="237554a6-dfc3-4370-bd2e-05801eb6e551" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("237554a6-dfc3-4370-bd2e-05801eb6e551")) {                    Plotly.newPlot(                        "237554a6-dfc3-4370-bd2e-05801eb6e551",                        [{"customdata":{"dtype":"f8","bdata":"MzMzMzPnc0AzMzMzM+dzQAAAAAAAAAAAAAAAAAAAAABmZmZmZn5tQGZmZmZmfm1AAAAAAAAAAAAAAAAAAAAAAGZmZmZmfm1AZmZmZmZ+bUAAAAAAAAAAAAAAAAAAAAAAMzMzMzPnc0AzMzMzM+dzQAAAAAAAAAAAAAAAAAAAAABmZmZmZn5tQGZmZmZmfm1AAAAAAAAAAAAAAAAAAAAAADMzMzMz53NAMzMzMzPnc0AAAAAAAAAAAAAAAAAAAAAAZmZmZmZ+bUBmZmZmZn5tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAHBmQGZmZmZmrmhAMDMzMzPzMUD8\u002f\u002f\u002f\u002f\u002f\u002f8jQAAAAAAAcGZAZmZmZmauaEAwMzMzM\u002fMxQPz\u002f\u002f\u002f\u002f\u002f\u002fyNAAAAAAAAYckAzMzMzM+dzQDAzMzMz8zxA\u002fv\u002f\u002f\u002f\u002f\u002f\u002fI0AAAAAAANBqQGZmZmZmfm1AMDMzMzNzNUD9\u002f\u002f\u002f\u002f\u002f\u002f8jQAAAAAAAuHJAMzMzMzOXdEAwMzMzM\u002fM9QP7\u002f\u002f\u002f\u002f\u002f\u002fyNAMzMzMzMzd0AzMzMzMzN3QAAAAAAAAAAAAAAAAAAAAABmZmZmZn5tQGZmZmZmfm1AAAAAAAAAAAAAAAAAAAAAAGZmZmZmfm1AZmZmZmZ+bUAAAAAAAAAAAAAAAAAAAAAA","shape":"15, 4"},"hovertemplate":"Site=BKM Kitap\u003cbr\u003eKitap \u0130smi=%{x}\u003cbr\u003eDe\u011fi\u015fim Say\u0131s\u0131=%{y}\u003cbr\u003e\u0130lk Fiyat=%{customdata[0]}\u003cbr\u003eSon Fiyat=%{customdata[1]}\u003cbr\u003eToplam De\u011fi\u015fim=%{customdata[2]}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{customdata[3]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BKM Kitap","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"BKM Kitap","orientation":"v","showlegend":true,"textposition":"auto","x":["Bir Kibritle Yok Olmak 1 \u00d6zel Kutulu Set","G\u00f6k\u00e7en 1: Unutulan \u00c7i\u00e7ekler","Oyuncak M\u00fczesi 1","G\u00f6k\u00e7en 3: G\u00fcz Ya\u011fmurlar\u0131 - Hediyeli \u00d6zel Kutu","G\u00f6k\u00e7en 2: Geride Kalanlar","Oyuncak M\u00fczesi 1 Ciltli \u00d6zel Kutulu Set","\u00d6tanazi Okulu","G\u00f6lge ve Kan","Sen Yokken","Oyuncak Mah\u015feri - Hediyeli Kutu","Oyuncak Mah\u015feri","G\u00fcm\u00fc\u015f Y\u00fcrek 1: Kay\u0131p D\u00fcnyan\u0131n Ba\u015flang\u0131c\u0131 \u00d6zel Kutulu","TYT T\u00fcrk\u00e7e Soru Bankas\u0131","Medusa`n\u0131n \u00d6l\u00fc Kumlar\u0131 2","G\u00f6k\u00e7en - 3: G\u00fcz Ya\u011fmurlar\u0131"],"xaxis":"x","y":{"dtype":"i1","bdata":"BAQEBAQEBAMDAwMDAgIC"},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Kitap \u0130smi"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Say\u0131s\u0131"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0},"title":{"text":"Fiyat\u0131 En S\u0131k De\u011fi\u015fen 15 Kitap"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Siteler Arası Ortalama Fiyat Değişim Sıklığı</h3>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="fc15a816-b956-4729-ac62-cd0edb59a16e" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("fc15a816-b956-4729-ac62-cd0edb59a16e")) {                    Plotly.newPlot(                        "fc15a816-b956-4729-ac62-cd0edb59a16e",                        [{"customdata":{"dtype":"i1","bdata":"FQ==","shape":"1, 1"},"hovertemplate":"Site=%{x}\u003cbr\u003eOrtalama De\u011fi\u015fim Say\u0131s\u0131=%{marker.color}\u003cbr\u003e\u00dcr\u00fcn Say\u0131s\u0131=%{customdata[0]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":{"dtype":"f8","bdata":"Pc\u002fzPM\u002fzBEA="},"coloraxis":"coloraxis","pattern":{"shape":""}},"name":"","orientation":"v","showlegend":false,"textposition":"auto","texttemplate":"%{y:.2f}","x":["BKM Kitap"],"xaxis":"x","y":{"dtype":"f8","bdata":"Pc\u002fzPM\u002fzBEA="},"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Site"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Ortalama De\u011fi\u015fim Say\u0131s\u0131"}},"coloraxis":{"colorbar":{"title":{"text":"Ortalama De\u011fi\u015fim Say\u0131s\u0131"}},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"legend":{"tracegroupgap":0},"title":{"text":"Siteler Aras\u0131 Ortalama Fiyat De\u011fi\u015fim S\u0131kl\u0131\u011f\u0131"},"barmode":"relative"},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+            <div class="chart-container">
+                <h3>Değişim Sayısı ve Değişim Yüzdesi İlişkisi</h3>
+                <p>Bu grafik, bir kitabın fiyatının kaç kez değiştiği ile toplam değişim yüzdesi arasındaki ilişkiyi gösterir.</p>
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.0.min.js" integrity="sha256-bO3dS6yCpk9aK4gUpNELtCiDeSYvGYnK7jFI58NQnHI=" crossorigin="anonymous"></script>                <div id="89ab476f-0282-4444-948b-89b1a6c32c4b" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("89ab476f-0282-4444-948b-89b1a6c32c4b")) {                    Plotly.newPlot(                        "89ab476f-0282-4444-948b-89b1a6c32c4b",                        [{"hovertemplate":"\u003cb\u003e%{hovertext}\u003c\u002fb\u003e\u003cbr\u003e\u003cbr\u003eSite=BKM Kitap\u003cbr\u003eDe\u011fi\u015fim Say\u0131s\u0131=%{x}\u003cbr\u003eDe\u011fi\u015fim Y\u00fczdesi=%{y}\u003cbr\u003eMutlak De\u011fi\u015fim=%{marker.size}\u003cextra\u003e\u003c\u002fextra\u003e","hovertext":["TYT T\u00fcrk\u00e7e Soru Bankas\u0131","Bir Adam\u0131n Sava\u015f\u0131","Bir Kibritle Yok Olmak 1 \u00d6zel Kutulu Set","Erken R\u00fcya Zamanlar","G\u00f6k\u00e7en 1: Unutulan \u00c7i\u00e7ekler","G\u00f6k\u00e7en 2: Geride Kalanlar","G\u00f6k\u00e7en - 3: G\u00fcz Ya\u011fmurlar\u0131","G\u00f6k\u00e7en 3: G\u00fcz Ya\u011fmurlar\u0131 - Hediyeli \u00d6zel Kutu","G\u00f6lge ve Kan","G\u00fcm\u00fc\u015f Y\u00fcrek 1: Kay\u0131p D\u00fcnyan\u0131n Ba\u015flang\u0131c\u0131 \u00d6zel Kutulu","G\u00fcnd\u00fcz D\u00fc\u015f\u00fc","Medusa`n\u0131n \u00d6l\u00fc Kumlar\u0131 2","Mekanik A\u015fk","\u00d6tanazi Okulu","Oyuncak Mah\u015feri","Oyuncak Mah\u015feri - Hediyeli Kutu","Oyuncak M\u00fczesi 1","Oyuncak M\u00fczesi 1 Ciltli \u00d6zel Kutulu Set","Pusu","Sen Yokken","Tatl\u0131 Tesad\u00fcf"],"legendgroup":"BKM Kitap","marker":{"color":"#636efa","opacity":0.7,"size":{"dtype":"f8","bdata":"AAAAAAAAAAAAAAAAAAAUQAAAAAAAAAAAMDMzMzPzMUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAzMzMz8zFAMDMzMzPzPUAwMzMzM\u002fMxQAAAAAAAAAAAMDMzMzNzM0AAAAAAAAAAADAzMzMzczVAMDMzMzPzPEAAAAAAAAAAAAAAAAAAAAAAMDMzMzPzMUAwMzMzM\u002fMxQDAzMzMzczNA"},"sizemode":"area","sizeref":0.07487499999999997,"symbol":"circle"},"mode":"markers","name":"BKM Kitap","orientation":"v","showlegend":true,"x":{"dtype":"i1","bdata":"AgEEAQQEAgQDAwECAQQDAwQEAQMB"},"xaxis":"x","y":{"dtype":"f8","bdata":"AAAAAAAAAABP7MRO7MQewAAAAAAAAAAA\u002fP\u002f\u002f\u002f\u002f\u002f\u002fI0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002fv\u002f\u002f\u002f\u002f\u002f\u002fI0D8\u002f\u002f\u002f\u002f\u002f\u002f8jQAAAAAAAAAAA\u002fP\u002f\u002f\u002f\u002f\u002f\u002fI0AAAAAAAAAAAP3\u002f\u002f\u002f\u002f\u002f\u002fyNA\u002fv\u002f\u002f\u002f\u002f\u002f\u002fI0AAAAAAAAAAAAAAAAAAAAAA\u002fP\u002f\u002f\u002f\u002f\u002f\u002fI0D8\u002f\u002f\u002f\u002f\u002f\u002f8jQPz\u002f\u002f\u002f\u002f\u002f\u002fyNA"},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Say\u0131s\u0131"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"De\u011fi\u015fim Y\u00fczdesi"}},"legend":{"title":{"text":"Site"},"tracegroupgap":0,"itemsizing":"constant"},"title":{"text":"De\u011fi\u015fim Say\u0131s\u0131 ve De\u011fi\u015fim Y\u00fczdesi \u0130li\u015fkisi"}},                        {"responsive": true}                    )                };            </script>        </div>
+            </div>
+        </div>
+        
+        <div id="DetailedData" class="tabcontent">
+            <h2>Detaylı Fiyat Değişim Verileri</h2>
+            <div class="filters">
+                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Kitap adı ara..." style="width: 300px; padding: 8px;">
+                <select id="siteFilter" onchange="filterTable()">
+                    <option value="">Tüm Siteler</option>
+                    <option value="Kitap Yurdu">Kitap Yurdu</option>
+                    <option value="BKM Kitap">BKM Kitap</option>
+                </select>
+                <select id="changeFilter" onchange="filterTable()">
+                    <option value="">Tüm Değişimler</option>
+                    <option value="increase">Fiyatı Artanlar</option>
+                    <option value="decrease">Fiyatı Düşenler</option>
+                </select>
+            </div>
+            <table id="priceTable">
+                <tr>
+                    <th onclick="sortTable(0)">Kitap Adı</th>
+                    <th onclick="sortTable(1)">Site</th>
+                    <th onclick="sortTable(2)">Kategori</th>
+                    <th onclick="sortTable(3)">İlk Fiyat (₺)</th>
+                    <th onclick="sortTable(4)">Son Fiyat (₺)</th>
+                    <th onclick="sortTable(5)">Değişim (₺)</th>
+                    <th onclick="sortTable(6)">Değişim (%)</th>
+                    <th>Tarih</th>
+                </tr>
+    
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/2023-tyt-turkce-soru-bankasi-3d-yayinlari" target="_blank">TYT Türkçe Soru Bankası</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Eğitim ve Okula Yardımcı Kitaplar</td>
+                    <td>406.00</td>
+                    <td>371.20</td>
+                    <td class="negative-change">-34.80</td>
+                    <td class="negative-change">-8.57%</td>
+                    <td>11/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/bir-adamin-savasi" target="_blank">Bir Adamın Savaşı</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Japon Klasikleri</td>
+                    <td>65.00</td>
+                    <td>60.00</td>
+                    <td class="negative-change">-5.00</td>
+                    <td class="negative-change">-7.69%</td>
+                    <td>01/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/bir-kibritle-yok-olmak-1-ozel-kutulu-set" target="_blank">Bir Kibritle Yok Olmak 1 Özel Kutulu Set</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>289.50</td>
+                    <td>318.45</td>
+                    <td class="positive-change">28.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/erken-ruya-zamanlar-288111" target="_blank">Erken Rüya Zamanlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kampanyalarımız</td>
+                    <td>179.50</td>
+                    <td>197.45</td>
+                    <td class="positive-change">17.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>10/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gokcen-1-unutulan-cicekler" target="_blank">Gökçen 1: Unutulan Çiçekler</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>214.50</td>
+                    <td>235.95</td>
+                    <td class="positive-change">21.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gokcen-2-geride-kalanlar" target="_blank">Gökçen 2: Geride Kalanlar</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>214.50</td>
+                    <td>235.95</td>
+                    <td class="positive-change">21.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gokcen-3-guz-yagmurlari-870596" target="_blank">Gökçen - 3: Güz Yağmurları</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>214.50</td>
+                    <td>235.95</td>
+                    <td class="positive-change">21.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gokcen-3-guz-yagmurlari-hediyeli-ozel-kutu" target="_blank">Gökçen 3: Güz Yağmurları - Hediyeli Özel Kutu</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>289.50</td>
+                    <td>318.45</td>
+                    <td class="positive-change">28.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/golge-ve-kan" target="_blank">Gölge ve Kan</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kampanyalarımız</td>
+                    <td>179.50</td>
+                    <td>197.45</td>
+                    <td class="positive-change">17.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gumus-yurek-1-kayip-dunyanin-baslangici-ozel-kutulu" target="_blank">Gümüş Yürek 1: Kayıp Dünyanın Başlangıcı Özel Kutulu</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>299.50</td>
+                    <td>329.45</td>
+                    <td class="positive-change">29.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>10/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/gunduz-dusu-367381" target="_blank">Gündüz Düşü</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kampanyalarımız</td>
+                    <td>179.50</td>
+                    <td>197.45</td>
+                    <td class="positive-change">17.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>10/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/medusanin-olu-kumlari-2" target="_blank">Medusa`nın Ölü Kumları 2</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>214.50</td>
+                    <td>235.95</td>
+                    <td class="positive-change">21.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>10/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/mekanik-ask-ciltli" target="_blank">Mekanik Aşk</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kampanyalarımız</td>
+                    <td>194.50</td>
+                    <td>213.95</td>
+                    <td class="positive-change">19.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/otanazi-okulu-1-ciltli" target="_blank">Ötanazi Okulu</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>214.50</td>
+                    <td>235.95</td>
+                    <td class="positive-change">21.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/oyuncak-mahseri" target="_blank">Oyuncak Mahşeri</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Yeni Çıkan Kitaplar</td>
+                    <td>214.50</td>
+                    <td>235.95</td>
+                    <td class="positive-change">21.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/oyuncak-mahseri-hediyeli-kutu" target="_blank">Oyuncak Mahşeri - Hediyeli Kutu</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Yeni Çıkan Kitaplar</td>
+                    <td>289.50</td>
+                    <td>318.45</td>
+                    <td class="positive-change">28.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/oyuncak-muzesi-1" target="_blank">Oyuncak Müzesi 1</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Edebiyat Kitapları</td>
+                    <td>214.50</td>
+                    <td>235.95</td>
+                    <td class="positive-change">21.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/oyuncak-muzesi-1-ciltli-ozel-kutulu-set" target="_blank">Oyuncak Müzesi 1 Ciltli Özel Kutulu Set</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Wattpad Kitapları</td>
+                    <td>289.50</td>
+                    <td>318.45</td>
+                    <td class="positive-change">28.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/pusu-367382" target="_blank">Pusu</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kampanyalarımız</td>
+                    <td>179.50</td>
+                    <td>197.45</td>
+                    <td class="positive-change">17.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>10/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/sen-yokken-287997" target="_blank">Sen Yokken</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kampanyalarımız</td>
+                    <td>179.50</td>
+                    <td>197.45</td>
+                    <td class="positive-change">17.95</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>08/12/2025</td>
+                </tr>
+        
+                <tr>
+                    <td><a href="https://www.bkmkitap.com/tatli-tesaduf-ciltli" target="_blank">Tatlı Tesadüf</a></td>
+                    <td>BKM Kitap</td>
+                    <td>Kampanyalarımız</td>
+                    <td>194.50</td>
+                    <td>213.95</td>
+                    <td class="positive-change">19.45</td>
+                    <td class="positive-change">10.00%</td>
+                    <td>10/12/2025</td>
+                </tr>
+        
+            </table>
+        </div>
+        
+        <script>
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+            
+            function filterTable() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchInput");
+                filter = input.value.toUpperCase();
+                siteFilter = document.getElementById("siteFilter").value;
+                changeFilter = document.getElementById("changeFilter").value;
+                
+                table = document.getElementById("priceTable");
+                tr = table.getElementsByTagName("tr");
+                
+                for (i = 1; i < tr.length; i++) {
+                    let nameMatch = true, siteMatch = true, changeMatch = true;
+                    
+                    // Name filter
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            nameMatch = true;
+                        } else {
+                            nameMatch = false;
+                        }
+                    }
+                    
+                    // Site filter
+                    if (siteFilter !== "") {
+                        td = tr[i].getElementsByTagName("td")[1];
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue === siteFilter) {
+                                siteMatch = true;
+                            } else {
+                                siteMatch = false;
+                            }
+                        }
+                    }
+                    
+                    // Change filter
+                    if (changeFilter !== "") {
+                        td = tr[i].getElementsByTagName("td")[5];
+                        if (td) {
+                            value = parseFloat(td.textContent || td.innerText);
+                            if ((changeFilter === "increase" && value > 0) || 
+                                (changeFilter === "decrease" && value < 0)) {
+                                changeMatch = true;
+                            } else {
+                                changeMatch = false;
+                            }
+                        }
+                    }
+                    
+                    if (nameMatch && siteMatch && changeMatch) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+            
+            function sortTable(n) {
+                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                table = document.getElementById("priceTable");
+                switching = true;
+                dir = "asc";
+                
+                while (switching) {
+                    switching = false;
+                    rows = table.rows;
+                    
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        shouldSwitch = false;
+                        x = rows[i].getElementsByTagName("td")[n];
+                        y = rows[i + 1].getElementsByTagName("td")[n];
+                        
+                        // Parse as number if it's a numeric column
+                        if (n >= 3 && n <= 6) {
+                            if (dir == "asc") {
+                                if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            } else if (dir == "desc") {
+                                if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            if (dir == "asc") {
+                                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            } else if (dir == "desc") {
+                                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (shouldSwitch) {
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                        switchcount++;
+                    } else {
+                        if (switchcount == 0 && dir == "asc") {
+                            dir = "desc";
+                            switching = true;
+                        }
+                    }
+                }
+            }
+        </script>
+    </body>
+    </html>
+    
