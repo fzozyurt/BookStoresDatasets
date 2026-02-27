@@ -10,6 +10,11 @@ env:
     FILE_NAME: 'BKM_Datasets.csv'
     LOG_FILE: 'BKM.log'
     ID: 'BKM'
+    LOG_LEVEL: 'WARNING'
+    LOG_DIR: 'logs'
+    LOG_MAX_BYTES: '5242880'
+    LOG_BACKUP_COUNT: '3'
+    CONSOLE_LOG_LEVEL: 'INFO'
 
 jobs:
   scrape_categories:
@@ -168,7 +173,7 @@ jobs:
       run: |
         mkdir -p logs
         python -m Scripts.rename_log
-        zip -j logs/BKM_logs_$(date +'%Y-%m-%d').zip logs/BKM*.log
+        zip -j logs/BKM_logs_$(date +'%Y-%m-%d').zip logs/BKM_errors_*.log
         find logs -name "BKM_*.log" -type f -delete
 
     - name: Commit and push changes
@@ -176,7 +181,7 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git pull origin main
-        git add logs/ Data/BKM_Datasets.csv
+        git add logs/*.zip Data/BKM_Datasets.csv
         git commit -m "Update BKM Data and Logs - $(date +'%Y-%m-%d')"
         git push
       env:

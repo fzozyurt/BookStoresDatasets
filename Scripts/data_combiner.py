@@ -112,7 +112,8 @@ def combine_dataset(site_name, job_count=5):
 
 
 if __name__ == "__main__":
-    from Scripts.additional import log_config, log_combine
+    from Scripts.additional import log_combine
+    from Scripts.logging_utils import setup_logging
     
     parser = argparse.ArgumentParser(description='Combine scraped datasets.')
     parser.add_argument('site', choices=['KY', 'BKM'], help='Site datasets to combine (KY or BKM)')
@@ -122,7 +123,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     log_file = args.log_file or f"{args.site}_combine.log"
-    log_config(log_file)
+    setup_logging(log_file=log_file)
     
     os.environ['ID'] = args.site  # For log_combine function
     
