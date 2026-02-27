@@ -4,9 +4,9 @@ import os
 from kaggle.api.kaggle_api_extended import KaggleApi
 
 
-from additional import log_config
+from Scripts.logging_utils import setup_logging
 
-log_config(os.getenv('LOG_FILE'))
+setup_logging(log_file=os.getenv('LOG_FILE'))
 
 def publish_to_kaggle(folder, message):
     logging.info(f"Starting publish_to_kaggle with folder: {folder} and message: {message}")

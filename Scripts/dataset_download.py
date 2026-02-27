@@ -3,10 +3,10 @@ import os
 import logging
 from kaggle.api.kaggle_api_extended import KaggleApi
 
-from Scripts.additional import log_config
+from Scripts.logging_utils import setup_logging
 import argparse
 
-log_config(os.getenv('LOG_FILE'))
+setup_logging(log_file=os.getenv('LOG_FILE'))
 
 def download_kaggle_dataset(dataset_name):
     logging.info(f"Starting download for dataset: {dataset_name}")

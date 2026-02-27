@@ -56,8 +56,8 @@ class BaseScraper(ABC):
         if not log_format:
             log_format = f'%(asctime)s - %(levelname)s - {self.matrix_id} - %(message)s'
             
-        from Scripts.additional import log_config
-        log_config(log_file, log_format)
+        from Scripts.logging_utils import setup_logging
+        setup_logging(log_file=log_file, log_format=log_format)
         
     def load_dataset(self):
         """Load existing dataset for comparison"""

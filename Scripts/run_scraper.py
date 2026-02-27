@@ -8,7 +8,7 @@ import argparse
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Scripts.scrapers.ky_scraper import KitapYurduScraper
 from Scripts.scrapers.bkm_scraper import BkmKitapScraper
-from Scripts.additional import log_config
+from Scripts.logging_utils import setup_logging
 
 
 def main():
@@ -55,7 +55,7 @@ def main():
     log_file = args.log_file or f"{args.site}_{matrix_id}.log"
     if '/' in log_file:
         log_file = os.path.basename(log_file)  # Only use filename part
-    log_config(log_file, f'%(asctime)s - %(levelname)s - {matrix_id} - %(message)s')
+    setup_logging(log_file=log_file, log_format=f'%(asctime)s - %(levelname)s - {matrix_id} - %(message)s')
         
     # Run the scraper
     if args.site == 'KY':

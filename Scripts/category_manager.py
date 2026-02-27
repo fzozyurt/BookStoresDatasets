@@ -75,7 +75,7 @@ def scrape_categories(site_name, parts=5, output_dir='Categories'):
 
 
 if __name__ == "__main__":
-    from Scripts.additional import log_config
+    from Scripts.logging_utils import setup_logging
     
     parser = argparse.ArgumentParser(description='Scrape categories from specified site.')
     parser.add_argument('site', choices=['KY', 'BKM'], help='Site to scrape categories from (KY or BKM)')
@@ -85,6 +85,6 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    log_config(args.log_file)
+    setup_logging(log_file=args.log_file)
     
     scrape_categories(args.site, args.parts, args.output_dir)

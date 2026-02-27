@@ -8,8 +8,8 @@ def rename_log_file():
     today = datetime.now().strftime('%d%m%Y%H%M')
 
     # Define the old and new file names
-    old_file = f'logs/{ID}.log'
-    new_file = f'logs/{ID}{today}.log'
+    old_file = f'logs/{ID}_errors.log'
+    new_file = f'logs/{ID}_errors_{today}.log'
 
     # Rename the file
     if os.path.exists(old_file):
