@@ -25,6 +25,9 @@ class Product(BaseModel):
     store: str
     scraped_at: datetime
     image_url: str | None = None
+    isbn: str = ""
+    currency: str = "TRY"
+    availability: str = ""
 
     @property
     def csv_columns(self) -> list[str]:
@@ -38,6 +41,9 @@ class Product(BaseModel):
             "Site",
             "Tarih",
             "Resim",
+            "ISBN",
+            "Para Birimi",
+            "Stok Durumu",
         ]
 
     def to_csv_row(self) -> list[str | int | float]:
@@ -51,4 +57,7 @@ class Product(BaseModel):
             self.store,
             self.scraped_at.strftime("%Y-%m-%d %H:%M:%S"),
             self.image_url or "",
+            self.isbn,
+            self.currency,
+            self.availability,
         ]

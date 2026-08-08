@@ -22,6 +22,7 @@ class KitapYurduAdapter(StorePort):
     store = "kitapyurdu"
     display_name = "Kitap Yurdu"
     site_url = "https://www.kitapyurdu.com"
+    domain = "www.kitapyurdu.com"
 
     async def fetch_categories(self) -> list[Category]:
         soup = await self.get_soup(f"{self.site_url}/")
@@ -56,7 +57,7 @@ class KitapYurduAdapter(StorePort):
                 break
             yield soup
 
-    def parse_products(self, soup: BeautifulSoup, category: Category) -> list[dict]:
+    def parse_dom_products(self, soup: BeautifulSoup, category: Category) -> list[dict]:
         raw: list[dict] = []
         for card in soup.select(f"div.{_PRODUCT_CARD}"):
             title = card.select_one(".ky-product-title")

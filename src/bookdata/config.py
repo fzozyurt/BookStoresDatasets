@@ -19,9 +19,14 @@ class Settings:
     retry_attempts: int = 3
     retry_backoff_base: float = 2.0
     min_request_interval: float = 0.2
+    respect_robots: bool = False
 
     per_category_max_pages: int = 50
     kaggle_dataset: str | None = None
+
+    match_threshold: float = 0.95
+    review_threshold: float = 0.75
+    author_match_threshold: float = 0.85
 
     store: str = "bkm"
 
@@ -36,8 +41,12 @@ class Settings:
             request_timeout=float(os.getenv("BOOKDATA_TIMEOUT", "20")),
             retry_attempts=int(os.getenv("BOOKDATA_RETRY_ATTEMPTS", "3")),
             min_request_interval=float(os.getenv("BOOKDATA_MIN_INTERVAL", "0.2")),
+            respect_robots=os.getenv("BOOKDATA_RESPECT_ROBOTS", "").lower() in {"1", "true", "yes"},
             per_category_max_pages=int(os.getenv("BOOKDATA_MAX_PAGES", "50")),
             kaggle_dataset=os.getenv("BOOKDATA_KAGGLE_DATASET"),
+            match_threshold=float(os.getenv("BOOKDATA_MATCH_THRESHOLD", "0.95")),
+            review_threshold=float(os.getenv("BOOKDATA_REVIEW_THRESHOLD", "0.75")),
+            author_match_threshold=float(os.getenv("BOOKDATA_AUTHOR_MATCH_THRESHOLD", "0.85")),
             store=os.getenv("BOOKDATA_STORE", "bkm"),
         )
 

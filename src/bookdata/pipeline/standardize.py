@@ -34,8 +34,16 @@ def parse_price(text: str) -> float | None:
     return value if value > 0 else None
 
 
+def _raw_price(raw: dict) -> str:
+    """JSON-LD sayısal fiyatını text'e, metni olduğu gibi iletir."""
+    price = raw.get("price")
+    if isinstance(price, (int, float)):
+        return f"{price:.2f}".replace(".", ",")
+    return str(raw.get("price_text", ""))
+
+
 def normalize(raw: dict, store: str, display_name: str) -> Product | None:
-    price = parse_price(raw.get("price_text", ""))
+    price = parse_price(_raw_price(raw))
     if price is None or not raw.get("title") or not raw.get("url"):
         return None
     return Product(
@@ -48,6 +56,9 @@ def normalize(raw: dict, store: str, display_name: str) -> Product | None:
         store=display_name,
         scraped_at=datetime.now(UTC),
         image_url=raw.get("image_url"),
+        isbn=raw.get("isbn", ""),
+        currency=str(raw.get("currency", "TRY")).upper(),
+        availability=raw.get("availability", ""),
     )
 
 

@@ -24,11 +24,17 @@ logger = logging.getLogger(__name__)
 
 
 class StorePort(ABC):
-    """Bir kitap sitesinin web arayüzünü modelleyen soyut port."""
+    """Bir kitap sitesinin web arayüzünü modelleyen soyut port.
+
+    Adapter'lar yalnızca siteye özel işleri yapar: kategori listesi, sayfalama ve
+    DOM'dan ham ürün çıkarma. JSON-LD (yapılandırılmış veri) birleştirmesi core'da
+    `parse_products` içinde yapılır; adapter'lar bunu düşünmez.
+    """
 
     store: str
     display_name: str
     site_url: str
+    domain: str = ""
 
     def __init__(self, http: AsyncHTTPClient, settings: Settings) -> None:
         self.http = http
@@ -55,8 +61,20 @@ class StorePort(ABC):
         """Kategoriye ait tüm sayfa HTML'lerini (sayfalama dahil) üretir."""
 
     @abstractmethod
+    def parse_dom_products(self, soup: BeautifulSoup, category: Category) -> list[dict]:
+        """Sayfadan DOM selectors ile ham ürün dict'leri çıkarır."""
+
     def parse_products(self, soup: BeautifulSoup, category: Category) -> list[dict]:
-        """Sayfadan ham ürün dict'leri çıkarır."""
+        """DOM çıktısını JSON-LD verisiyle zenginleştirir (structured data first)."""
+        from bookdata.pipeline.extract import merge_products, products_from_json_ld
+
+        dom = self.parse_dom_products(soup, category)
+        ld = products_from_json_ld(soup, category.name)
+        if not ld:
+            return dom
+        merged = merge_products(dom, ld)
+        logger.info("JSON-LD zenginleştirmesi (%s): %s DOM + %s LD", self.store, len(dom), len(ld))
+        return merged
 
     @property
     def stats(self) -> dict[str, int]:

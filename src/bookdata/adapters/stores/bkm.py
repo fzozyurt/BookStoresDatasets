@@ -22,6 +22,7 @@ class BkmKitapAdapter(StorePort):
     store = "bkm"
     display_name = "BKM Kitap"
     site_url = "https://www.bkmkitap.com"
+    domain = "www.bkmkitap.com"
 
     async def fetch_categories(self) -> list[Category]:
         soup = await self.get_soup(f"{self.site_url}/kategori-listesi")
@@ -58,7 +59,7 @@ class BkmKitapAdapter(StorePort):
                 pages.append(int(match.group(1)))
         return max(pages, default=0)
 
-    def parse_products(self, soup: BeautifulSoup, category: Category) -> list[dict]:
+    def parse_dom_products(self, soup: BeautifulSoup, category: Category) -> list[dict]:
         raw: list[dict] = []
         for item in soup.select("div.product-item"):
             title = item.select_one("a.product-title")

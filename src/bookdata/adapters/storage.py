@@ -10,7 +10,20 @@ from bookdata.models import Product
 
 logger = logging.getLogger(__name__)
 
-HEADER = ["Kitap İsmi", "Yazar", "Yayınevi", "Kategori", "Fiyat", "URL", "Site", "Tarih", "Resim"]
+HEADER = [
+    "Kitap İsmi",
+    "Yazar",
+    "Yayınevi",
+    "Kategori",
+    "Fiyat",
+    "URL",
+    "Site",
+    "Tarih",
+    "Resim",
+    "ISBN",
+    "Para Birimi",
+    "Stok Durumu",
+]
 
 
 class DatasetStore:

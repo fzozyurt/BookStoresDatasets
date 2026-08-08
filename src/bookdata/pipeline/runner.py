@@ -13,6 +13,8 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
+import httpx
+
 from bookdata.adapters.http import AsyncHTTPClient
 from bookdata.adapters.storage import DatasetStore
 from bookdata.adapters.stores.base import StorePort
@@ -47,6 +49,16 @@ def get_store_class(settings: Settings) -> type[StorePort]:
         options = ", ".join(STORE_REGISTRY)
         raise KeyError(f"Bilinmeyen mağaza: {settings.store}. Seçenekler: {options}")
     return adapter_cls
+
+
+def resolve_adapter(url: str) -> type[StorePort] | None:
+    """URL'den host'a bakarak kayıtlı adapter'ı döndürür (registry, if/else yok)."""
+    host = httpx.URL(url).host
+    for adapter_cls in STORE_REGISTRY.values():
+        domain = adapter_cls.domain
+        if domain and (host == domain or host.endswith("." + domain)):
+            return adapter_cls
+    return None
 
 
 async def run_scrape(settings: Settings) -> ScrapeResult:

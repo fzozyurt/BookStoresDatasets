@@ -17,8 +17,10 @@ hands-free.
 
 ## Highlights
 
-- ⚡ **Async scraping** — `httpx`-based concurrent fetcher with retries, backoff and per-host rate limiting
+- ⚡ **Async scraping** — `httpx`-based concurrent fetcher with retries, backoff, per-host rate limiting and `robots.txt` support
 - 🧹 **Port-adapter architecture** — clean separation of concerns, mockable and fully unit-tested
+- 🧾 **Structured-data extraction** — JSON-LD (`Product`/`Book`/`ItemList`) parsed first, DOM used as fallback; ISBN, currency and stock availability captured
+- 🔗 **LLM-free product matching** — cross-store matching engine: ISBN → publisher bucket → RapidFuzz title+author fuzzy, with MATCH / REVIEW / DIFFERENT confidence bands
 - 📈 **Price-diff engine** — vectorized pandas diff so the dataset only grows with real price changes
 - 🗂️ **Centralized ignore rules** — one global `ignore_categories.txt` applies to every store
 - 🤖 **Zero-ops automation** — GitHub Actions runs on a CRON schedule *and* on demand
@@ -48,24 +50,27 @@ hands-free.
 
 ```
 src/bookdata/
-├── cli.py              # Typer CLI (scrape / categories / report / publish / stores)
+├── cli.py              # Typer CLI (scrape / categories / report / publish / inspect / stores)
 ├── config.py           # Settings from environment variables
 ├── logging_setup.py    # Central log configuration
-├── models.py           # Category / Product data models
+├── models.py           # Category / Product data models (isbn, currency, availability)
+├── errors.py           # Typed fetch/robots error hierarchy
+├── matching.py         # Cross-store matching engine (ISBN → publisher → fuzzy title+author)
 ├── analyze.py          # Price changes, weekly trends, summary stats
 ├── dashboard.py        # Plotly dashboard renderer (single-file HTML)
 ├── pipeline/
 │   ├── runner.py       # Orchestrates the scrape flow + store registry
+│   ├── extract.py      # JSON-LD product extraction ("structured data first")
 │   ├── filter.py       # Applies global ignore rules to categories
 │   ├── products.py     # Concurrent product collection
 │   ├── standardize.py  # Normalizes scraped rows into the dataset schema
 │   └── merge.py        # Computes price diffs against the last known price
 └── adapters/
-    ├── http.py         # Async HTTP client (retries, rate limiting)
+    ├── http.py         # Async HTTP client (retries, rate limiting, robots.txt)
     ├── kaggle.py       # Kaggle dataset publisher
     ├── storage.py      # CSV dataset store
     └── stores/
-        ├── base.py     # StorePort abstract interface
+        ├── base.py     # StorePort abstract interface (domain-based resolution)
         ├── bkm.py      # BKM Kitap adapter
         └── kitapyurdu.py  # Kitap Yurdu adapter
 ```
@@ -87,6 +92,8 @@ Every command runs through the `bookdata` CLI:
 | --- | --- |
 | `bookdata scrape <store>` | Category → filter → products → standardize → price diff → append to dataset |
 | `bookdata categories <store>` | List a store's categories (ignore rules applied) |
+| `bookdata inspect <url>` | Diagnose any URL: adapter match, HTTP status, JSON-LD + detected fields |
+| `bookdata match` | Match the same book across stores (ISBN → publisher → fuzzy); REVIEW rows → CSV |
 | `bookdata report` | Generate the interactive dashboard from all datasets |
 | `bookdata publish <store>` | Upload the dataset to Kaggle |
 | `bookdata stores` | List registered store adapters |
@@ -97,11 +104,27 @@ Examples:
 uv run bookdata scrape bkm
 uv run bookdata scrape kitapyurdu
 uv run bookdata categories bkm -n 20
+uv run bookdata inspect https://www.bkmkitap.com/kitap
+uv run bookdata match --match-threshold 0.95 --review-threshold 0.75
 uv run bookdata report -o Report/index.html
 uv run bookdata publish bkm
 ```
 
 `KY` / `BKM` shortcuts are accepted for `kitapyurdu` / `bkm`.
+
+### Cross-store matching
+
+`bookdata match` groups the same book across stores without an LLM:
+
+1. **ISBN equal** → `MATCH` (deterministic)
+2. No ISBN → same **publisher** (Brand) bucket → **title** (Model) fuzzy similarity + **author** fuzzy confirmation
+3. Confidence bands: `≥ 0.95` → `MATCH`, `0.75–0.95` → `REVIEW`, below → `DIFFERENT`
+4. Same title, different publisher → edition **variant** → `REVIEW` (human decides)
+
+Author participates fuzzily too — name order/spelling varies across stores
+("Rowling, J.K." vs "J. K. Rowling"). Ambiguous pairs are exported to
+`Match/review_<date>.csv` for manual review, and confident cross-store matches
+feed the dashboard's store price-comparison chart.
 
 ### Ignore rules
 
@@ -126,6 +149,10 @@ All settings are environment-driven — nothing is hardcoded:
 | `BOOKDATA_RETRY_ATTEMPTS` | `3` | Retries per request |
 | `BOOKDATA_MIN_INTERVAL` | `0.2` | Min seconds between requests per host |
 | `BOOKDATA_MAX_PAGES` | `50` | Max pagination pages per category |
+| `BOOKDATA_RESPECT_ROBOTS` | `false` | Respect `robots.txt` (Disallow) rules before fetching |
+| `BOOKDATA_MATCH_THRESHOLD` | `0.95` | Title similarity for `MATCH` |
+| `BOOKDATA_REVIEW_THRESHOLD` | `0.75` | Title similarity floor for `REVIEW` |
+| `BOOKDATA_AUTHOR_MATCH_THRESHOLD` | `0.85` | Author similarity needed to confirm a `MATCH` |
 | `BOOKDATA_KAGGLE_DATASET` | — | Kaggle dataset id (`owner/slug`) for publishing |
 | `KAGGLE_USERNAME` / `KAGGLE_KEY` | — | Kaggle API credentials |
 
@@ -160,6 +187,7 @@ The generated dashboard is a single self-contained HTML page:
 - **Category analysis** — change distribution across categories and stores
 - **Top movers** — 10 most increased / 10 most decreased titles
 - **Weekly trend** — average price over time
+- **Store comparison** — matched books (via the matching engine) with per-store prices, top price gaps
 
 Plotly loads from a CDN, keeping the HTML tiny while staying fully interactive.
 

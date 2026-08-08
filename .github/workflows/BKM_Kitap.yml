@@ -20,6 +20,7 @@ jobs:
     env:
       BOOKDATA_STORE: ${{ env.STORE }}
       BOOKDATA_LOG_DIR: logs
+      BOOKDATA_RESPECT_ROBOTS: "true"
       BOOKDATA_KAGGLE_DATASET: ${{ env.DATASET }}
       KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
       KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}

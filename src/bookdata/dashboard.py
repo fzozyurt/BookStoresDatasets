@@ -8,11 +8,53 @@ import pandas as pd
 import plotly.express as px
 
 from bookdata.analyze import price_changes, summary, weekly_trends
+from bookdata.matching import cross_store_prices, match_products, unique_listings
 
 
 def _bar(df: pd.DataFrame, x: str, y: str, color: str, title: str) -> str:
     fig = px.bar(df, x=x, y=y, color=color, title=title, text_auto=".1f")
     return fig.to_html(full_html=False, include_plotlyjs=False)
+
+
+def _horizontal_grouped_bar(df: pd.DataFrame, title: str, limit: int = 15) -> str:
+    fig = px.bar(
+        df,
+        x="Fiyat",
+        y="Kitap",
+        color="Site",
+        title=title,
+        orientation="h",
+        barmode="group",
+        text_auto=".2f",
+    )
+    return fig.to_html(full_html=False, include_plotlyjs=False)
+
+
+def _compare_chart(products: list[dict]) -> tuple[str, int, int]:
+    """Mağazalar arası eşleşen kitapların fiyat karşılaştırmasını üretir."""
+    result = match_products(products)
+    comp = cross_store_prices(products, result=result)
+    if comp.empty:
+        return "", len(result.groups), len(result.review)
+    wide = (
+        comp.pivot_table(index=["Anahtar", "Kitap"], columns="Site", values="Fiyat", aggfunc="min")
+        .reset_index()
+        .dropna()
+    )
+    store_cols = [c for c in wide.columns if c not in ("Anahtar", "Kitap")]
+    if len(store_cols) < 2:
+        return "", len(result.groups), len(result.review)
+    wide["Fark %"] = (
+        (wide[store_cols].max(axis=1) - wide[store_cols].min(axis=1))
+        / wide[store_cols].min(axis=1)
+        * 100
+    )
+    top = wide.reindex(wide["Fark %"].abs().sort_values(ascending=False).index).head(15)
+    long = top.melt(id_vars=["Kitap"], value_vars=store_cols, var_name="Site", value_name="Fiyat")
+    chart = _horizontal_grouped_bar(
+        long, "Eşleşen Kitaplar: Mağaza Fiyat Karşılaştırması (en büyük fark)"
+    )
+    return chart, len(result.groups), len(result.review)
 
 
 def _line(df: pd.DataFrame, title: str) -> str:
@@ -38,6 +80,9 @@ def render_dashboard(df: pd.DataFrame) -> str:
     top_up = changes.nlargest(10, "Değişim %")
     top_down = changes.nsmallest(10, "Değişim %")
 
+    listings = unique_listings(df)
+    chart_compare, matched_groups, review_count = _compare_chart(listings.to_dict("records"))
+
     last_view = (
         f"{stats['son_goruntuleme']:%d.%m.%Y}" if not pd.isna(stats["son_goruntuleme"]) else "—"
     )
@@ -48,6 +93,15 @@ def render_dashboard(df: pd.DataFrame) -> str:
     chart_trend = _line(trends, "Haftalık Ortalama Fiyat")
     chart_up = _bar(top_up, "Kitap", "Değişim %", "Site", "En Çok Artan 10 Kitap")
     chart_down = _bar(top_down, "Kitap", "Değişim %", "Site", "En Çok Düşen 10 Kitap")
+
+    compare_section = (
+        f'<div class="chart">{chart_compare}</div>'
+        if chart_compare
+        else '<div class="chart">Eşleşen çoklu mağaza kitabı bulunamadı.</div>'
+    )
+    compare_stat = (
+        f'<div class="stat">Eşleşen kitap <b>{matched_groups}</b> incelemede {review_count}</div>'
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="tr">
@@ -75,12 +129,14 @@ def render_dashboard(df: pd.DataFrame) -> str:
 <div class="stats">
   <div class="stat">Artan ürün <b class="up">{stats["artan"]}</b> ort. %{up}</div>
   <div class="stat">Azalan ürün <b class="down">{stats["azalan"]}</b> ort. %{down}</div>
+  {compare_stat}
 </div>
 <div class="chart">{chart_site}</div>
 <div class="chart">{chart_cat}</div>
 <div class="chart">{chart_trend}</div>
 <div class="chart">{chart_up}</div>
 <div class="chart">{chart_down}</div>
+{compare_section}
 </body>
 </html>"""
 

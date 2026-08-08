@@ -1,6 +1,4 @@
-# Loglar: içerik commit edilmez, klasör .gitkeep ile korunur
-logs/*
-!logs/.gitkeep
+# Loglar: repo güncel kalsın diye commit edilir (GitHub Actions her çalışmada günceller)
 
 # Veriler ve raporlar git'te tutulmaz
 Data/
