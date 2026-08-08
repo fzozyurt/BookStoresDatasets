@@ -32,10 +32,6 @@ jobs:
             dataset_var: KAGGLE_DATASET_KY
             dataset_file: KY_Datasets.csv
             local_file: kitapyurdu_Datasets.csv
-    if: |
-      github.event.inputs.store == '' ||
-      github.event.inputs.store == 'all' ||
-      github.event.inputs.store == matrix.store
     env:
       BOOKDATA_STORE: ${{ matrix.store }}
       BOOKDATA_LOG_DIR: logs
@@ -52,10 +48,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      # matrix bağlamı job-level 'if'te kullanılamadığı için seçim filtreleri
+      # step'lere uygulanır. CRON / 'all' → her iki mağaza; belirli mağaza → sadece o.
       - name: Install dependencies
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.store == 'all' || github.event.inputs.store == matrix.store }}
         run: uv sync --frozen
 
       - name: Download previous dataset from Kaggle
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.store == 'all' || github.event.inputs.store == matrix.store }}
         run: |
           mkdir -p Data
           if uv run kaggle datasets download -d "$BOOKDATA_KAGGLE_DATASET" -p Data --unzip; then
@@ -63,12 +63,15 @@ jobs:
           fi
 
       - name: Scrape and update dataset
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.store == 'all' || github.event.inputs.store == matrix.store }}
         run: uv run bookdata scrape "${{ matrix.store }}"
 
       - name: Publish dataset to Kaggle
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.store == 'all' || github.event.inputs.store == matrix.store }}
         run: uv run bookdata publish "${{ matrix.store }}"
 
       - name: Commit logs
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.store == 'all' || github.event.inputs.store == matrix.store }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
