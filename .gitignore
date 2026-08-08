@@ -1,4 +1,19 @@
-logs/*.log
-logs/*.log.*
+# Loglar: içerik commit edilmez, klasör .gitkeep ile korunur
+logs/*
+!logs/.gitkeep
 
-*.pyc
+# Veriler ve raporlar git'te tutulmaz
+Data/
+Dataset/
+Report/
+Categories/
+
+# Python / cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# OS
+.DS_Store

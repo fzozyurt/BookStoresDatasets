@@ -1,8 +1,0 @@
-pandas
-selenium
-numpy
-requests
-kaggle
-beautifulsoup4
-tenacity
-plotly

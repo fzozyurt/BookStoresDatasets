@@ -1,0 +1,48 @@
+[project]
+name = "bookdata"
+version = "0.1.0"
+description = "BKM ve Kitapyurdu fiyat izleme: port-adapter mimari ile temiz scraping pipeline"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "httpx[http2]>=0.27",
+    "kaggle>=1.6",
+    "pandas>=2.2",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+    "tenacity>=9.0",
+    "typer>=0.12",
+]
+
+[project.optional-dependencies]
+report = ["plotly>=5.24"]
+
+[project.scripts]
+bookdata = "bookdata.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = true
+managed = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+lint.select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+lint.ignore = ["SIM117"]
+extend-exclude = [".venv", "Data", "Report", "logs", "Report"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

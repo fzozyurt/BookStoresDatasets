@@ -1,147 +1,186 @@
-# BookStores Datasets - Web Scraper Project
+# BookStores Datasets
 
-Kitap satış sitelerinden veri kazıma (web scraping) ile kitap bilgilerini toplayan modüler bir sistem.
+> Automated book price tracking for Turkish online bookstores — scrape → diff → publish → visualize.
 
-## Proje Yapısı
+[![Python](https://img.shields.io/badge/python-3.12-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![uv](https://img.shields.io/badge/uv-managed-2f8c9f?logo=astral)](https://docs.astral.sh/uv/)
+[![CI](https://img.shields.io/badge/CI-lint%20%2B%20tests-2088ff)](#automation)
+[![Kaggle](https://img.shields.io/badge/Data-Kaggle-20beff?logo=kaggle)](https://www.kaggle.com/)
+[![GitHub Pages](https://img.shields.io/badge/Dashboard-GitHub%20Pages-222222?logo=github)](https://pages.github.com/)
+[![License](https://img.shields.io/badge/license-MIT-green)](#license)
 
-- `.github/workflows/`: GitHub Actions workflow dosyaları
-- `Categories/`: Kazıma için kullanılan kategori JSON dosyaları
-- `Data/`: Veri dosyaları (referans CSV'ler)
-- `Dataset/`: Kazınan veri setleri (çıktı dosyaları)
-- `logs/`: Log dosyaları
-- `Report/`: Haftalık oluşturulan analiz raporları ve dashboard'lar
-- `Scripts/`: Python betikleri
-  - `additional.py`: Yardımcı fonksiyonlar ve loglama yapılandırması
-  - `category_manager.py`: Kategori kazıma ve bölme işlemleri
-  - `data_combiner.py`: Parçalı verileri birleştirme işlemleri
-  - `dataset_download.py`: Veri setlerini Kaggle'dan indirme
-  - `dataset_upload.py`: Veri setlerini Kaggle'a yükleme
-  - `rename_log.py`: Log isimlerini yeniden adlandırma 
-  - `report.py`: Raporlama ve dashboard oluşturma işlemleri
-  - `run_scraper.py`: Kazıyıcı çalıştırma ana modülü
-  - `Selenium.py`: Selenium ile tarayıcı otomasyonu
-  - `scrapers/`: Kazıyıcı sınıflar
-    - `base_scraper.py`: Temel kazıyıcı sınıf
-    - `ky_scraper.py`: KitapYurdu kazıyıcısı
-    - `bkm_scraper.py`: BKM Kitap kazıyıcısı
-- `requirements.txt`: Gerekli Python paketleri
+`bookdata` is a clean, testable web-scraping pipeline that tracks book prices across Turkish
+bookstores. It scrapes categories and products asynchronously, normalizes the data, computes
+price changes, and maintains an append-only CSV dataset that lives on **Kaggle**. A scheduled
+CI job renders an interactive **Plotly dashboard** and publishes it to **GitHub Pages** — fully
+hands-free.
 
-## Kurulum
+## Highlights
 
-Gerekli paketleri yükleyin:
-```sh
-pip install -r requirements.txt
+- ⚡ **Async scraping** — `httpx`-based concurrent fetcher with retries, backoff and per-host rate limiting
+- 🧹 **Port-adapter architecture** — clean separation of concerns, mockable and fully unit-tested
+- 📈 **Price-diff engine** — vectorized pandas diff so the dataset only grows with real price changes
+- 🗂️ **Centralized ignore rules** — one global `ignore_categories.txt` applies to every store
+- 🤖 **Zero-ops automation** — GitHub Actions runs on a CRON schedule *and* on demand
+- 📊 **Interactive dashboard** — Plotly charts in a single small HTML file (CDN-hosted)
+- 🔓 **Open source by default** — no credentials or personal IDs in the codebase; all configured via environment
+
+## Architecture
+
+```
+                 ┌────────────────────────────── GitHub Actions ─────────────────────────────┐
+                 │   schedule / workflow_dispatch                                             │
+                 ▼                                                                           │
+        ┌──────────────┐    ┌──────────────┐   ┌───────────────┐   ┌───────────────────┐      │
+        │ fetch_        │    │ pipeline     │   │ dataset       │   │ Kaggle Publisher  │      │
+        │ categories    ├───▶│ filter →     ├──▶│ store (CSV)   ├──▶│ (append-only)     │      │
+        │ fetch_        │    │ standardize  │   │ price diff    │   └───────────────────┘      │
+        │ products      │    │ → merge      │   └───────┬───────┘                             │
+        └──────────────┘    └──────────────┘           │                                      │
+                                                       ▼                                      │
+                                        ┌──────────────────────┐   ┌───────────────────┐       │
+                                        │ analyze + dashboard  │──▶│ GitHub Pages       │──────┘
+                                        │ (Plotly HTML)        │   │ (public dashboard) │
+                                        └──────────────────────┘   └───────────────────┘
 ```
 
-## Kullanım
+## Project structure
 
-### Manuel Kullanım
-
-#### 1. Kategorileri Kazıma ve Bölümlere Ayırma
-
-```sh
-python -m Scripts.category_manager KY --parts 5 --output-dir Categories
-python -m Scripts.category_manager BKM --parts 5 --output-dir Categories
+```
+src/bookdata/
+├── cli.py              # Typer CLI (scrape / categories / report / publish / stores)
+├── config.py           # Settings from environment variables
+├── logging_setup.py    # Central log configuration
+├── models.py           # Category / Product data models
+├── analyze.py          # Price changes, weekly trends, summary stats
+├── dashboard.py        # Plotly dashboard renderer (single-file HTML)
+├── pipeline/
+│   ├── runner.py       # Orchestrates the scrape flow + store registry
+│   ├── filter.py       # Applies global ignore rules to categories
+│   ├── products.py     # Concurrent product collection
+│   ├── standardize.py  # Normalizes scraped rows into the dataset schema
+│   └── merge.py        # Computes price diffs against the last known price
+└── adapters/
+    ├── http.py         # Async HTTP client (retries, rate limiting)
+    ├── kaggle.py       # Kaggle dataset publisher
+    ├── storage.py      # CSV dataset store
+    └── stores/
+        ├── base.py     # StorePort abstract interface
+        ├── bkm.py      # BKM Kitap adapter
+        └── kitapyurdu.py  # Kitap Yurdu adapter
 ```
 
-#### 2. Veri Kazıma (Tek Bir Parça)
+## Quick start
+
+Requires [uv](https://docs.astral.sh/uv/).
 
 ```sh
-python -m Scripts.run_scraper KY --matrix-id 1 --categories-file Categories/categories_1.json --workers 5
-python -m Scripts.run_scraper BKM --matrix-id 1 --categories-file Categories/categories_1.json --workers 5
+uv sync                 # install runtime dependencies
+uv sync --extra report  # + plotly for the dashboard
 ```
 
-#### 3. Kazınan Verileri Birleştirme
+## Usage
+
+Every command runs through the `bookdata` CLI:
+
+| Command | Description |
+| --- | --- |
+| `bookdata scrape <store>` | Category → filter → products → standardize → price diff → append to dataset |
+| `bookdata categories <store>` | List a store's categories (ignore rules applied) |
+| `bookdata report` | Generate the interactive dashboard from all datasets |
+| `bookdata publish <store>` | Upload the dataset to Kaggle |
+| `bookdata stores` | List registered store adapters |
+
+Examples:
 
 ```sh
-python -m Scripts.data_combiner KY --job-count 5
-python -m Scripts.data_combiner BKM --job-count 5
+uv run bookdata scrape bkm
+uv run bookdata scrape kitapyurdu
+uv run bookdata categories bkm -n 20
+uv run bookdata report -o Report/index.html
+uv run bookdata publish bkm
 ```
 
-#### 4. Kaggle'a Veri Seti Yükleme
+`KY` / `BKM` shortcuts are accepted for `kitapyurdu` / `bkm`.
+
+### Ignore rules
+
+`ignore_categories.txt` holds one pattern per line (blank lines and `#` comments are ignored).
+Any category whose name or URL contains a pattern is skipped — **for every store**. This is the
+single source of truth for "not a book" categories (stationery, toys, accessories, music, film…).
+Override the file location with `BOOKDATA_IGNORE_FILE`.
+
+### Configuration
+
+All settings are environment-driven — nothing is hardcoded:
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `BOOKDATA_STORE` | `bkm` | Default store for commands that need one |
+| `BOOKDATA_DATA_DIR` | `Data` | Where `*_Datasets.csv` files live |
+| `BOOKDATA_LOG_DIR` | `logs` | Log output directory |
+| `BOOKDATA_LOG_LEVEL` | `INFO` | Log verbosity |
+| `BOOKDATA_IGNORE_FILE` | `ignore_categories.txt` | Global category ignore patterns |
+| `BOOKDATA_CONCURRENCY` | `12` | Parallel HTTP requests |
+| `BOOKDATA_TIMEOUT` | `20` | Request timeout (seconds) |
+| `BOOKDATA_RETRY_ATTEMPTS` | `3` | Retries per request |
+| `BOOKDATA_MIN_INTERVAL` | `0.2` | Min seconds between requests per host |
+| `BOOKDATA_MAX_PAGES` | `50` | Max pagination pages per category |
+| `BOOKDATA_KAGGLE_DATASET` | — | Kaggle dataset id (`owner/slug`) for publishing |
+| `KAGGLE_USERNAME` / `KAGGLE_KEY` | — | Kaggle API credentials |
+
+## Automation
+
+GitHub Actions drives everything — every workflow runs on a **CRON schedule** and can be
+triggered **manually** from the Actions tab.
+
+| Workflow | Trigger | What it does |
+| --- | --- | --- |
+| `BKM_Kitap.yml` | CRON (2×/day) + manual | Scrapes BKM, updates the Kaggle dataset, commits logs |
+| `Kitap_Yurdu.yml` | CRON (2×/day) + manual | Scrapes Kitap Yurdu, updates the Kaggle dataset, commits logs |
+| `generate_report.yml` | CRON (weekly) + manual | Pulls datasets from Kaggle, renders the dashboard, deploys it to GitHub Pages |
+| `ci.yml` | push + PR | Runs `ruff check`, `ruff format --check`, and `pytest` |
+
+Scrape workflows download the latest dataset from Kaggle, compute price diffs against it,
+re-upload the updated dataset, and commit fresh logs — so the repository always shows recent
+activity and the data stays authoritative on Kaggle.
+
+### Setup
+
+1. Add repository **secrets**: `KAGGLE_USERNAME`, `KAGGLE_KEY`.
+2. Add repository **variables**: `KAGGLE_DATASET_BKM`, `KAGGLE_DATASET_KY` (e.g. `owner/your-dataset`).
+3. Enable **GitHub Pages** (source: GitHub Actions) for the dashboard deployment.
+
+## Dashboard features
+
+The generated dashboard is a single self-contained HTML page:
+
+- **Summary cards** — record/product counts, last scrape date, rising/falling stats
+- **Store comparison** — average price change per store
+- **Category analysis** — change distribution across categories and stores
+- **Top movers** — 10 most increased / 10 most decreased titles
+- **Weekly trend** — average price over time
+
+Plotly loads from a CDN, keeping the HTML tiny while staying fully interactive.
+
+## Adding a store
+
+1. Create an adapter in `src/bookdata/adapters/stores/` implementing `StorePort`
+   (use `bkm.py` or `kitapyurdu.py` as a template).
+2. Register it in `STORE_REGISTRY` in `src/bookdata/pipeline/runner.py`.
+3. Add any store-specific patterns to `ignore_categories.txt` if needed.
+
+## Development
 
 ```sh
-python -m Scripts.dataset_upload
+uv run pytest                 # run tests
+uv run ruff check src tests   # lint
+uv run ruff format src tests  # format
 ```
 
-#### 5. Analiz Raporu ve Dashboard Oluşturma
+The test suite covers filtering, standardization, merging, storage, analysis and dashboard
+rendering — and the CI workflow runs it on every push.
 
-```sh
-python -m Scripts.report
-```
+## License
 
-### GitHub Actions ile Otomatikleştirme
-
-Proje, GitHub Actions ile aşağıdaki işlemleri otomatik olarak gerçekleştirebilir:
-
-1. Kategorileri kazıma ve bölümlere ayırma
-2. Paralel olarak veri kazıma işlemlerini çalıştırma
-3. Kazınan verileri birleştirme
-4. Veri setini Kaggle'a yükleme
-5. Haftalık analiz raporu ve dashboard oluşturma (her Pazar otomatik çalışır)
-
-## İnteraktif Dashboard Özellikleri
-
-Sistem otomatik olarak her hafta Pazar günü aşağıdaki özelliklere sahip grafik dashboard'lar oluşturur:
-
-### 1. Site Analizi
-- Siteler arası fiyat değişimi karşılaştırması
-- Ortalama değişim yüzdeleri ve ürün sayıları
-
-### 2. Kategori Analizi
-- Kategori bazında fiyat değişimleri
-- Site ve kategori karşılaştırmaları
-
-### 3. Ürün Analizi
-- En çok fiyatı artan 10 kitap
-- En çok fiyatı düşen 10 kitap
-- İlk ve son fiyat karşılaştırmaları
-
-### 4. Haftalık Trend Analizi
-- Zaman içindeki fiyat değişimleri
-- Kategori ve site bazlı haftalık değişim grafikleri
-
-### 5. Detaylı Veri Görünümü
-- Filtreleme ve sıralama özellikleri
-- Arama, site filtresi ve değişim türüne göre filtreleme
-
-## Yeni Site Ekleme
-
-Yeni bir kitap satış sitesi eklemek için:
-
-1. `Scripts/scrapers/` dizininde `base_scraper.py` dosyasından türeyen yeni bir sınıf oluşturun:
-   ```python
-   from Scripts.scrapers.base_scraper import BaseScraper
-   
-   class NewStoreScraper(BaseScraper):
-       def __init__(self, matrix_id=None, workers_count=5):
-           super().__init__("NEW_STORE_CODE", matrix_id, workers_count)
-           # Site özel ayarlar
-       
-       # Gerekli metotları uygulayın:
-       def scrape_categories(self):
-           # Kategori kazıma kodu
-           pass
-       
-       def get_pagination(self, soup):
-           # Sayfalama kodu
-           pass
-       
-       def generate_pagination_urls(self, base_url, page_count):
-           # Sayfa URL'leri oluşturma kodu
-           pass
-       
-       def scrape_products(self, soup):
-           # Ürün kazıma kodu
-           pass
-   ```
-
-2. Yeni kazıyıcıyı `Scripts/run_scraper.py` dosyasına ekleyin
-3. Gerekirse, GitHub Actions workflow dosyalarını güncelleyin
-
-## Notlar
-
-- Kazıma işlemleri paralel threadler kullanarak optimize edilmiştir
-- Kategori bölümlendirme ile dağıtık çalışma desteklenir
-- Log yapılandırması merkezi olarak yönetilir
-- Dashboard'lar interaktif HTML dosyaları olarak oluşturulur ve GitHub'a otomatik commit edilir
+[MIT](LICENSE) © BookStores Datasets contributors

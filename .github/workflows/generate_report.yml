@@ -1,69 +1,57 @@
-name: Haftalık Rapor ve Dashboard Oluşturma
+name: Haftalık Dashboard ve Pages Yayını
 
 on:
   schedule:
-    - cron: '0 10 * * 0'  # Her Pazar saat 10:00 UTC'de çalışacak
-  workflow_dispatch:  # Manuel çalıştırma seçeneği
+    - cron: '0 10 * * 0'  # Her Pazar saat 10:00 UTC
+  workflow_dispatch:  # Manuel tetikleme
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 env:
-  LOG_FILE: 'report.log'
+  KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+  KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
 jobs:
-  generate-reports:
+  dashboard:
     runs-on: ubuntu-latest
-    strategy:
-        matrix:
-          Dataset: [bkm-book-dataset, kitap-yurdu-dataset]
-
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.10'
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: '3.12'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install plotly pandas kaggle
-    
-    - name: Kaggle Dataset Download
-      env:
-        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-      run: |
-        python -m Scripts.dataset_download --dataset_name furkanzeki/${{matrix.Dataset}}
+      - name: Install dependencies (plotly dahil)
+        run: uv sync --frozen --extra report
 
-    - name: Generate Report and Dashboard
-      run: |
-        mkdir -p Report
-        python -m Scripts.report
-        echo "Rapor oluşturma işlemi tamamlandı: $(date)"
+      - name: Download datasets from Kaggle
+        run: |
+          mkdir -p Data
+          uv run kaggle datasets download -d "${{ vars.KAGGLE_DATASET_BKM }}" -p Data --unzip || true
+          uv run kaggle datasets download -d "${{ vars.KAGGLE_DATASET_KY }}" -p Data --unzip || true
+          mv -f Data/BKM_Datasets.csv Data/bkm_Datasets.csv || true
+          mv -f Data/KY_Datasets.csv Data/kitapyurdu_Datasets.csv || true
 
-    - name: Check Report Generation 
-      id: check_report
-      run: |
-        if [ -d "Report" ] && ls Report/*.html 1> /dev/null 2>&1; then
-          echo "Report başarıyla oluşturuldu."
-          echo "REPORT_GENERATED=true" >> $GITHUB_ENV
-        else
-          echo "Report oluşturma hatası!"
-          echo "REPORT_GENERATED=false" >> $GITHUB_ENV
-          exit 1
-        fi
+      - name: Generate dashboard
+        run: uv run bookdata report -o Report/index.html
 
-    - name: Commit and push reports
-      if: env.REPORT_GENERATED == 'true'
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git pull origin main
-        git add Report/*.html
-        TODAY=$(date +'%Y-%m-%d')
-        git commit -m "Haftalık Rapor ve Dashboard eklendi - ${{ matrix.Dataset }} - $TODAY"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: Report
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

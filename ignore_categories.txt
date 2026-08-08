@@ -1,0 +1,11 @@
+# İşlenmeyecek kategoriler (her satır bir desen; kategori adı veya URL'de geçiyorsa atlanır)
+Kırtasiye
+Hobi
+Aksesuar
+Puzzle
+Oyuncak
+Oyun
+Süpriz
+CD
+Müzik
+Film
