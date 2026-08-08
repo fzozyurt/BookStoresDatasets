@@ -1,0 +1,81 @@
+name: Kazıma ve Kaggle Güncelleme
+
+on:
+  schedule:
+    - cron: '0 6,18 * * *'  # Günde iki kez (UTC) — her iki mağaza da
+  workflow_dispatch:        # Manuel tetikleme; store seçilebilir
+    inputs:
+      store:
+        description: 'Hangi mağaza kazınsın?'
+        type: choice
+        options:
+          - all
+          - bkm
+          - kitapyurdu
+        default: all
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - store: bkm
+            dataset_var: KAGGLE_DATASET_BKM
+            dataset_file: BKM_Datasets.csv
+            local_file: bkm_Datasets.csv
+          - store: kitapyurdu
+            dataset_var: KAGGLE_DATASET_KY
+            dataset_file: KY_Datasets.csv
+            local_file: kitapyurdu_Datasets.csv
+    if: |
+      github.event.inputs.store == '' ||
+      github.event.inputs.store == 'all' ||
+      github.event.inputs.store == matrix.store
+    env:
+      BOOKDATA_STORE: ${{ matrix.store }}
+      BOOKDATA_LOG_DIR: logs
+      BOOKDATA_RESPECT_ROBOTS: "true"
+      BOOKDATA_KAGGLE_DATASET: ${{ vars[matrix.dataset_var] }}
+      KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+      KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Download previous dataset from Kaggle
+        run: |
+          mkdir -p Data
+          if uv run kaggle datasets download -d "$BOOKDATA_KAGGLE_DATASET" -p Data --unzip; then
+            mv "Data/${{ matrix.dataset_file }}" "Data/${{ matrix.local_file }}"
+          fi
+
+      - name: Scrape and update dataset
+        run: uv run bookdata scrape "${{ matrix.store }}"
+
+      - name: Publish dataset to Kaggle
+        run: uv run bookdata publish "${{ matrix.store }}"
+
+      - name: Commit logs
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add logs/
+          if ! git diff --cached --quiet; then
+            git commit -m "Kazıma logları - ${{ matrix.store }} - $(date +'%Y-%m-%d')"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -163,10 +163,9 @@ triggered **manually** from the Actions tab.
 
 | Workflow | Trigger | What it does |
 | --- | --- | --- |
-| `BKM_Kitap.yml` | CRON (2×/day) + manual | Scrapes BKM, updates the Kaggle dataset, commits logs |
-| `Kitap_Yurdu.yml` | CRON (2×/day) + manual | Scrapes Kitap Yurdu, updates the Kaggle dataset, commits logs |
+| `scrape.yml` | CRON (2×/day) + manual | Scrapes both stores (matrix: `bkm` / `kitapyurdu`), updates the Kaggle datasets, commits logs. Manual run lets you pick `all` / `bkm` / `kitapyurdu` |
 | `generate_report.yml` | CRON (weekly) + manual | Pulls datasets from Kaggle, renders the dashboard, deploys it to GitHub Pages |
-| `ci.yml` | push + PR | Runs `ruff check`, `ruff format --check`, and `pytest` |
+| `ci.yml` | every push + PR + manual | Runs `ruff check`, `ruff format --check`, and `pytest` on every commit |
 
 Scrape workflows download the latest dataset from Kaggle, compute price diffs against it,
 re-upload the updated dataset, and commit fresh logs — so the repository always shows recent

@@ -1,9 +1,9 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
+  push:            # Her push'ta (tüm branch'ler) test koşar
   pull_request:
+  workflow_dispatch:  # Actions sekmesinden manuel çalıştırılabilir
 
 jobs:
   lint-and-test:
