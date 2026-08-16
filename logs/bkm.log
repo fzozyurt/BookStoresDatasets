@@ -4318,3 +4318,679 @@
 2026-08-16 06:42:56,071 | INFO    | bookdata.adapters.storage | Veri setine 2073 yeni kayıt eklendi: Data/bkm_Datasets.csv
 2026-08-16 06:42:56,091 | INFO    | bookdata.pipeline.runner | Özet: 246 kategori bulundu, 234 işlendi; 2141 ürün → 2073 kayıt eklendi (toplam 43282). İstek: 333, hata: 0
 2026-08-16 06:42:58,765 | INFO    | bookdata.adapters.kaggle | Kaggle yayını tamamlandı: furkanzeki/bkm-book-dataset (2026-08-16)
+2026-08-16 18:30:53,366 | INFO    | bookdata.pipeline.filter | Ignore kuralları gereği 12 kategori atlandı (10 desen)
+2026-08-16 18:30:54,313 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Selçuklu Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:30:54,743 | INFO    | bookdata.pipeline.products | Kategori 'Tavsiye Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:31:10,057 | INFO    | bookdata.pipeline.products | Kategori 'Psikoloji Başvuru Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:31:11,457 | INFO    | bookdata.pipeline.products | Kategori '4. Sınıf Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:31:11,600 | INFO    | bookdata.pipeline.products | Kategori 'Polisiye Romanlar': 1 sayfa, 12 ürün
+2026-08-16 18:31:11,787 | INFO    | bookdata.pipeline.products | Kategori 'Yapbozlu Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:31:16,130 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Türk Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:31:16,265 | INFO    | bookdata.pipeline.products | Kategori 'Latin Edebiyatı': 1 sayfa, 12 ürün
+2026-08-16 18:31:16,726 | INFO    | bookdata.pipeline.products | Kategori 'Yapıştırıcı ve Bantlar': 1 sayfa, 12 ürün
+2026-08-16 18:31:16,908 | INFO    | bookdata.pipeline.products | Kategori 'Fantastik Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:31:36,616 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ozel-egitim-kitaplari-1202
+2026-08-16 18:31:36,616 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Özel Eğitim Çocuk Kitapları): https://www.bkmkitap.com/ozel-egitim-kitaplari-1202
+2026-08-16 18:31:36,616 | INFO    | bookdata.pipeline.products | Kategori 'Özel Eğitim Çocuk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,617 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/roman-ve-oyku-kitaplari
+2026-08-16 18:31:36,617 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Roman ve Öykü Kitapları): https://www.bkmkitap.com/roman-ve-oyku-kitaplari
+2026-08-16 18:31:36,617 | INFO    | bookdata.pipeline.products | Kategori 'Roman ve Öykü Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,618 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/tiyatro-ve-piyes-kitaplari
+2026-08-16 18:31:36,619 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tiyatro ve Piyes Kitapları): https://www.bkmkitap.com/tiyatro-ve-piyes-kitaplari
+2026-08-16 18:31:36,619 | INFO    | bookdata.pipeline.products | Kategori 'Tiyatro ve Piyes Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,620 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-seri-katil-kitaplari
+2026-08-16 18:31:36,620 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Seri Katil Kitapları): https://www.bkmkitap.com/en-cok-satan-seri-katil-kitaplari
+2026-08-16 18:31:36,620 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Seri Katil Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,620 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/matbu-evraklar-ve-makbuzlar
+2026-08-16 18:31:36,620 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Matbu Evraklar ve Makbuzlar): https://www.bkmkitap.com/matbu-evraklar-ve-makbuzlar
+2026-08-16 18:31:36,621 | INFO    | bookdata.pipeline.products | Kategori 'Matbu Evraklar ve Makbuzlar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,621 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/turkiye-ve-cumhuriyet-tarihi-kitaplari
+2026-08-16 18:31:36,621 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Türkiye ve Cumhuriyet Tarihi Kitapları): https://www.bkmkitap.com/turkiye-ve-cumhuriyet-tarihi-kitaplari
+2026-08-16 18:31:36,621 | INFO    | bookdata.pipeline.products | Kategori 'Türkiye ve Cumhuriyet Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,622 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/gelisim-psikolojisi-kitaplari
+2026-08-16 18:31:36,622 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gelişim Psikolojisi Kitapları): https://www.bkmkitap.com/gelisim-psikolojisi-kitaplari
+2026-08-16 18:31:36,622 | INFO    | bookdata.pipeline.products | Kategori 'Gelişim Psikolojisi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,623 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/milletler-tarihi-kitaplari
+2026-08-16 18:31:36,623 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Milletler Tarihi Kitapları): https://www.bkmkitap.com/milletler-tarihi-kitaplari
+2026-08-16 18:31:36,623 | INFO    | bookdata.pipeline.products | Kategori 'Milletler Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,623 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/tarihsel-romanlar-kitaplari
+2026-08-16 18:31:36,624 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tarihi Romanlar): https://www.bkmkitap.com/tarihsel-romanlar-kitaplari
+2026-08-16 18:31:36,624 | INFO    | bookdata.pipeline.products | Kategori 'Tarihi Romanlar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,624 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/100-temel-eser-kitaplari
+2026-08-16 18:31:36,624 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (100 Temel Eser): https://www.bkmkitap.com/100-temel-eser-kitaplari
+2026-08-16 18:31:36,624 | INFO    | bookdata.pipeline.products | Kategori '100 Temel Eser': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,625 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/oyku-kitaplari
+2026-08-16 18:31:36,625 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Öykü Kitapları): https://www.bkmkitap.com/oyku-kitaplari
+2026-08-16 18:31:36,625 | INFO    | bookdata.pipeline.products | Kategori 'Öykü Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:36,625 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/bilim-kurgu-kitaplari
+2026-08-16 18:31:36,625 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Bilim Kurgu Kitapları): https://www.bkmkitap.com/bilim-kurgu-kitaplari
+2026-08-16 18:31:36,626 | INFO    | bookdata.pipeline.products | Kategori 'Bilim Kurgu Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,647 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/egitici-ve-ogretici-cocuk-kitaplari
+2026-08-16 18:31:56,648 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Eğitici ve Öğretici Çocuk Kitapları): https://www.bkmkitap.com/egitici-ve-ogretici-cocuk-kitaplari
+2026-08-16 18:31:56,648 | INFO    | bookdata.pipeline.products | Kategori 'Eğitici ve Öğretici Çocuk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,648 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/basvuru-kitaplari-610
+2026-08-16 18:31:56,648 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Başvuru Kitapları): https://www.bkmkitap.com/basvuru-kitaplari-610
+2026-08-16 18:31:56,648 | INFO    | bookdata.pipeline.products | Kategori 'Başvuru Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,649 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/roman-kitaplari
+2026-08-16 18:31:56,649 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Roman): https://www.bkmkitap.com/roman-kitaplari
+2026-08-16 18:31:56,649 | INFO    | bookdata.pipeline.products | Kategori 'Roman': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,650 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/soylesi-kitaplari
+2026-08-16 18:31:56,650 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Söyleşi Kitapları): https://www.bkmkitap.com/soylesi-kitaplari
+2026-08-16 18:31:56,650 | INFO    | bookdata.pipeline.products | Kategori 'Söyleşi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,651 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cizgi-roman-1212-kitaplari
+2026-08-16 18:31:56,651 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çizgi Roman Kitapları): https://www.bkmkitap.com/cizgi-roman-1212-kitaplari
+2026-08-16 18:31:56,651 | INFO    | bookdata.pipeline.products | Kategori 'Çizgi Roman Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,652 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/osmanli-tarihi-kitaplari
+2026-08-16 18:31:56,652 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Osmanlı Tarihi Kitapları): https://www.bkmkitap.com/osmanli-tarihi-kitaplari
+2026-08-16 18:31:56,652 | INFO    | bookdata.pipeline.products | Kategori 'Osmanlı Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,654 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/sanatsal-malzemeler
+2026-08-16 18:31:56,654 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Sanatsal Malzemeler): https://www.bkmkitap.com/sanatsal-malzemeler
+2026-08-16 18:31:56,654 | INFO    | bookdata.pipeline.products | Kategori 'Sanatsal Malzemeler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,654 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/0-3-yas-kitaplari
+2026-08-16 18:31:56,654 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (0-3 Yaş Kitapları): https://www.bkmkitap.com/0-3-yas-kitaplari
+2026-08-16 18:31:56,654 | INFO    | bookdata.pipeline.products | Kategori '0-3 Yaş Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,655 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/arastima-ve-inceleme-kitaplari
+2026-08-16 18:31:56,655 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Araştırma ve İnceleme Kitapları): https://www.bkmkitap.com/arastima-ve-inceleme-kitaplari
+2026-08-16 18:31:56,655 | INFO    | bookdata.pipeline.products | Kategori 'Araştırma ve İnceleme Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,655 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/karikatur-kitaplari
+2026-08-16 18:31:56,656 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Karikatürler): https://www.bkmkitap.com/karikatur-kitaplari
+2026-08-16 18:31:56,656 | INFO    | bookdata.pipeline.products | Kategori 'Karikatürler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,656 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/tarih-mitoloji-kitaplari
+2026-08-16 18:31:56,656 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tarih - Mitoloji Kitapları): https://www.bkmkitap.com/tarih-mitoloji-kitaplari
+2026-08-16 18:31:56,656 | INFO    | bookdata.pipeline.products | Kategori 'Tarih - Mitoloji Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:31:56,657 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/i-dunya-savasi-kitaplari
+2026-08-16 18:31:56,657 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (I. Dünya Savaşı Kitapları): https://www.bkmkitap.com/i-dunya-savasi-kitaplari
+2026-08-16 18:31:56,657 | INFO    | bookdata.pipeline.products | Kategori 'I. Dünya Savaşı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,003 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/anadolu-tarihi-kitaplari
+2026-08-16 18:32:27,003 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Anadolu Tarihi Kitapları): https://www.bkmkitap.com/anadolu-tarihi-kitaplari
+2026-08-16 18:32:27,003 | INFO    | bookdata.pipeline.products | Kategori 'Anadolu Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,003 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/edebiyat-referans-kitaplar
+2026-08-16 18:32:27,004 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Edebiyat Referans Kitaplar): https://www.bkmkitap.com/edebiyat-referans-kitaplar
+2026-08-16 18:32:27,004 | INFO    | bookdata.pipeline.products | Kategori 'Edebiyat Referans Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,005 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/gokturk-tarihi-kitaplari
+2026-08-16 18:32:27,005 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Göktürk Tarihi Kitapları): https://www.bkmkitap.com/gokturk-tarihi-kitaplari
+2026-08-16 18:32:27,006 | INFO    | bookdata.pipeline.products | Kategori 'Göktürk Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,007 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/1-sinif-kitaplari
+2026-08-16 18:32:27,007 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (1. Sınıf Kitapları): https://www.bkmkitap.com/1-sinif-kitaplari
+2026-08-16 18:32:27,007 | INFO    | bookdata.pipeline.products | Kategori '1. Sınıf Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,008 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/siir-kitaplari
+2026-08-16 18:32:27,008 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Şiir Kitapları): https://www.bkmkitap.com/siir-kitaplari
+2026-08-16 18:32:27,008 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Şiir Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,009 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kurt-edebiyati-kitaplari
+2026-08-16 18:32:27,009 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Kürt Edebiyatı): https://www.bkmkitap.com/kurt-edebiyati-kitaplari
+2026-08-16 18:32:27,009 | INFO    | bookdata.pipeline.products | Kategori 'Kürt Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,142 | INFO    | bookdata.pipeline.products | Kategori 'Setler': 1 sayfa, 12 ürün
+2026-08-16 18:32:27,143 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/din-egitimi-kitaplari
+2026-08-16 18:32:27,143 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Din Eğitimi Kitapları): https://www.bkmkitap.com/din-egitimi-kitaplari
+2026-08-16 18:32:27,143 | INFO    | bookdata.pipeline.products | Kategori 'Din Eğitimi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,144 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-boyama-kitaplari
+2026-08-16 18:32:27,144 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Boyama Kitapları): https://www.bkmkitap.com/cocuk-boyama-kitaplari
+2026-08-16 18:32:27,144 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Boyama Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,144 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/biyografik-ve-otobiyografik-kitaplar
+2026-08-16 18:32:27,145 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Biyografi ve Otobiyografi Kitapları): https://www.bkmkitap.com/biyografik-ve-otobiyografik-kitaplar
+2026-08-16 18:32:27,145 | INFO    | bookdata.pipeline.products | Kategori 'Biyografi ve Otobiyografi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,145 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genel-psikoloji-kitaplari
+2026-08-16 18:32:27,145 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Genel Psikoloji Kitapları): https://www.bkmkitap.com/genel-psikoloji-kitaplari
+2026-08-16 18:32:27,145 | INFO    | bookdata.pipeline.products | Kategori 'Genel Psikoloji Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:27,146 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/tarihi-kisilikler-kitaplari
+2026-08-16 18:32:27,146 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tarihi Kişilikler Kitapları): https://www.bkmkitap.com/tarihi-kisilikler-kitaplari
+2026-08-16 18:32:27,146 | INFO    | bookdata.pipeline.products | Kategori 'Tarihi Kişilikler Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,164 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/antolojii-kitaplari
+2026-08-16 18:32:47,164 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Antoloji Kitapları): https://www.bkmkitap.com/antolojii-kitaplari
+2026-08-16 18:32:47,165 | INFO    | bookdata.pipeline.products | Kategori 'Antoloji Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,165 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/divan-edebiyati-ve-halk-edebiyati-kitaplari
+2026-08-16 18:32:47,165 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Divan Edebiyatı ve Halk Edebiyatı Kitapları): https://www.bkmkitap.com/divan-edebiyati-ve-halk-edebiyati-kitaplari
+2026-08-16 18:32:47,165 | INFO    | bookdata.pipeline.products | Kategori 'Divan Edebiyatı ve Halk Edebiyatı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,166 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/biyoloji-ve-genetik-kitaplari
+2026-08-16 18:32:47,166 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Biyoloji - Genetik Kitapları): https://www.bkmkitap.com/biyoloji-ve-genetik-kitaplari
+2026-08-16 18:32:47,166 | INFO    | bookdata.pipeline.products | Kategori 'Biyoloji - Genetik Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,167 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-okunan-suc-kitaplari
+2026-08-16 18:32:47,167 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Okunan Suç Kitapları): https://www.bkmkitap.com/en-cok-okunan-suc-kitaplari
+2026-08-16 18:32:47,167 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Suç Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,168 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/arkeoloji-kitaplari
+2026-08-16 18:32:47,168 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Arkeoloji Kitapları): https://www.bkmkitap.com/arkeoloji-kitaplari
+2026-08-16 18:32:47,168 | INFO    | bookdata.pipeline.products | Kategori 'Arkeoloji Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,169 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ekol-ve-yaklasim-kitaplari
+2026-08-16 18:32:47,169 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ekol ve Yaklaşım Kitapları): https://www.bkmkitap.com/ekol-ve-yaklasim-kitaplari
+2026-08-16 18:32:47,169 | INFO    | bookdata.pipeline.products | Kategori 'Ekol ve Yaklaşım Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,170 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/aksiyon-ve-macera-kitaplari
+2026-08-16 18:32:47,170 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Aksiyon ve Macera Kitapları): https://www.bkmkitap.com/aksiyon-ve-macera-kitaplari
+2026-08-16 18:32:47,170 | INFO    | bookdata.pipeline.products | Kategori 'Aksiyon ve Macera Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,170 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/saglikli-yasam-kitaplari-4199
+2026-08-16 18:32:47,170 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Sağlıklı Yaşam Kitapları): https://www.bkmkitap.com/saglikli-yasam-kitaplari-4199
+2026-08-16 18:32:47,170 | INFO    | bookdata.pipeline.products | Kategori 'Sağlıklı Yaşam Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,171 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cizgi-roman-anime-ve-mangalar
+2026-08-16 18:32:47,171 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çizgi Roman - Anime ve Mangalar): https://www.bkmkitap.com/cizgi-roman-anime-ve-mangalar
+2026-08-16 18:32:47,171 | INFO    | bookdata.pipeline.products | Kategori 'Çizgi Roman - Anime ve Mangalar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,172 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/rus-edebiyati-kitaplari
+2026-08-16 18:32:47,172 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Rus Edebiyatı): https://www.bkmkitap.com/rus-edebiyati-kitaplari
+2026-08-16 18:32:47,172 | INFO    | bookdata.pipeline.products | Kategori 'Rus Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,173 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/dunya-tarihi-kitaplari
+2026-08-16 18:32:47,173 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Dünya Tarihi Kitapları): https://www.bkmkitap.com/dunya-tarihi-kitaplari
+2026-08-16 18:32:47,173 | INFO    | bookdata.pipeline.products | Kategori 'Dünya Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:32:47,173 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-gerilim-kitaplari
+2026-08-16 18:32:47,173 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Gerilim Kitapları): https://www.bkmkitap.com/en-cok-satan-gerilim-kitaplari
+2026-08-16 18:32:47,174 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Gerilim Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,211 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/masal-1057-kitaplari
+2026-08-16 18:33:07,211 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yetişkin Masal Kitapları): https://www.bkmkitap.com/masal-1057-kitaplari
+2026-08-16 18:33:07,211 | INFO    | bookdata.pipeline.products | Kategori 'Yetişkin Masal Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,211 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/psikolojik-danisma-kitaplari
+2026-08-16 18:33:07,211 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Psikolojik Danışma Kitapları ): https://www.bkmkitap.com/psikolojik-danisma-kitaplari
+2026-08-16 18:33:07,211 | INFO    | bookdata.pipeline.products | Kategori 'Psikolojik Danışma Kitapları ': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,212 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/anaokul
+2026-08-16 18:33:07,212 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Anaokulu): https://www.bkmkitap.com/anaokul
+2026-08-16 18:33:07,212 | INFO    | bookdata.pipeline.products | Kategori 'Anaokulu': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,213 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cok-satan-kitaplar
+2026-08-16 18:33:07,213 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çok Satanlar): https://www.bkmkitap.com/cok-satan-kitaplar
+2026-08-16 18:33:07,214 | INFO    | bookdata.pipeline.products | Kategori 'Çok Satanlar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,214 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/din-psikolojisi-kitaplari
+2026-08-16 18:33:07,214 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Din Psikolojisi Kitapları): https://www.bkmkitap.com/din-psikolojisi-kitaplari
+2026-08-16 18:33:07,215 | INFO    | bookdata.pipeline.products | Kategori 'Din Psikolojisi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,215 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/3-6-yas-kitaplari
+2026-08-16 18:33:07,215 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (3-6 Yaş Kitapları): https://www.bkmkitap.com/3-6-yas-kitaplari
+2026-08-16 18:33:07,215 | INFO    | bookdata.pipeline.products | Kategori '3-6 Yaş Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,216 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-psikolojisi-kitaplari
+2026-08-16 18:33:07,216 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Psikolojisi Kitapları): https://www.bkmkitap.com/cocuk-psikolojisi-kitaplari
+2026-08-16 18:33:07,216 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Psikolojisi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,217 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kalemler-veyazi-gerecleri
+2026-08-16 18:33:07,217 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Kalemler ve Yazı Gereçleri): https://www.bkmkitap.com/kalemler-veyazi-gerecleri
+2026-08-16 18:33:07,217 | INFO    | bookdata.pipeline.products | Kategori 'Kalemler ve Yazı Gereçleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,218 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ortadogu-ve-arap-edebiyati-kitaplari
+2026-08-16 18:33:07,218 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ortadoğu - Arap Edebiyatı Kitapları): https://www.bkmkitap.com/ortadogu-ve-arap-edebiyati-kitaplari
+2026-08-16 18:33:07,218 | INFO    | bookdata.pipeline.products | Kategori 'Ortadoğu - Arap Edebiyatı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,218 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-100-tarih-kitabi
+2026-08-16 18:33:07,219 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan 100 Tarih Kitabı): https://www.bkmkitap.com/en-cok-satan-100-tarih-kitabi
+2026-08-16 18:33:07,219 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan 100 Tarih Kitabı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,219 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yabanci-dilde-tarih-kitaplari
+2026-08-16 18:33:07,219 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yabancı Dilde Tarih Kitapları ): https://www.bkmkitap.com/yabanci-dilde-tarih-kitaplari
+2026-08-16 18:33:07,219 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Tarih Kitapları ': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:07,220 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ulke-rehberi-kitaplari
+2026-08-16 18:33:07,220 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ülke Rehberi Kitapları): https://www.bkmkitap.com/ulke-rehberi-kitaplari
+2026-08-16 18:33:07,220 | INFO    | bookdata.pipeline.products | Kategori 'Ülke Rehberi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,240 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/annelik-ve-cocuk-bakimi-kitaplari
+2026-08-16 18:33:27,240 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Annelik ve Çocuk Bakımı Kitapları): https://www.bkmkitap.com/annelik-ve-cocuk-bakimi-kitaplari
+2026-08-16 18:33:27,240 | INFO    | bookdata.pipeline.products | Kategori 'Annelik ve Çocuk Bakımı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,240 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/secili-arastirma-ve-tarih-kitaplari
+2026-08-16 18:33:27,240 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Seçili Araştırma ve Tarih Kitapları): https://www.bkmkitap.com/secili-arastirma-ve-tarih-kitaplari
+2026-08-16 18:33:27,241 | INFO    | bookdata.pipeline.products | Kategori 'Seçili Araştırma ve Tarih Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,241 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/turk-klasikleri-kitaplari
+2026-08-16 18:33:27,241 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Türk Klasikleri Kitapları): https://www.bkmkitap.com/turk-klasikleri-kitaplari
+2026-08-16 18:33:27,241 | INFO    | bookdata.pipeline.products | Kategori 'Türk Klasikleri Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,242 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/canta-ve-mataralar
+2026-08-16 18:33:27,243 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çanta ve Mataralar): https://www.bkmkitap.com/canta-ve-mataralar
+2026-08-16 18:33:27,243 | INFO    | bookdata.pipeline.products | Kategori 'Çanta ve Mataralar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,243 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/arac-ve-gerecler
+2026-08-16 18:33:27,243 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Araç ve Gereçler): https://www.bkmkitap.com/arac-ve-gerecler
+2026-08-16 18:33:27,244 | INFO    | bookdata.pipeline.products | Kategori 'Araç ve Gereçler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,244 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/mustafa-kemal-ataturk
+2026-08-16 18:33:27,244 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Mustafa Kemal Atatürk Kitapları): https://www.bkmkitap.com/mustafa-kemal-ataturk
+2026-08-16 18:33:27,244 | INFO    | bookdata.pipeline.products | Kategori 'Mustafa Kemal Atatürk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,246 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ani-mektup-gunluk-kitaplari
+2026-08-16 18:33:27,246 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Anı - Mektup - Günlük Kitapları): https://www.bkmkitap.com/ani-mektup-gunluk-kitaplari
+2026-08-16 18:33:27,247 | INFO    | bookdata.pipeline.products | Kategori 'Anı - Mektup - Günlük Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,247 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/derleme
+2026-08-16 18:33:27,247 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Derlemeler): https://www.bkmkitap.com/derleme
+2026-08-16 18:33:27,247 | INFO    | bookdata.pipeline.products | Kategori 'Derlemeler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,248 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kategori-listesi
+2026-08-16 18:33:27,248 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tüm Kategoriler): https://www.bkmkitap.com/kategori-listesi
+2026-08-16 18:33:27,248 | INFO    | bookdata.pipeline.products | Kategori 'Tüm Kategoriler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,249 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/turkiye-ve-yakin-tarih-kitaplari
+2026-08-16 18:33:27,249 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Türkiye - Yakın Tarih Kitapları): https://www.bkmkitap.com/turkiye-ve-yakin-tarih-kitaplari
+2026-08-16 18:33:27,249 | INFO    | bookdata.pipeline.products | Kategori 'Türkiye - Yakın Tarih Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,249 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ofis-makineleri
+2026-08-16 18:33:27,249 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ofis Makineleri): https://www.bkmkitap.com/ofis-makineleri
+2026-08-16 18:33:27,250 | INFO    | bookdata.pipeline.products | Kategori 'Ofis Makineleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:27,250 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ask-kitaplari
+2026-08-16 18:33:27,250 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Aşk Kitapları): https://www.bkmkitap.com/ask-kitaplari
+2026-08-16 18:33:27,250 | INFO    | bookdata.pipeline.products | Kategori 'Aşk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,274 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/amerikan-edebiyati-kitaplari
+2026-08-16 18:33:47,274 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Amerikan Edebiyatı): https://www.bkmkitap.com/amerikan-edebiyati-kitaplari
+2026-08-16 18:33:47,274 | INFO    | bookdata.pipeline.products | Kategori 'Amerikan Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,274 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yazici-ve-fotokopi-kagitlari
+2026-08-16 18:33:47,274 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yazıcı ve Fotokopi Kağıtları): https://www.bkmkitap.com/yazici-ve-fotokopi-kagitlari
+2026-08-16 18:33:47,274 | INFO    | bookdata.pipeline.products | Kategori 'Yazıcı ve Fotokopi Kağıtları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,275 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yabanci-dilde-edebiyat-kitaplari
+2026-08-16 18:33:47,275 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yabancı Dilde Edebiyat Kitapları): https://www.bkmkitap.com/yabanci-dilde-edebiyat-kitaplari
+2026-08-16 18:33:47,275 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Edebiyat Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,276 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-otobiyografi-kitaplari
+2026-08-16 18:33:47,276 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Otobiyografi Kitapları): https://www.bkmkitap.com/en-cok-satan-otobiyografi-kitaplari
+2026-08-16 18:33:47,276 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Otobiyografi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,277 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ulkeler-tarihi-kitaplari
+2026-08-16 18:33:47,277 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ülkeler Tarihi Kitapları): https://www.bkmkitap.com/ulkeler-tarihi-kitaplari
+2026-08-16 18:33:47,278 | INFO    | bookdata.pipeline.products | Kategori 'Ülkeler Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,278 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/psikolojik-arastirma-teknikleri-kitaplari
+2026-08-16 18:33:47,278 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Psikolojik Araştırma Teknikleri Kitapları): https://www.bkmkitap.com/psikolojik-arastirma-teknikleri-kitaplari
+2026-08-16 18:33:47,278 | INFO    | bookdata.pipeline.products | Kategori 'Psikolojik Araştırma Teknikleri Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,279 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-ilkokul-kitaplari
+2026-08-16 18:33:47,279 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk İlkokul Kitapları): https://www.bkmkitap.com/cocuk-ilkokul-kitaplari
+2026-08-16 18:33:47,279 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk İlkokul Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,280 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/egitim-psikolojisi-kitaplari
+2026-08-16 18:33:47,280 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Eğitim Psikolojisi Kitapları): https://www.bkmkitap.com/egitim-psikolojisi-kitaplari
+2026-08-16 18:33:47,280 | INFO    | bookdata.pipeline.products | Kategori 'Eğitim Psikolojisi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,280 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/hikayeler-kitaplari
+2026-08-16 18:33:47,281 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Hikayeler): https://www.bkmkitap.com/hikayeler-kitaplari
+2026-08-16 18:33:47,281 | INFO    | bookdata.pipeline.products | Kategori 'Hikayeler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,281 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/national-geographic-kids-kitaplari
+2026-08-16 18:33:47,281 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (National Geographic Kids): https://www.bkmkitap.com/national-geographic-kids-kitaplari
+2026-08-16 18:33:47,281 | INFO    | bookdata.pipeline.products | Kategori 'National Geographic Kids': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,282 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/rehber-kisisel-gelisim-kitaplari
+2026-08-16 18:33:47,282 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Rehber - Kişisel Gelişim Kitapları): https://www.bkmkitap.com/rehber-kisisel-gelisim-kitaplari
+2026-08-16 18:33:47,282 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Rehber - Kişisel Gelişim Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:33:47,283 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-6-7-yas-kitaplari
+2026-08-16 18:33:47,283 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk 6-7 Yaş Kitapları): https://www.bkmkitap.com/cocuk-6-7-yas-kitaplari
+2026-08-16 18:33:47,283 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk 6-7 Yaş Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,302 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kurtulus-savasi-kitaplari
+2026-08-16 18:34:07,302 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Kurtuluş Savaşı Kitapları): https://www.bkmkitap.com/kurtulus-savasi-kitaplari
+2026-08-16 18:34:07,302 | INFO    | bookdata.pipeline.products | Kategori 'Kurtuluş Savaşı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,303 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/okunmasi-gereken-siir-kitaplari
+2026-08-16 18:34:07,303 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Okunması Gereken Şiir Kitapları): https://www.bkmkitap.com/okunmasi-gereken-siir-kitaplari
+2026-08-16 18:34:07,303 | INFO    | bookdata.pipeline.products | Kategori 'Okunması Gereken Şiir Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,303 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kpss-sinavi-kategorileri
+2026-08-16 18:34:07,303 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (KPSS Kitapları): https://www.bkmkitap.com/kpss-sinavi-kategorileri
+2026-08-16 18:34:07,303 | INFO    | bookdata.pipeline.products | Kategori 'KPSS Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,305 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/5-sinif-kitaplari
+2026-08-16 18:34:07,305 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (5. Sınıf Kitapları): https://www.bkmkitap.com/5-sinif-kitaplari
+2026-08-16 18:34:07,305 | INFO    | bookdata.pipeline.products | Kategori '5. Sınıf Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,305 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genel-tarih-kitaplari
+2026-08-16 18:34:07,306 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Genel Tarih Kitapları ): https://www.bkmkitap.com/genel-tarih-kitaplari
+2026-08-16 18:34:07,306 | INFO    | bookdata.pipeline.products | Kategori 'Genel Tarih Kitapları ': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,306 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/psikoloji-kitaplari
+2026-08-16 18:34:07,306 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Psikolojik Kitaplar): https://www.bkmkitap.com/psikoloji-kitaplari
+2026-08-16 18:34:07,306 | INFO    | bookdata.pipeline.products | Kategori 'Psikolojik Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,307 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/fizik-tedavi-ve-rehabilitasyon-kitaplari
+2026-08-16 18:34:07,307 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Fizik Tedavi ve Rehabilitasyon Kitapları): https://www.bkmkitap.com/fizik-tedavi-ve-rehabilitasyon-kitaplari
+2026-08-16 18:34:07,307 | INFO    | bookdata.pipeline.products | Kategori 'Fizik Tedavi ve Rehabilitasyon Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,308 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/psikoloji-3994
+2026-08-16 18:34:07,308 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Psikoloji): https://www.bkmkitap.com/psikoloji-3994
+2026-08-16 18:34:07,308 | INFO    | bookdata.pipeline.products | Kategori 'Psikoloji': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,309 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/politik-kurgu-kitaplari
+2026-08-16 18:34:07,309 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Politik - Kurgu Kitapları): https://www.bkmkitap.com/politik-kurgu-kitaplari
+2026-08-16 18:34:07,309 | INFO    | bookdata.pipeline.products | Kategori 'Politik - Kurgu Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,309 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/anatomi-kitaplari
+2026-08-16 18:34:07,310 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Anatomi Kitapları): https://www.bkmkitap.com/anatomi-kitaplari
+2026-08-16 18:34:07,310 | INFO    | bookdata.pipeline.products | Kategori 'Anatomi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,310 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/seyahatname-1158-kitaplari
+2026-08-16 18:34:07,310 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Seyahatname Kitapları): https://www.bkmkitap.com/seyahatname-1158-kitaplari
+2026-08-16 18:34:07,311 | INFO    | bookdata.pipeline.products | Kategori 'Seyahatname Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:07,311 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cinsellik-1-kitaplari
+2026-08-16 18:34:07,311 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Cinsellik Kitapları): https://www.bkmkitap.com/cinsellik-1-kitaplari
+2026-08-16 18:34:07,311 | INFO    | bookdata.pipeline.products | Kategori 'Cinsellik Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:34:08,555 | INFO    | bookdata.pipeline.products | Kategori 'İtalyan Edebiyatı': 1 sayfa, 12 ürün
+2026-08-16 18:34:08,720 | INFO    | bookdata.pipeline.products | Kategori 'Selçuklu Dönemi Kitapları': 1 sayfa, 5 ürün
+2026-08-16 18:34:10,453 | INFO    | bookdata.pipeline.products | Kategori '2. Sınıf Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:34:10,565 | INFO    | bookdata.pipeline.products | Kategori 'Bölgeler Tarihi Kitapları': 1 sayfa, 3 ürün
+2026-08-16 18:34:18,785 | INFO    | bookdata.pipeline.products | Kategori 'Yakın Tarih Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:34:18,950 | INFO    | bookdata.pipeline.products | Kategori 'Histoloji ve Embriyoloji Kitapları': 1 sayfa, 1 ürün
+2026-08-16 18:34:29,019 | INFO    | bookdata.pipeline.products | Kategori 'Korku ve Gerilim Edebiyatı': 1 sayfa, 12 ürün
+2026-08-16 18:34:29,172 | INFO    | bookdata.pipeline.products | Kategori '100 Temel Eser Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:34:29,300 | INFO    | bookdata.pipeline.products | Kategori 'Antik Mısır Kitapları': 1 sayfa, 8 ürün
+2026-08-16 18:34:29,463 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Dil Eğitimi Kitapları': 1 sayfa, 4 ürün
+2026-08-16 18:34:41,128 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/genel-saglik-kitaplari
+2026-08-16 18:35:00,142 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/klasikler-kitaplari
+2026-08-16 18:35:00,142 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/cocuk-0-3-yas-kitaplari
+2026-08-16 18:35:00,147 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/cografya-ve-genel-kitaplar
+2026-08-16 18:35:00,153 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/onemli-olaylar-ve-biyografi-ve-otobiyografi-kitaplari
+2026-08-16 18:35:20,169 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/psikiyatri-ve-psikanaliz-kitaplari
+2026-08-16 18:35:20,169 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Psikiyatri ve Psikanaliz Kitapları): https://www.bkmkitap.com/psikiyatri-ve-psikanaliz-kitaplari
+2026-08-16 18:35:20,169 | INFO    | bookdata.pipeline.products | Kategori 'Psikiyatri ve Psikanaliz Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,170 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/fantastik-kitaplar
+2026-08-16 18:35:20,170 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Fantastik Kitaplar): https://www.bkmkitap.com/fantastik-kitaplar
+2026-08-16 18:35:20,170 | INFO    | bookdata.pipeline.products | Kategori 'Fantastik Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,172 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genclik-edebiyati
+2026-08-16 18:35:20,172 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gençlik Edebiyatı): https://www.bkmkitap.com/genclik-edebiyati
+2026-08-16 18:35:20,172 | INFO    | bookdata.pipeline.products | Kategori 'Gençlik Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,173 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genel-saglik-kitaplari
+2026-08-16 18:35:20,173 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Genel Sağlık Kitapları): https://www.bkmkitap.com/genel-saglik-kitaplari
+2026-08-16 18:35:20,173 | INFO    | bookdata.pipeline.products | Kategori 'Genel Sağlık Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,173 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ispanyol-edebiyat-kitaplari
+2026-08-16 18:35:20,173 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (İspanyol Edebiyatı): https://www.bkmkitap.com/ispanyol-edebiyat-kitaplari
+2026-08-16 18:35:20,173 | INFO    | bookdata.pipeline.products | Kategori 'İspanyol Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,174 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-osmanli-kitaplari
+2026-08-16 18:35:20,175 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Osmanlı Kitapları): https://www.bkmkitap.com/en-cok-satan-osmanli-kitaplari
+2026-08-16 18:35:20,175 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Osmanlı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,175 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/turk-edebiyati-top-50
+2026-08-16 18:35:20,175 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Türk Edebiyatı TOP 50): https://www.bkmkitap.com/turk-edebiyati-top-50
+2026-08-16 18:35:20,175 | INFO    | bookdata.pipeline.products | Kategori 'Türk Edebiyatı TOP 50': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,176 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/onemli-olaylar-ve-biyografi-ve-otobiyografi-kitaplari
+2026-08-16 18:35:20,176 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Önemli Olaylar ve Biyografi ve Otobiyografi Kitapları): https://www.bkmkitap.com/onemli-olaylar-ve-biyografi-ve-otobiyografi-kitaplari
+2026-08-16 18:35:20,176 | INFO    | bookdata.pipeline.products | Kategori 'Önemli Olaylar ve Biyografi ve Otobiyografi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,177 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/tarih-arastirma-ve-inceleme-kitaplari
+2026-08-16 18:35:20,178 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cografya-ve-genel-kitaplar
+2026-08-16 18:35:20,178 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Coğrafya ve Genel Kitaplar): https://www.bkmkitap.com/cografya-ve-genel-kitaplar
+2026-08-16 18:35:20,178 | INFO    | bookdata.pipeline.products | Kategori 'Coğrafya ve Genel Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,178 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/klasikler-kitaplari
+2026-08-16 18:35:20,178 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Klasik Romanlar ve Kitapları): https://www.bkmkitap.com/klasikler-kitaplari
+2026-08-16 18:35:20,178 | INFO    | bookdata.pipeline.products | Kategori 'Klasik Romanlar ve Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:20,179 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-0-3-yas-kitaplari
+2026-08-16 18:35:20,179 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk 0-3 Yaş Kitapları): https://www.bkmkitap.com/cocuk-0-3-yas-kitaplari
+2026-08-16 18:35:20,179 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk 0-3 Yaş Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,198 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/elestiri-inceleme-ve-kuram-kitaplari
+2026-08-16 18:35:40,198 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Eleştiri İnceleme ve Kuram Kitapları): https://www.bkmkitap.com/elestiri-inceleme-ve-kuram-kitaplari
+2026-08-16 18:35:40,199 | INFO    | bookdata.pipeline.products | Kategori 'Eleştiri İnceleme ve Kuram Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,199 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/gezi-ve-rehber-kitaplari
+2026-08-16 18:35:40,199 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gezi ve Rehber Kitapları): https://www.bkmkitap.com/gezi-ve-rehber-kitaplari
+2026-08-16 18:35:40,199 | INFO    | bookdata.pipeline.products | Kategori 'Gezi ve Rehber Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,199 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/okul-oncesi-resimli-kitaplar
+2026-08-16 18:35:40,200 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Okul Öncesi Resimli Kitaplar): https://www.bkmkitap.com/okul-oncesi-resimli-kitaplar
+2026-08-16 18:35:40,200 | INFO    | bookdata.pipeline.products | Kategori 'Okul Öncesi Resimli Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,201 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/mizah-2-kitaplari
+2026-08-16 18:35:40,201 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata ( Mizah Kitapları): https://www.bkmkitap.com/mizah-2-kitaplari
+2026-08-16 18:35:40,201 | INFO    | bookdata.pipeline.products | Kategori ' Mizah Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,202 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ingiliz-edebiyati-kitaplari
+2026-08-16 18:35:40,202 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (İngiliz Edebiyatı): https://www.bkmkitap.com/ingiliz-edebiyati-kitaplari
+2026-08-16 18:35:40,202 | INFO    | bookdata.pipeline.products | Kategori 'İngiliz Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,204 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ilac-rehber-kitaplari
+2026-08-16 18:35:40,204 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (İlaç Rehber Kitapları): https://www.bkmkitap.com/ilac-rehber-kitaplari
+2026-08-16 18:35:40,204 | INFO    | bookdata.pipeline.products | Kategori 'İlaç Rehber Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,205 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/boyama-kitaplari
+2026-08-16 18:35:40,205 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Boyama Kitapları): https://www.bkmkitap.com/boyama-kitaplari
+2026-08-16 18:35:40,205 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Boyama Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,206 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/turkiye-rehberi-kitaplari
+2026-08-16 18:35:40,206 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Türkiye Rehber Kitapları): https://www.bkmkitap.com/turkiye-rehberi-kitaplari
+2026-08-16 18:35:40,206 | INFO    | bookdata.pipeline.products | Kategori 'Türkiye Rehber Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,206 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/bilimsel-kitaplari
+2026-08-16 18:35:40,206 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Bilimsel Kitaplar): https://www.bkmkitap.com/bilimsel-kitaplari
+2026-08-16 18:35:40,207 | INFO    | bookdata.pipeline.products | Kategori 'Bilimsel Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,207 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-4-5-yas-kitaplari
+2026-08-16 18:35:40,207 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk 4-5 Yaş Kitapları): https://www.bkmkitap.com/cocuk-4-5-yas-kitaplari
+2026-08-16 18:35:40,207 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk 4-5 Yaş Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,208 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kinetik-kumlar
+2026-08-16 18:35:40,208 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Kinetik Kumlar): https://www.bkmkitap.com/kinetik-kumlar
+2026-08-16 18:35:40,208 | INFO    | bookdata.pipeline.products | Kategori 'Kinetik Kumlar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:35:40,208 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/tarih-arastirma-ve-inceleme-kitaplari
+2026-08-16 18:35:40,208 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Araştırma - İnceleme Kitapları): https://www.bkmkitap.com/tarih-arastirma-ve-inceleme-kitaplari
+2026-08-16 18:35:40,209 | INFO    | bookdata.pipeline.products | Kategori 'Araştırma - İnceleme Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,227 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/takvim-ve-planlayicilar
+2026-08-16 18:36:00,227 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Takvim Ve Planlayıcılar): https://www.bkmkitap.com/takvim-ve-planlayicilar
+2026-08-16 18:36:00,227 | INFO    | bookdata.pipeline.products | Kategori 'Takvim Ve Planlayıcılar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,227 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cikartmali-kitaplar
+2026-08-16 18:36:00,228 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çıkartmalı Kitaplar): https://www.bkmkitap.com/cikartmali-kitaplar
+2026-08-16 18:36:00,228 | INFO    | bookdata.pipeline.products | Kategori 'Çıkartmalı Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,228 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/istanbul-rehberi-kitaplari
+2026-08-16 18:36:00,228 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (İstanbul Rehberi Kitapları): https://www.bkmkitap.com/istanbul-rehberi-kitaplari
+2026-08-16 18:36:00,228 | INFO    | bookdata.pipeline.products | Kategori 'İstanbul Rehberi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,229 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/aforizma
+2026-08-16 18:36:00,230 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Aforizma): https://www.bkmkitap.com/aforizma
+2026-08-16 18:36:00,230 | INFO    | bookdata.pipeline.products | Kategori 'Aforizma': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,230 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/dunya-cocuk-klasikleri-kitaplari
+2026-08-16 18:36:00,231 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Dünya Çocuk Klasikleri): https://www.bkmkitap.com/dunya-cocuk-klasikleri-kitaplari
+2026-08-16 18:36:00,231 | INFO    | bookdata.pipeline.products | Kategori 'Dünya Çocuk Klasikleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,231 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cok-satan-cizgi-romanlar
+2026-08-16 18:36:00,231 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çok Satan Çizgi Romanlar): https://www.bkmkitap.com/cok-satan-cizgi-romanlar
+2026-08-16 18:36:00,231 | INFO    | bookdata.pipeline.products | Kategori 'Çok Satan Çizgi Romanlar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,232 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/3-sinif-kitaplari
+2026-08-16 18:36:00,232 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (3. Sınıf Kitapları): https://www.bkmkitap.com/3-sinif-kitaplari
+2026-08-16 18:36:00,232 | INFO    | bookdata.pipeline.products | Kategori '3. Sınıf Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,232 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/noroloji-kitaplari
+2026-08-16 18:36:00,232 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Nöroloji Kitapları): https://www.bkmkitap.com/noroloji-kitaplari
+2026-08-16 18:36:00,232 | INFO    | bookdata.pipeline.products | Kategori 'Nöroloji Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,233 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/turk-tarihi-arastirma-kitaplari
+2026-08-16 18:36:00,233 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Türk Tarihi Araştırmaları Kitapları): https://www.bkmkitap.com/turk-tarihi-arastirma-kitaplari
+2026-08-16 18:36:00,233 | INFO    | bookdata.pipeline.products | Kategori 'Türk Tarihi Araştırmaları Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,233 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yazar-listesi
+2026-08-16 18:36:00,233 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yazar Listesi): https://www.bkmkitap.com/yazar-listesi
+2026-08-16 18:36:00,234 | INFO    | bookdata.pipeline.products | Kategori 'Yazar Listesi': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,234 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genel-kitaplar
+2026-08-16 18:36:00,234 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Genel Edebiyat Kitapları): https://www.bkmkitap.com/genel-kitaplar
+2026-08-16 18:36:00,234 | INFO    | bookdata.pipeline.products | Kategori 'Genel Edebiyat Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:00,235 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kagit-urunleri
+2026-08-16 18:36:00,235 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Kağıt Ürünleri): https://www.bkmkitap.com/kagit-urunleri
+2026-08-16 18:36:00,235 | INFO    | bookdata.pipeline.products | Kategori 'Kağıt Ürünleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,283 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kitap/tarih-kitaplari
+2026-08-16 18:36:20,283 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tarih Kitapları): https://www.bkmkitap.com/kitap/tarih-kitaplari
+2026-08-16 18:36:20,283 | INFO    | bookdata.pipeline.products | Kategori 'Tarih Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,283 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/turk-edebiyati-kitaplari
+2026-08-16 18:36:20,284 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Türk Edebiyatı Romanları): https://www.bkmkitap.com/turk-edebiyati-kitaplari
+2026-08-16 18:36:20,284 | INFO    | bookdata.pipeline.products | Kategori 'Türk Edebiyatı Romanları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,284 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-fantastik-kitaplar-4183
+2026-08-16 18:36:20,284 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Fantastik Kitaplar): https://www.bkmkitap.com/en-cok-satan-fantastik-kitaplar-4183
+2026-08-16 18:36:20,284 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Fantastik Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,286 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genel-cocuk-kitaplari
+2026-08-16 18:36:20,286 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Genel Çocuk Kitapları): https://www.bkmkitap.com/genel-cocuk-kitaplari
+2026-08-16 18:36:20,286 | INFO    | bookdata.pipeline.products | Kategori 'Genel Çocuk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,286 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yoga-ve-meditasyon-kitaplari
+2026-08-16 18:36:20,287 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yoga Meditasyon Kitapları): https://www.bkmkitap.com/yoga-ve-meditasyon-kitaplari
+2026-08-16 18:36:20,287 | INFO    | bookdata.pipeline.products | Kategori 'Yoga Meditasyon Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,287 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kitap/cocuk-kitaplari
+2026-08-16 18:36:20,288 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Kitapları): https://www.bkmkitap.com/kitap/cocuk-kitaplari
+2026-08-16 18:36:20,288 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,288 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genclik-lise-kitaplari
+2026-08-16 18:36:20,288 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gençlik Lise Kitapları): https://www.bkmkitap.com/genclik-lise-kitaplari
+2026-08-16 18:36:20,288 | INFO    | bookdata.pipeline.products | Kategori 'Gençlik Lise Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,289 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/dosya-ve-klasorler
+2026-08-16 18:36:20,289 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Dosya ve Klasörler): https://www.bkmkitap.com/dosya-ve-klasorler
+2026-08-16 18:36:20,289 | INFO    | bookdata.pipeline.products | Kategori 'Dosya ve Klasörler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,290 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/fransiz-edebiyati-kitaplari
+2026-08-16 18:36:20,290 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Fransız Edebiyatı Kitapları): https://www.bkmkitap.com/fransiz-edebiyati-kitaplari
+2026-08-16 18:36:20,290 | INFO    | bookdata.pipeline.products | Kategori 'Fransız Edebiyatı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,291 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/zeka-gelisimi-kitaplari
+2026-08-16 18:36:20,291 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Zeka Gelişimi Kitapları): https://www.bkmkitap.com/zeka-gelisimi-kitaplari
+2026-08-16 18:36:20,291 | INFO    | bookdata.pipeline.products | Kategori 'Zeka Gelişimi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,291 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-okunan-bilim-kurgu-kitaplari
+2026-08-16 18:36:20,291 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Okunan Bilim Kurgu Kitapları): https://www.bkmkitap.com/en-cok-okunan-bilim-kurgu-kitaplari
+2026-08-16 18:36:20,291 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Bilim Kurgu Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:20,292 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-diyet-kitaplari
+2026-08-16 18:36:20,292 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Diyet Kitapları): https://www.bkmkitap.com/en-cok-satan-diyet-kitaplari
+2026-08-16 18:36:20,292 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Diyet Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:36:31,799 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:36:32,965 | INFO    | bookdata.pipeline.products | Kategori 'Tahta ve Panolar': ürün bulunamadı (1 sayfa)
+2026-08-16 18:36:33,142 | INFO    | bookdata.pipeline.products | Kategori 'II. Dünya Savaşı Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:36:50,878 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/referans-kitaplari
+2026-08-16 18:36:50,879 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/okul-oncesi-cocuk-kitaplari
+2026-08-16 18:36:51,636 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/alman-edebiyati-kitaplari
+2026-08-16 18:36:52,328 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/beslenme-ve-diyet-kitaplari
+2026-08-16 18:36:52,454 | INFO    | bookdata.pipeline.products | Kategori 'Referans Kitaplar': 1 sayfa, 12 ürün
+2026-08-16 18:37:04,517 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/referans-kitaplar
+2026-08-16 18:37:04,517 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/en-cok-okunan-karikatur-kitaplari
+2026-08-16 18:37:21,939 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/siir-2-kitaplari
+2026-08-16 18:37:21,939 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/okul-oncesi-sekilli-kitaplar
+2026-08-16 18:37:23,045 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/sessiz-kitaplar
+2026-08-16 18:37:23,045 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/boyalar-ve-boya-urunleri
+2026-08-16 18:37:23,046 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/cocuk-gelisimi-kitaplari
+2026-08-16 18:37:23,046 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (1/3): https://www.bkmkitap.com/deneme
+2026-08-16 18:37:24,530 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (2/3): https://www.bkmkitap.com/referans-kitaplari
+2026-08-16 18:37:26,011 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (2/3): https://www.bkmkitap.com/alman-edebiyati-kitaplari
+2026-08-16 18:37:39,618 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (2/3): https://www.bkmkitap.com/beslenme-ve-diyet-kitaplari
+2026-08-16 18:37:39,619 | WARNING | bookdata.adapters.http | İstek yeniden deneniyor (2/3): https://www.bkmkitap.com/referans-kitaplar
+2026-08-16 18:37:59,633 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/okul-oncesi-cocuk-kitaplari
+2026-08-16 18:37:59,633 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Okul Öncesi Çocuk Kitapları): https://www.bkmkitap.com/okul-oncesi-cocuk-kitaplari
+2026-08-16 18:37:59,633 | INFO    | bookdata.pipeline.products | Kategori 'Okul Öncesi Çocuk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,634 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/boyalar-ve-boya-urunleri
+2026-08-16 18:37:59,634 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Boyalar ve Boya Ürünleri): https://www.bkmkitap.com/boyalar-ve-boya-urunleri
+2026-08-16 18:37:59,634 | INFO    | bookdata.pipeline.products | Kategori 'Boyalar ve Boya Ürünleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,635 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/sessiz-kitaplar
+2026-08-16 18:37:59,635 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Sessiz Kitaplar): https://www.bkmkitap.com/sessiz-kitaplar
+2026-08-16 18:37:59,635 | INFO    | bookdata.pipeline.products | Kategori 'Sessiz Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,636 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/deneme
+2026-08-16 18:37:59,636 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Denemeler): https://www.bkmkitap.com/deneme
+2026-08-16 18:37:59,636 | INFO    | bookdata.pipeline.products | Kategori 'Denemeler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,637 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-gelisimi-kitaplari
+2026-08-16 18:37:59,637 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Gelişimi Kitapları): https://www.bkmkitap.com/cocuk-gelisimi-kitaplari
+2026-08-16 18:37:59,637 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Gelişimi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,638 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/referans-kitaplari
+2026-08-16 18:37:59,638 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gezi ve Rehber Referans Kitapları): https://www.bkmkitap.com/referans-kitaplari
+2026-08-16 18:37:59,638 | INFO    | bookdata.pipeline.products | Kategori 'Gezi ve Rehber Referans Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,638 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/alman-edebiyati-kitaplari
+2026-08-16 18:37:59,639 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Alman Edebiyatı Kitapları): https://www.bkmkitap.com/alman-edebiyati-kitaplari
+2026-08-16 18:37:59,639 | INFO    | bookdata.pipeline.products | Kategori 'Alman Edebiyatı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,639 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/siir-2-kitaplari
+2026-08-16 18:37:59,639 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Şiir Kitapları): https://www.bkmkitap.com/siir-2-kitaplari
+2026-08-16 18:37:59,639 | INFO    | bookdata.pipeline.products | Kategori 'Şiir Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,640 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-okunan-karikatur-kitaplari
+2026-08-16 18:37:59,640 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Okunan Karikatür Kitapları): https://www.bkmkitap.com/en-cok-okunan-karikatur-kitaplari
+2026-08-16 18:37:59,640 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Karikatür Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,641 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/okul-oncesi-sekilli-kitaplar
+2026-08-16 18:37:59,641 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Okul Öncesi Şekilli Kitaplar): https://www.bkmkitap.com/okul-oncesi-sekilli-kitaplar
+2026-08-16 18:37:59,641 | INFO    | bookdata.pipeline.products | Kategori 'Okul Öncesi Şekilli Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,641 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/beslenme-ve-diyet-kitaplari
+2026-08-16 18:37:59,641 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Beslenme ve Diyet Kitapları): https://www.bkmkitap.com/beslenme-ve-diyet-kitaplari
+2026-08-16 18:37:59,642 | INFO    | bookdata.pipeline.products | Kategori 'Beslenme ve Diyet Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:37:59,642 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/referans-kitaplar
+2026-08-16 18:37:59,642 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Referans Kitaplar): https://www.bkmkitap.com/referans-kitaplar
+2026-08-16 18:37:59,642 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Referans Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,663 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/anlati-kitaplari
+2026-08-16 18:38:19,663 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Anlatı Kitapları): https://www.bkmkitap.com/anlati-kitaplari
+2026-08-16 18:38:19,664 | INFO    | bookdata.pipeline.products | Kategori 'Anlatı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,664 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-gizemli-kitaplar
+2026-08-16 18:38:19,664 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Gizemli Kitaplar): https://www.bkmkitap.com/en-cok-satan-gizemli-kitaplar
+2026-08-16 18:38:19,664 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Gizemli Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,665 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/hamilelik-ve-dogum-kitaplari
+2026-08-16 18:38:19,665 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Hamilelik ve Doğum Kitapları): https://www.bkmkitap.com/hamilelik-ve-dogum-kitaplari
+2026-08-16 18:38:19,665 | INFO    | bookdata.pipeline.products | Kategori 'Hamilelik ve Doğum Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,666 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-etkinlik-kitaplari
+2026-08-16 18:38:19,666 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Etkinlik Kitapları): https://www.bkmkitap.com/cocuk-etkinlik-kitaplari
+2026-08-16 18:38:19,666 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Etkinlik Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,667 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-bilim-kurgu-kitaplari
+2026-08-16 18:38:19,667 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Bilim Kurgu Kitapları): https://www.bkmkitap.com/cocuk-bilim-kurgu-kitaplari
+2026-08-16 18:38:19,667 | INFO    | bookdata.pipeline.products | Kategori 'Bilim Kurgu Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,668 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/slime-ve-malzemeleri
+2026-08-16 18:38:19,668 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Slime ve Malzemeleri): https://www.bkmkitap.com/slime-ve-malzemeleri
+2026-08-16 18:38:19,668 | INFO    | bookdata.pipeline.products | Kategori 'Slime ve Malzemeleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,669 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/periyodik-yayinlari-kitaplari
+2026-08-16 18:38:19,669 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Periyodik Yayınlar): https://www.bkmkitap.com/periyodik-yayinlari-kitaplari
+2026-08-16 18:38:19,669 | INFO    | bookdata.pipeline.products | Kategori 'Periyodik Yayınlar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,669 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yayinevi-listesi
+2026-08-16 18:38:19,669 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yayınevi Listesi): https://www.bkmkitap.com/yayinevi-listesi
+2026-08-16 18:38:19,669 | INFO    | bookdata.pipeline.products | Kategori 'Yayınevi Listesi': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,670 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/alternatif-tip-ve-sifali-bitki-kitaplari
+2026-08-16 18:38:19,670 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Alternatif Tıp Şifalı Bitkiler Kitapları): https://www.bkmkitap.com/alternatif-tip-ve-sifali-bitki-kitaplari
+2026-08-16 18:38:19,670 | INFO    | bookdata.pipeline.products | Kategori 'Alternatif Tıp Şifalı Bitkiler Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,670 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-sevilen-cocuk-kitabi-setleri
+2026-08-16 18:38:19,670 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Sevilen Çocuk Kitabı Setleri): https://www.bkmkitap.com/en-sevilen-cocuk-kitabi-setleri
+2026-08-16 18:38:19,671 | INFO    | bookdata.pipeline.products | Kategori 'En Sevilen Çocuk Kitabı Setleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,671 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/masaustu-gerecleri
+2026-08-16 18:38:19,671 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ofis Malzemeleri): https://www.bkmkitap.com/masaustu-gerecleri
+2026-08-16 18:38:19,671 | INFO    | bookdata.pipeline.products | Kategori 'Ofis Malzemeleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:19,672 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-dunya-tarihi-kitaplari
+2026-08-16 18:38:19,672 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Dünya Tarihi Kitapları): https://www.bkmkitap.com/en-cok-satan-dunya-tarihi-kitaplari
+2026-08-16 18:38:19,672 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Dünya Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,693 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/saglik-iletisimi-kitaplari
+2026-08-16 18:38:39,693 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Sağlık İletişimi Kitapları): https://www.bkmkitap.com/saglik-iletisimi-kitaplari
+2026-08-16 18:38:39,693 | INFO    | bookdata.pipeline.products | Kategori 'Sağlık İletişimi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,694 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yabanci-dilde-psikoloji-kitaplari
+2026-08-16 18:38:39,694 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yabancı Dilde Psikoloji Kitapları): https://www.bkmkitap.com/yabanci-dilde-psikoloji-kitaplari
+2026-08-16 18:38:39,694 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Psikoloji Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,694 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/efsane-ve-destan-kitaplari
+2026-08-16 18:38:39,694 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Efsane ve Destan Kitapları): https://www.bkmkitap.com/efsane-ve-destan-kitaplari
+2026-08-16 18:38:39,695 | INFO    | bookdata.pipeline.products | Kategori 'Efsane ve Destan Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,696 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genclik-ortaokul-kitaplari
+2026-08-16 18:38:39,696 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gençlik Ortaokul Kitapları): https://www.bkmkitap.com/genclik-ortaokul-kitaplari
+2026-08-16 18:38:39,696 | INFO    | bookdata.pipeline.products | Kategori 'Gençlik Ortaokul Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,697 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-kitabitop-50
+2026-08-16 18:38:39,697 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Kitabı TOP 50): https://www.bkmkitap.com/cocuk-kitabitop-50
+2026-08-16 18:38:39,697 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Kitabı TOP 50': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,698 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/okula-yardimci-ve-sinavlara-hazirlik-kitaplari-kampanyasi
+2026-08-16 18:38:39,698 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Eğitim - Okula Yardımcı Kitaplar): https://www.bkmkitap.com/okula-yardimci-ve-sinavlara-hazirlik-kitaplari-kampanyasi
+2026-08-16 18:38:39,698 | INFO    | bookdata.pipeline.products | Kategori 'Eğitim - Okula Yardımcı Kitaplar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,698 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/olcu-ve-cizim-malzemeleri
+2026-08-16 18:38:39,699 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ölçü ve Çizim Malzemeleri): https://www.bkmkitap.com/olcu-ve-cizim-malzemeleri
+2026-08-16 18:38:39,699 | INFO    | bookdata.pipeline.products | Kategori 'Ölçü ve Çizim Malzemeleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,699 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/yunan-mitolojisi-kitaplari
+2026-08-16 18:38:39,699 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Yunan Mitolojisi Kitapları): https://www.bkmkitap.com/yunan-mitolojisi-kitaplari
+2026-08-16 18:38:39,700 | INFO    | bookdata.pipeline.products | Kategori 'Yunan Mitolojisi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,700 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/saglik-kitaplari
+2026-08-16 18:38:39,700 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Sağlık Kitapları): https://www.bkmkitap.com/saglik-kitaplari
+2026-08-16 18:38:39,700 | INFO    | bookdata.pipeline.products | Kategori 'Sağlık Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,701 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/dekoratif-urunler
+2026-08-16 18:38:39,701 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Dekoratif Ürünler): https://www.bkmkitap.com/dekoratif-urunler
+2026-08-16 18:38:39,701 | INFO    | bookdata.pipeline.products | Kategori 'Dekoratif Ürünler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,701 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/tarihi-belgeler-kitaplari
+2026-08-16 18:38:39,701 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tarihi Belgeler Kitapları): https://www.bkmkitap.com/tarihi-belgeler-kitaplari
+2026-08-16 18:38:39,702 | INFO    | bookdata.pipeline.products | Kategori 'Tarihi Belgeler Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:39,702 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/uzakdogu-edebiyati-kitaplari
+2026-08-16 18:38:39,702 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Uzakdoğu Edebiyatı): https://www.bkmkitap.com/uzakdogu-edebiyati-kitaplari
+2026-08-16 18:38:39,702 | INFO    | bookdata.pipeline.products | Kategori 'Uzakdoğu Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,734 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/casusluk-kitaplari
+2026-08-16 18:38:59,734 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Casusluk Kitapları): https://www.bkmkitap.com/casusluk-kitaplari
+2026-08-16 18:38:59,734 | INFO    | bookdata.pipeline.products | Kategori 'Casusluk Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,735 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/ajandatakvim-ve-planlayicilar
+2026-08-16 18:38:59,735 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Ajanda,Takvim Ve Planlayıcılar): https://www.bkmkitap.com/ajandatakvim-ve-planlayicilar
+2026-08-16 18:38:59,735 | INFO    | bookdata.pipeline.products | Kategori 'Ajanda,Takvim Ve Planlayıcılar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,735 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/senaryo-kitaplari
+2026-08-16 18:38:59,735 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Senaryo Kitapları): https://www.bkmkitap.com/senaryo-kitaplari
+2026-08-16 18:38:59,735 | INFO    | bookdata.pipeline.products | Kategori 'Senaryo Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,737 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-biyografi-otobiyografi-kitaplari
+2026-08-16 18:38:59,737 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Biyografi Otobiyografi Kitapları): https://www.bkmkitap.com/cocuk-biyografi-otobiyografi-kitaplari
+2026-08-16 18:38:59,737 | INFO    | bookdata.pipeline.products | Kategori 'Biyografi Otobiyografi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,737 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cocuk-bilim-kitaplari-4293
+2026-08-16 18:38:59,737 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Bilim Kitapları): https://www.bkmkitap.com/cocuk-bilim-kitaplari-4293
+2026-08-16 18:38:59,738 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Bilim Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,738 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/seyahatname-kitaplari
+2026-08-16 18:38:59,738 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Seyahatname Kitapları): https://www.bkmkitap.com/seyahatname-kitaplari
+2026-08-16 18:38:59,738 | INFO    | bookdata.pipeline.products | Kategori 'Seyahatname Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,739 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-iyi-korku-kitaplari
+2026-08-16 18:38:59,739 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En İyi Korku Kitapları): https://www.bkmkitap.com/en-iyi-korku-kitaplari
+2026-08-16 18:38:59,739 | INFO    | bookdata.pipeline.products | Kategori 'En İyi Korku Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,740 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/sosyal-tarih-kitaplari
+2026-08-16 18:38:59,740 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Sosyal Tarih Kitapları): https://www.bkmkitap.com/sosyal-tarih-kitaplari
+2026-08-16 18:38:59,740 | INFO    | bookdata.pipeline.products | Kategori 'Sosyal Tarih Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,741 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/psikoloji-akimi-kitaplari
+2026-08-16 18:38:59,741 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Psikoloji Akımları Kitapları): https://www.bkmkitap.com/psikoloji-akimi-kitaplari
+2026-08-16 18:38:59,741 | INFO    | bookdata.pipeline.products | Kategori 'Psikoloji Akımları Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,742 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/etkinlik-kitaplari
+2026-08-16 18:38:59,742 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Etkinlik Kitapları): https://www.bkmkitap.com/etkinlik-kitaplari
+2026-08-16 18:38:59,742 | INFO    | bookdata.pipeline.products | Kategori 'Etkinlik Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,743 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-50-dunya-klasigi
+2026-08-16 18:38:59,743 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan 50 Dünya Klasiği): https://www.bkmkitap.com/en-cok-satan-50-dunya-klasigi
+2026-08-16 18:38:59,743 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan 50 Dünya Klasiği': ürün bulunamadı (0 sayfa)
+2026-08-16 18:38:59,743 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/psikiyatri-kitaplari
+2026-08-16 18:38:59,743 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Psikiyatri Kitapları): https://www.bkmkitap.com/psikiyatri-kitaplari
+2026-08-16 18:38:59,743 | INFO    | bookdata.pipeline.products | Kategori 'Psikiyatri Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:08,003 | INFO    | bookdata.pipeline.products | Kategori 'Amerika Tarihi Kitapları': ürün bulunamadı (1 sayfa)
+2026-08-16 18:39:08,132 | INFO    | bookdata.pipeline.products | Kategori 'Dil Bilimi Kitapları': 1 sayfa, 12 ürün
+2026-08-16 18:39:28,026 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/genel-ulke-edebiyatlari-kitaplari
+2026-08-16 18:39:28,026 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Genel Ülke Edebiyatları Kitapları): https://www.bkmkitap.com/genel-ulke-edebiyatlari-kitaplari
+2026-08-16 18:39:28,026 | INFO    | bookdata.pipeline.products | Kategori 'Genel Ülke Edebiyatları Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,027 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/dokun-hisset-kitaplari
+2026-08-16 18:39:28,027 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Dokun Hisset Kitapları): https://www.bkmkitap.com/dokun-hisset-kitaplari
+2026-08-16 18:39:28,027 | INFO    | bookdata.pipeline.products | Kategori 'Dokun Hisset Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,028 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/masal-kitaplari
+2026-08-16 18:39:28,028 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Masallar): https://www.bkmkitap.com/masal-kitaplari
+2026-08-16 18:39:28,029 | INFO    | bookdata.pipeline.products | Kategori 'Masallar': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,029 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/gezi-rehber-kitaplari
+2026-08-16 18:39:28,029 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gezi Rehberi Kitapları): https://www.bkmkitap.com/gezi-rehber-kitaplari
+2026-08-16 18:39:28,030 | INFO    | bookdata.pipeline.products | Kategori 'Gezi Rehberi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,030 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/sosyal-psikoloji-kitaplari
+2026-08-16 18:39:28,030 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Sosyal Psikoloji Kitapları ): https://www.bkmkitap.com/sosyal-psikoloji-kitaplari
+2026-08-16 18:39:28,030 | INFO    | bookdata.pipeline.products | Kategori 'Sosyal Psikoloji Kitapları ': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,031 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/kent-rehberleri
+2026-08-16 18:39:28,031 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Kent Rehberleri): https://www.bkmkitap.com/kent-rehberleri
+2026-08-16 18:39:28,031 | INFO    | bookdata.pipeline.products | Kategori 'Kent Rehberleri': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,032 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/aile-sagligi-kitaplari
+2026-08-16 18:39:28,032 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Aile Sağlığı Kitapları): https://www.bkmkitap.com/aile-sagligi-kitaplari
+2026-08-16 18:39:28,032 | INFO    | bookdata.pipeline.products | Kategori 'Aile Sağlığı Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,032 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/iskandinav-edebiyati-kitaplari
+2026-08-16 18:39:28,033 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (İskandinav Edebiyatı): https://www.bkmkitap.com/iskandinav-edebiyati-kitaplari
+2026-08-16 18:39:28,033 | INFO    | bookdata.pipeline.products | Kategori 'İskandinav Edebiyatı': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,033 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/gezi-kitaplari-2785
+2026-08-16 18:39:28,033 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Gezi ve Rehber Kitapları): https://www.bkmkitap.com/gezi-kitaplari-2785
+2026-08-16 18:39:28,033 | INFO    | bookdata.pipeline.products | Kategori 'Gezi ve Rehber Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,034 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-satan-biyografi-kitaplari
+2026-08-16 18:39:28,034 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Satan Biyografi Kitapları): https://www.bkmkitap.com/en-cok-satan-biyografi-kitaplari
+2026-08-16 18:39:28,034 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Biyografi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,034 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/bilmece-bulmaca-kitaplari
+2026-08-16 18:39:28,035 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Bilmece Bulmaca Kitapları): https://www.bkmkitap.com/bilmece-bulmaca-kitaplari
+2026-08-16 18:39:28,035 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Bilmece Bulmaca Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:28,035 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/dunya-klasikleri-top-50
+2026-08-16 18:39:28,035 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Dünya Klasikleri TOP 50): https://www.bkmkitap.com/dunya-klasikleri-top-50
+2026-08-16 18:39:28,035 | INFO    | bookdata.pipeline.products | Kategori 'Dünya Klasikleri TOP 50': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:48,056 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/en-cok-okunan-cumhuriyet-tarihi-kitaplari
+2026-08-16 18:39:48,056 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (En Çok Okunan Cumhuriyet Tarihi Kitapları): https://www.bkmkitap.com/en-cok-okunan-cumhuriyet-tarihi-kitaplari
+2026-08-16 18:39:48,056 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Cumhuriyet Tarihi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:48,056 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/defter-ve-ajanda
+2026-08-16 18:39:48,057 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Defterler): https://www.bkmkitap.com/defter-ve-ajanda
+2026-08-16 18:39:48,057 | INFO    | bookdata.pipeline.products | Kategori 'Defterler': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:48,057 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/tarih-felsefesi-kitaplari
+2026-08-16 18:39:48,057 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Tarih Felsefesi Kitapları): https://www.bkmkitap.com/tarih-felsefesi-kitaplari
+2026-08-16 18:39:48,057 | INFO    | bookdata.pipeline.products | Kategori 'Tarih Felsefesi Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:48,058 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/edebiyat-kitaplari
+2026-08-16 18:39:48,058 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Edebiyat Kitapları): https://www.bkmkitap.com/edebiyat-kitaplari
+2026-08-16 18:39:48,058 | INFO    | bookdata.pipeline.products | Kategori 'Edebiyat Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:48,058 | WARNING | bookdata.adapters.stores.base | Sayfa alınamadı (bkm): https://www.bkmkitap.com/cizgi-roman-kitaplari
+2026-08-16 18:39:48,058 | WARNING | bookdata.pipeline.products | Kategori işlenirken hata (Çocuk Çizgi Roman Kitapları): https://www.bkmkitap.com/cizgi-roman-kitaplari
+2026-08-16 18:39:48,059 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Çizgi Roman Kitapları': ürün bulunamadı (0 sayfa)
+2026-08-16 18:39:48,060 | INFO    | bookdata.pipeline.standardize | Standardize edildi: 261 ham → 260 ürün
+2026-08-16 18:39:48,375 | INFO    | bookdata.pipeline.merge | Fiyat karşılaştırması: 260 ürünün 255 tanesinde değişiklik/yeni kayıt
+2026-08-16 18:39:48,377 | INFO    | bookdata.adapters.storage | Veri setine 255 yeni kayıt eklendi: Data/bkm_Datasets.csv
+2026-08-16 18:39:48,407 | INFO    | bookdata.pipeline.runner | Özet: 246 kategori bulundu, 234 işlendi; 260 ürün → 255 kayıt eklendi (toplam 43537). İstek: 235, hata: 207
+2026-08-16 18:39:51,254 | INFO    | bookdata.adapters.kaggle | Kaggle yayını tamamlandı: furkanzeki/bkm-book-dataset (2026-08-16)
