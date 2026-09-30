@@ -26115,3 +26115,243 @@
 2026-09-30 12:06:26,743 | INFO    | bookdata.adapters.storage | Veri setine 2075 yeni kayıt eklendi: Data/bkm_Datasets.csv
 2026-09-30 12:06:26,905 | INFO    | bookdata.pipeline.runner | Özet: 246 kategori bulundu, 234 işlendi; 2117 ürün → 2075 kayıt eklendi (toplam 225766). İstek: 333, hata: 0
 2026-09-30 12:06:30,245 | INFO    | bookdata.adapters.kaggle | Kaggle yayını tamamlandı: furkanzeki/bkm-book-dataset (2026-09-30)
+2026-09-30 21:57:51,618 | INFO    | bookdata.pipeline.filter | Ignore kuralları gereği 12 kategori atlandı (10 desen)
+2026-09-30 21:57:52,324 | INFO    | bookdata.pipeline.products | Kategori 'Önemli Olaylar ve Biyografi ve Otobiyografi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:52,826 | INFO    | bookdata.pipeline.products | Kategori 'Psikoloji Akımları Kitapları': 1 sayfa, 2 ürün
+2026-09-30 21:57:52,893 | INFO    | bookdata.pipeline.products | Kategori 'Selçuklu Dönemi Kitapları': 1 sayfa, 5 ürün
+2026-09-30 21:57:52,958 | INFO    | bookdata.pipeline.products | Kategori 'Yunan Mitolojisi Kitapları': 1 sayfa, 11 ürün
+2026-09-30 21:57:53,022 | INFO    | bookdata.pipeline.products | Kategori 'Gençlik Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,143 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Diyet Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,215 | INFO    | bookdata.pipeline.products | Kategori 'Eğitim Psikolojisi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,283 | INFO    | bookdata.pipeline.products | Kategori 'Türk Tarihi Araştırmaları Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,342 | INFO    | bookdata.pipeline.products | Kategori 'Anatomi Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:57:53,476 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk İlkokul Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,548 | INFO    | bookdata.pipeline.products | Kategori 'Derlemeler': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,616 | INFO    | bookdata.pipeline.products | Kategori 'Anlatı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,677 | INFO    | bookdata.pipeline.products | Kategori 'Fizik Tedavi ve Rehabilitasyon Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:57:53,858 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Dil Eğitimi Kitapları': 1 sayfa, 4 ürün
+2026-09-30 21:57:53,929 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Bilim Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:53,998 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Karikatür Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:55,371 | INFO    | bookdata.pipeline.products | Kategori 'Osmanlı Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:55,444 | INFO    | bookdata.pipeline.products | Kategori 'Tarih Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:55,620 | INFO    | bookdata.pipeline.products | Kategori 'Biyografi ve Otobiyografi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:55,706 | INFO    | bookdata.pipeline.products | Kategori 'Dünya Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:55,891 | INFO    | bookdata.pipeline.products | Kategori 'Senaryo Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,087 | INFO    | bookdata.pipeline.products | Kategori 'Çanta ve Mataralar': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,316 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Boyama Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,390 | INFO    | bookdata.pipeline.products | Kategori '4. Sınıf Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,460 | INFO    | bookdata.pipeline.products | Kategori 'Seyahatname Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,532 | INFO    | bookdata.pipeline.products | Kategori 'Polisiye Romanlar': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,675 | INFO    | bookdata.pipeline.products | Kategori 'Türkiye ve Cumhuriyet Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,745 | INFO    | bookdata.pipeline.products | Kategori 'Ölçü ve Çizim Malzemeleri': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,817 | INFO    | bookdata.pipeline.products | Kategori 'Gezi ve Rehber Referans Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:56,874 | INFO    | bookdata.pipeline.products | Kategori 'Sosyal Psikoloji Kitapları ': 1 sayfa, 2 ürün
+2026-09-30 21:57:57,016 | INFO    | bookdata.pipeline.products | Kategori 'Çok Satanlar': ürün bulunamadı (1 sayfa)
+2026-09-30 21:57:57,088 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Kitabı TOP 50': 1 sayfa, 12 ürün
+2026-09-30 21:57:57,215 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Rehber - Kişisel Gelişim Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:57,371 | INFO    | bookdata.pipeline.products | Kategori 'Çizgi Roman Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:57,436 | INFO    | bookdata.pipeline.products | Kategori 'Slime ve Malzemeleri': 1 sayfa, 4 ürün
+2026-09-30 21:57:57,506 | INFO    | bookdata.pipeline.products | Kategori 'Biyografi Otobiyografi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:57,885 | INFO    | bookdata.pipeline.products | Kategori '3-6 Yaş Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:58,142 | INFO    | bookdata.pipeline.products | Kategori 'Hikayeler': 1 sayfa, 12 ürün
+2026-09-30 21:57:58,213 | INFO    | bookdata.pipeline.products | Kategori 'Çizgi Roman - Anime ve Mangalar': 1 sayfa, 12 ürün
+2026-09-30 21:57:58,843 | INFO    | bookdata.pipeline.products | Kategori 'Yetişkin Masal Kitapları': 1 sayfa, 8 ürün
+2026-09-30 21:57:59,389 | INFO    | bookdata.pipeline.products | Kategori 'Rus Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:57:59,462 | INFO    | bookdata.pipeline.products | Kategori 'Zeka Gelişimi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:57:59,525 | INFO    | bookdata.pipeline.products | Kategori 'Hamilelik ve Doğum Kitapları': 1 sayfa, 6 ürün
+2026-09-30 21:57:59,593 | INFO    | bookdata.pipeline.products | Kategori 'Masallar': 1 sayfa, 12 ürün
+2026-09-30 21:57:59,758 | INFO    | bookdata.pipeline.products | Kategori 'Okul Öncesi Resimli Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:57:59,828 | INFO    | bookdata.pipeline.products | Kategori 'Karikatürler': 1 sayfa, 12 ürün
+2026-09-30 21:58:00,018 | INFO    | bookdata.pipeline.products | Kategori 'Sağlık İletişimi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:02,402 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Dünya Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:02,568 | INFO    | bookdata.pipeline.products | Kategori 'Edebiyat Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:02,735 | INFO    | bookdata.pipeline.products | Kategori 'Din Eğitimi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:02,804 | INFO    | bookdata.pipeline.products | Kategori 'Etkinlik Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:02,914 | INFO    | bookdata.pipeline.products | Kategori 'Tüm Kategoriler': ürün bulunamadı (1 sayfa)
+2026-09-30 21:58:03,049 | INFO    | bookdata.pipeline.products | Kategori 'Gezi Rehberi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:03,113 | INFO    | bookdata.pipeline.products | Kategori 'Ajanda,Takvim Ve Planlayıcılar': 1 sayfa, 12 ürün
+2026-09-30 21:58:03,177 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Cumhuriyet Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:03,824 | INFO    | bookdata.pipeline.products | Kategori 'Sessiz Kitaplar': 1 sayfa, 11 ürün
+2026-09-30 21:58:03,904 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Etkinlik Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:03,960 | INFO    | bookdata.pipeline.products | Kategori 'Tarihi Belgeler Kitapları': 1 sayfa, 2 ürün
+2026-09-30 21:58:04,105 | INFO    | bookdata.pipeline.products | Kategori 'Mustafa Kemal Atatürk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:04,172 | INFO    | bookdata.pipeline.products | Kategori 'Alman Edebiyatı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:04,282 | INFO    | bookdata.pipeline.products | Kategori 'İspanyol Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:04,442 | INFO    | bookdata.pipeline.products | Kategori 'Aşk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:05,060 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Bilim Kurgu Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:05,129 | INFO    | bookdata.pipeline.products | Kategori 'I. Dünya Savaşı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:05,360 | INFO    | bookdata.pipeline.products | Kategori 'Beslenme ve Diyet Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:05,420 | INFO    | bookdata.pipeline.products | Kategori 'Psikiyatri ve Psikanaliz Kitapları': 1 sayfa, 4 ürün
+2026-09-30 21:58:05,482 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Fantastik Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:05,632 | INFO    | bookdata.pipeline.products | Kategori 'Arkeoloji Kitapları': 1 sayfa, 2 ürün
+2026-09-30 21:58:05,691 | INFO    | bookdata.pipeline.products | Kategori 'Kurtuluş Savaşı Kitapları': 1 sayfa, 2 ürün
+2026-09-30 21:58:05,757 | INFO    | bookdata.pipeline.products | Kategori 'Yapbozlu Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:05,822 | INFO    | bookdata.pipeline.products | Kategori '1. Sınıf Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:05,977 | INFO    | bookdata.pipeline.products | Kategori 'Efsane ve Destan Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:06,033 | INFO    | bookdata.pipeline.products | Kategori 'Periyodik Yayınlar': 1 sayfa, 3 ürün
+2026-09-30 21:58:06,920 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Osmanlı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:07,023 | INFO    | bookdata.pipeline.products | Kategori 'Türk Klasikleri Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:07,081 | INFO    | bookdata.pipeline.products | Kategori 'Sosyal Tarih Kitapları': 1 sayfa, 2 ürün
+2026-09-30 21:58:07,147 | INFO    | bookdata.pipeline.products | Kategori 'Genel Psikoloji Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:07,322 | INFO    | bookdata.pipeline.products | Kategori 'Anaokulu': 1 sayfa, 12 ürün
+2026-09-30 21:58:07,380 | INFO    | bookdata.pipeline.products | Kategori 'Nöroloji Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:58:07,439 | INFO    | bookdata.pipeline.products | Kategori 'Yazıcı ve Fotokopi Kağıtları': 1 sayfa, 3 ürün
+2026-09-30 21:58:07,504 | INFO    | bookdata.pipeline.products | Kategori '100 Temel Eser Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:07,689 | INFO    | bookdata.pipeline.products | Kategori 'Yapıştırıcı ve Bantlar': 1 sayfa, 12 ürün
+2026-09-30 21:58:07,758 | INFO    | bookdata.pipeline.products | Kategori 'Bilim Kurgu Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:08,295 | INFO    | bookdata.pipeline.products | Kategori 'Okunması Gereken Şiir Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:08,514 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Biyografi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:08,573 | INFO    | bookdata.pipeline.products | Kategori 'Ortadoğu - Arap Edebiyatı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:08,634 | INFO    | bookdata.pipeline.products | Kategori '2. Sınıf Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:08,796 | INFO    | bookdata.pipeline.products | Kategori 'Genel Edebiyat Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:08,911 | INFO    | bookdata.pipeline.products | Kategori 'Çıkartmalı Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:08,974 | INFO    | bookdata.pipeline.products | Kategori 'Politik - Kurgu Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:09,038 | INFO    | bookdata.pipeline.products | Kategori 'Türk Edebiyatı TOP 50': 1 sayfa, 12 ürün
+2026-09-30 21:58:09,240 | INFO    | bookdata.pipeline.products | Kategori 'Eğitim - Okula Yardımcı Kitaplar': 1 sayfa, 29 ürün
+2026-09-30 21:58:09,302 | INFO    | bookdata.pipeline.products | Kategori 'Takvim Ve Planlayıcılar': 1 sayfa, 12 ürün
+2026-09-30 21:58:10,025 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Edebiyat Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:10,084 | INFO    | bookdata.pipeline.products | Kategori 'Ofis Makineleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:10,536 | INFO    | bookdata.pipeline.products | Kategori 'Dil Bilimi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:10,705 | INFO    | bookdata.pipeline.products | Kategori 'Denemeler': 1 sayfa, 12 ürün
+2026-09-30 21:58:10,817 | INFO    | bookdata.pipeline.products | Kategori 'Yakın Tarih Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:11,472 | INFO    | bookdata.pipeline.products | Kategori 'Coğrafya ve Genel Kitaplar': 1 sayfa, 1 ürün
+2026-09-30 21:58:11,536 | INFO    | bookdata.pipeline.products | Kategori '5. Sınıf Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:11,601 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Suç Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:11,651 | INFO    | bookdata.pipeline.products | Kategori 'Tahta ve Panolar': 1 sayfa, 1 ürün
+2026-09-30 21:58:11,780 | INFO    | bookdata.pipeline.products | Kategori 'Bölgeler Tarihi Kitapları': 1 sayfa, 3 ürün
+2026-09-30 21:58:11,897 | INFO    | bookdata.pipeline.products | Kategori '100 Temel Eser': 1 sayfa, 12 ürün
+2026-09-30 21:58:11,959 | INFO    | bookdata.pipeline.products | Kategori 'İtalyan Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:12,100 | INFO    | bookdata.pipeline.products | Kategori 'Antik Mısır Kitapları': 1 sayfa, 8 ürün
+2026-09-30 21:58:12,164 | INFO    | bookdata.pipeline.products | Kategori 'Din Psikolojisi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:12,828 | INFO    | bookdata.pipeline.products | Kategori 'Okul Öncesi Şekilli Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:13,014 | INFO    | bookdata.pipeline.products | Kategori 'Divan Edebiyatı ve Halk Edebiyatı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:13,082 | INFO    | bookdata.pipeline.products | Kategori 'Annelik ve Çocuk Bakımı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:13,135 | INFO    | bookdata.pipeline.products | Kategori 'Biyoloji - Genetik Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:58:13,199 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Şiir Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:13,357 | INFO    | bookdata.pipeline.products | Kategori 'Özel Eğitim Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:13,412 | INFO    | bookdata.pipeline.products | Kategori 'KPSS Kitapları': ürün bulunamadı (1 sayfa)
+2026-09-30 21:58:13,476 | INFO    | bookdata.pipeline.products | Kategori 'Eleştiri İnceleme ve Kuram Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:13,528 | INFO    | bookdata.pipeline.products | Kategori 'Psikiyatri Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:58:13,683 | INFO    | bookdata.pipeline.products | Kategori 'Dünya Çocuk Klasikleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:14,351 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan 50 Dünya Klasiği': 1 sayfa, 12 ürün
+2026-09-30 21:58:14,533 | INFO    | bookdata.pipeline.products | Kategori 'Korku ve Gerilim Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:14,601 | INFO    | bookdata.pipeline.products | Kategori 'Eğitici ve Öğretici Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:14,673 | INFO    | bookdata.pipeline.products | Kategori 'Tarihi Romanlar': 1 sayfa, 12 ürün
+2026-09-30 21:58:14,740 | INFO    | bookdata.pipeline.products | Kategori 'Seçili Araştırma ve Tarih Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:14,920 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Tarih Kitapları ': 1 sayfa, 1 ürün
+2026-09-30 21:58:15,431 | INFO    | bookdata.pipeline.products | Kategori 'Dekoratif Ürünler': 1 sayfa, 7 ürün
+2026-09-30 21:58:15,579 | INFO    | bookdata.pipeline.products | Kategori 'Genel Ülke Edebiyatları Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:15,836 | INFO    | bookdata.pipeline.products | Kategori 'Defterler': 1 sayfa, 12 ürün
+2026-09-30 21:58:15,908 | INFO    | bookdata.pipeline.products | Kategori 'İngiliz Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:15,974 | INFO    | bookdata.pipeline.products | Kategori 'Tavsiye Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:16,181 | INFO    | bookdata.pipeline.products | Kategori 'Okul Öncesi Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:16,248 | INFO    | bookdata.pipeline.products | Kategori 'Alternatif Tıp Şifalı Bitkiler Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:16,303 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Psikoloji Kitapları': ürün bulunamadı (1 sayfa)
+2026-09-30 21:58:16,367 | INFO    | bookdata.pipeline.products | Kategori 'Aforizma': 1 sayfa, 12 ürün
+2026-09-30 21:58:16,514 | INFO    | bookdata.pipeline.products | Kategori 'Setler': 1 sayfa, 12 ürün
+2026-09-30 21:58:16,573 | INFO    | bookdata.pipeline.products | Kategori 'Ülke Rehberi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:16,635 | INFO    | bookdata.pipeline.products | Kategori 'Psikolojik Danışma Kitapları ': 1 sayfa, 8 ürün
+2026-09-30 21:58:16,695 | INFO    | bookdata.pipeline.products | Kategori 'Fransız Edebiyatı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:17,939 | INFO    | bookdata.pipeline.products | Kategori 'Genel Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:18,004 | INFO    | bookdata.pipeline.products | Kategori 'Kent Rehberleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:18,062 | INFO    | bookdata.pipeline.products | Kategori 'Matbu Evraklar ve Makbuzlar': 1 sayfa, 6 ürün
+2026-09-30 21:58:18,227 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk 4-5 Yaş Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:18,285 | INFO    | bookdata.pipeline.products | Kategori 'Milletler Tarihi Kitapları': ürün bulunamadı (1 sayfa)
+2026-09-30 21:58:18,398 | INFO    | bookdata.pipeline.products | Kategori 'Gezi ve Rehber Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:18,562 | INFO    | bookdata.pipeline.products | Kategori 'Seyahatname Kitapları': 1 sayfa, 3 ürün
+2026-09-30 21:58:18,619 | INFO    | bookdata.pipeline.products | Kategori 'İlaç Rehber Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:58:18,677 | INFO    | bookdata.pipeline.products | Kategori 'Edebiyat Referans Kitaplar': 1 sayfa, 3 ürün
+2026-09-30 21:58:18,734 | INFO    | bookdata.pipeline.products | Kategori 'Tarihi Kişilikler Kitapları': 1 sayfa, 6 ürün
+2026-09-30 21:58:19,387 | INFO    | bookdata.pipeline.products | Kategori 'II. Dünya Savaşı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:19,642 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Otobiyografi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:19,714 | INFO    | bookdata.pipeline.products | Kategori 'Tiyatro ve Piyes Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:19,941 | INFO    | bookdata.pipeline.products | Kategori 'Dokun Hisset Kitapları': 1 sayfa, 10 ürün
+2026-09-30 21:58:20,011 | INFO    | bookdata.pipeline.products | Kategori 'Kürt Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:20,077 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Gelişimi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:20,296 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Referans Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:20,366 | INFO    | bookdata.pipeline.products | Kategori 'Genel Tarih Kitapları ': 1 sayfa, 12 ürün
+2026-09-30 21:58:20,433 | INFO    | bookdata.pipeline.products | Kategori 'Türkiye - Yakın Tarih Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:20,498 | INFO    | bookdata.pipeline.products | Kategori 'Gençlik Ortaokul Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:20,649 | INFO    | bookdata.pipeline.products | Kategori 'Aksiyon ve Macera Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:21,154 | INFO    | bookdata.pipeline.products | Kategori 'İskandinav Edebiyatı': 1 sayfa, 2 ürün
+2026-09-30 21:58:21,263 | INFO    | bookdata.pipeline.products | Kategori 'Göktürk Tarihi Kitapları': 1 sayfa, 9 ürün
+2026-09-30 21:58:21,409 | INFO    | bookdata.pipeline.products | Kategori 'Psikoloji': 1 sayfa, 12 ürün
+2026-09-30 21:58:21,478 | INFO    | bookdata.pipeline.products | Kategori 'Ekol ve Yaklaşım Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:21,545 | INFO    | bookdata.pipeline.products | Kategori 'Dünya Klasikleri TOP 50': 1 sayfa, 12 ürün
+2026-09-30 21:58:21,726 | INFO    | bookdata.pipeline.products | Kategori 'Yoga Meditasyon Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:21,798 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Gizemli Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:21,874 | INFO    | bookdata.pipeline.products | Kategori 'Tarih Felsefesi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:22,136 | INFO    | bookdata.pipeline.products | Kategori 'Anı - Mektup - Günlük Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:22,198 | INFO    | bookdata.pipeline.products | Kategori 'Anadolu Tarihi Kitapları': 1 sayfa, 3 ürün
+2026-09-30 21:58:22,344 | INFO    | bookdata.pipeline.products | Kategori '3. Sınıf Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:22,434 | INFO    | bookdata.pipeline.products | Kategori 'Araştırma ve İnceleme Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:22,591 | INFO    | bookdata.pipeline.products | Kategori ' Mizah Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:22,658 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Gerilim Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:23,605 | INFO    | bookdata.pipeline.products | Kategori 'Referans Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:23,865 | INFO    | bookdata.pipeline.products | Kategori 'Antoloji Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:23,931 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Bilmece Bulmaca Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:24,032 | INFO    | bookdata.pipeline.products | Kategori 'Tarih - Mitoloji Kitapları': 1 sayfa, 2 ürün
+2026-09-30 21:58:24,178 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk 0-3 Yaş Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:24,240 | INFO    | bookdata.pipeline.products | Kategori 'Söyleşi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:24,305 | INFO    | bookdata.pipeline.products | Kategori 'Psikoloji Başvuru Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:24,365 | INFO    | bookdata.pipeline.products | Kategori 'Uzakdoğu Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:25,972 | INFO    | bookdata.pipeline.products | Kategori 'Latin Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:26,038 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:27,108 | INFO    | bookdata.pipeline.products | Kategori 'Başvuru Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:27,174 | INFO    | bookdata.pipeline.products | Kategori 'Roman ve Öykü Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:27,288 | INFO    | bookdata.pipeline.products | Kategori 'Gezi ve Rehber Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:27,345 | INFO    | bookdata.pipeline.products | Kategori 'Sağlıklı Yaşam Kitapları': 1 sayfa, 7 ürün
+2026-09-30 21:58:27,486 | INFO    | bookdata.pipeline.products | Kategori 'Gelişim Psikolojisi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:27,551 | INFO    | bookdata.pipeline.products | Kategori 'National Geographic Kids': 1 sayfa, 12 ürün
+2026-09-30 21:58:27,613 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Okunan Türk Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:28,425 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Boyama Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:28,533 | INFO    | bookdata.pipeline.products | Kategori 'Ofis Malzemeleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:28,586 | INFO    | bookdata.pipeline.products | Kategori 'Psikolojik Araştırma Teknikleri Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:58:28,877 | INFO    | bookdata.pipeline.products | Kategori 'Genel Sağlık Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:29,003 | INFO    | bookdata.pipeline.products | Kategori 'Türk Edebiyatı Romanları': 1 sayfa, 12 ürün
+2026-09-30 21:58:29,154 | INFO    | bookdata.pipeline.products | Kategori 'Sağlık Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:29,219 | INFO    | bookdata.pipeline.products | Kategori 'Türkiye Rehber Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:29,427 | INFO    | bookdata.pipeline.products | Kategori 'En İyi Korku Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:30,230 | INFO    | bookdata.pipeline.products | Kategori 'Şiir Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:30,295 | INFO    | bookdata.pipeline.products | Kategori 'Araştırma - İnceleme Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:30,436 | INFO    | bookdata.pipeline.products | Kategori 'Histoloji ve Embriyoloji Kitapları': 1 sayfa, 1 ürün
+2026-09-30 21:58:30,499 | INFO    | bookdata.pipeline.products | Kategori 'Cinsellik Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:30,554 | INFO    | bookdata.pipeline.products | Kategori 'Ülkeler Tarihi Kitapları': 1 sayfa, 2 ürün
+2026-09-30 21:58:31,383 | INFO    | bookdata.pipeline.products | Kategori 'Casusluk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:31,448 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk 6-7 Yaş Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:31,512 | INFO    | bookdata.pipeline.products | Kategori 'Kinetik Kumlar': 1 sayfa, 7 ürün
+2026-09-30 21:58:31,575 | INFO    | bookdata.pipeline.products | Kategori 'Klasik Romanlar ve Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:31,757 | INFO    | bookdata.pipeline.products | Kategori 'En Sevilen Çocuk Kitabı Setleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:31,827 | INFO    | bookdata.pipeline.products | Kategori 'Sanatsal Malzemeler': 1 sayfa, 12 ürün
+2026-09-30 21:58:31,896 | INFO    | bookdata.pipeline.products | Kategori 'Bilimsel Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:32,941 | INFO    | bookdata.pipeline.products | Kategori 'Yabancı Dilde Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:33,058 | INFO    | bookdata.pipeline.products | Kategori 'Amerikan Edebiyatı': 1 sayfa, 12 ürün
+2026-09-30 21:58:33,111 | INFO    | bookdata.pipeline.products | Kategori 'Amerika Tarihi Kitapları': ürün bulunamadı (1 sayfa)
+2026-09-30 21:58:33,277 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Çizgi Roman Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:33,344 | INFO    | bookdata.pipeline.products | Kategori 'Fantastik Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:33,412 | INFO    | bookdata.pipeline.products | Kategori 'Dosya ve Klasörler': 1 sayfa, 12 ürün
+2026-09-30 21:58:33,475 | INFO    | bookdata.pipeline.products | Kategori 'Çocuk Psikolojisi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:33,694 | INFO    | bookdata.pipeline.products | Kategori 'Kalemler ve Yazı Gereçleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:33,756 | INFO    | bookdata.pipeline.products | Kategori 'Araç ve Gereçler': 1 sayfa, 2 ürün
+2026-09-30 21:58:33,821 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Seri Katil Kitapları': 1 sayfa, 11 ürün
+2026-09-30 21:58:34,059 | INFO    | bookdata.pipeline.products | Kategori 'Psikolojik Kitaplar': 1 sayfa, 12 ürün
+2026-09-30 21:58:34,170 | INFO    | bookdata.pipeline.products | Kategori 'Kağıt Ürünleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:34,235 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan 100 Tarih Kitabı': 1 sayfa, 12 ürün
+2026-09-30 21:58:34,387 | INFO    | bookdata.pipeline.products | Kategori 'Gençlik Lise Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:35,391 | INFO    | bookdata.pipeline.products | Kategori 'Boyalar ve Boya Ürünleri': 1 sayfa, 12 ürün
+2026-09-30 21:58:35,452 | INFO    | bookdata.pipeline.products | Kategori 'Fantastik Çocuk Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:35,598 | INFO    | bookdata.pipeline.products | Kategori 'Aile Sağlığı Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:35,653 | INFO    | bookdata.pipeline.products | Kategori 'Bilim Kurgu Kitapları': 1 sayfa, 5 ürün
+2026-09-30 21:58:35,872 | INFO    | bookdata.pipeline.products | Kategori 'Roman': 1 sayfa, 12 ürün
+2026-09-30 21:58:35,937 | INFO    | bookdata.pipeline.products | Kategori 'Çok Satan Çizgi Romanlar': 1 sayfa, 12 ürün
+2026-09-30 21:58:36,085 | INFO    | bookdata.pipeline.products | Kategori 'İstanbul Rehberi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:36,322 | INFO    | bookdata.pipeline.products | Kategori 'Öykü Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:36,385 | INFO    | bookdata.pipeline.products | Kategori '0-3 Yaş Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:58:36,580 | INFO    | bookdata.pipeline.products | Kategori 'En Çok Satan Selçuklu Tarihi Kitapları': 1 sayfa, 12 ürün
+2026-09-30 21:59:12,629 | INFO    | bookdata.pipeline.products | Kategori 'Yazar Listesi': ürün bulunamadı (50 sayfa)
+2026-09-30 21:59:14,662 | INFO    | bookdata.pipeline.products | Kategori 'Yayınevi Listesi': ürün bulunamadı (50 sayfa)
+2026-09-30 21:59:14,671 | INFO    | bookdata.pipeline.standardize | Standardize edildi: 2363 ham → 2119 ürün
+2026-09-30 21:59:16,131 | INFO    | bookdata.pipeline.merge | Fiyat karşılaştırması: 2119 ürünün 2079 tanesinde değişiklik/yeni kayıt
+2026-09-30 21:59:16,141 | INFO    | bookdata.adapters.storage | Veri setine 2079 yeni kayıt eklendi: Data/bkm_Datasets.csv
+2026-09-30 21:59:16,236 | INFO    | bookdata.pipeline.runner | Özet: 246 kategori bulundu, 234 işlendi; 2119 ürün → 2079 kayıt eklendi (toplam 227845). İstek: 333, hata: 0
+2026-09-30 21:59:19,208 | INFO    | bookdata.adapters.kaggle | Kaggle yayını tamamlandı: furkanzeki/bkm-book-dataset (2026-09-30)
